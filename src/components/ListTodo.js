@@ -5,17 +5,23 @@ import PriorityHighRoundedIcon from '@mui/icons-material/PriorityHighRounded';
 import ClearIcon from '@mui/icons-material/Clear';
 
 const ListTodo = () => {
+
     
-    const [tasks, setTasks] = useState([])
-    const { data, loading } = useFetch("http://localhost:8000/tasks")
-
+  const [tasks, setTasks] = useState([])
+    
+    const { get, loading } = useFetch("http://localhost:8000/")
+  
     useEffect(() => {
-        setTasks(data);
-    }, [data])
-
+        get("tasks")
+        .then(data => {
+            setTasks(data)
+        })
+        .catch(error => console.log('could not fetch data', error))
+    }, [])
+  
     function handleDelete(id) {
         console.log(tasks);
-        let newTasks = tasks.filter(task => task.id === id)
+        let newTasks = tasks.filter(task => task.id !== id)
         setTasks(newTasks);
     }
 

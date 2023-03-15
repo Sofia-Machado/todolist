@@ -1,10 +1,13 @@
 import { useState } from "react";
+import useFetch from "../useFetch";
 import { FormGroup, Select, Button, MenuItem, TextField, Checkbox, FormControl } from "@mui/material";
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import ErrorIcon from '@mui/icons-material/Error';
 
 const InputTodo = () => {
-    const [loading, setLoading] = useState(false);
+
+    const { post, loading } = useFetch("http://localhost:8000/")
+
     const [title, setTitle] = useState('');
     const [important, setImportant] = useState(false);
     const [category, setCategory] = useState('work');
@@ -16,20 +19,13 @@ const InputTodo = () => {
 
     function handleSubmit(e) {
         e.preventDefault();
-
-        setLoading(true);
         //define task values
         const task = { title, important, category };
-
         // sent new data to the database
-        fetch("http://localhost:8000/tasks", {
-            method: "POST",
-            headers: { "Content-Type": "application/json"},
-            body: JSON.stringify(task)
-        })
+        post("tasks", task)
         .then(() => {
             console.log(task);
-            setLoading(false);
+
         })
     }
 
