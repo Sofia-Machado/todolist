@@ -9,7 +9,7 @@ const ListTodo = () => {
     
   const [tasks, setTasks] = useState([])
     
-    const { get, loading } = useFetch("http://localhost:8000/")
+    const { get, deleteItem, loading } = useFetch("http://localhost:8000/")
   
     useEffect(() => {
         get("tasks")
@@ -21,8 +21,9 @@ const ListTodo = () => {
   
     function handleDelete(id) {
         console.log(tasks);
-        let newTasks = tasks.filter(task => task.id !== id)
-        setTasks(newTasks);
+        /* let newTasks = tasks.filter(task => task.id !== id)
+        setTasks(newTasks); */
+        deleteItem('tasks/' + id);
     }
 
     return (

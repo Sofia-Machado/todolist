@@ -48,5 +48,13 @@ export default function useFetch(baseUrl) {
         })
     }
 
-    return { get, post, loading };
+    function deleteItem(url, id) {
+        return new Promise ((resolve, reject) => {
+            fetch(baseUrl + url + id, {
+                method: 'DELETE'
+            })
+        })
+    }
+
+    return { get, post, deleteItem, loading };
 }
