@@ -21,8 +21,8 @@ const ListTodo = () => {
   
     function handleDelete(id) {
         console.log(tasks);
-        /* let newTasks = tasks.filter(task => task.id !== id)
-        setTasks(newTasks); */
+        let newTasks = tasks.filter(task => task.id !== id)
+        setTasks(newTasks);
         deleteItem('tasks/' + id);
     }
 

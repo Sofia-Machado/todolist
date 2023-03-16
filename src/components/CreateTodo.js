@@ -6,7 +6,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 
 const InputTodo = () => {
 
-    const { post, loading } = useFetch("http://localhost:8000/")
+    const { post } = useFetch("http://localhost:8000/")
 
     const [title, setTitle] = useState('');
     const [important, setImportant] = useState(false);
@@ -31,8 +31,6 @@ const InputTodo = () => {
 
     return ( 
         <>
-        {loading && <p>Loading...</p>}
-
             <form onSubmit={handleSubmit}>
                 <FormControl>
                     <FormGroup sx={styleWrapper}>

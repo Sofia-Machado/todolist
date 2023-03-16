@@ -48,10 +48,19 @@ export default function useFetch(baseUrl) {
         })
     }
 
-    function deleteItem(url, id) {
+    function deleteItem(url) {
         return new Promise ((resolve, reject) => {
-            fetch(baseUrl + url + id, {
-                method: 'DELETE'
+            fetch(baseUrl + url, {
+                method: 'DELETE',
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                return resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+                console.log(error)
             })
         })
     }

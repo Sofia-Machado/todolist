@@ -1,12 +1,6 @@
 {
   "tasks": [
     {
-      "title": "Do Laundry",
-      "category": "personal",
-      "important": false,
-      "id": 1
-    },
-    {
       "title": "Run",
       "important": true,
       "category": "personal",
@@ -17,18 +11,6 @@
       "important": true,
       "category": "personal",
       "id": 3
-    },
-    {
-      "title": "Code",
-      "important": false,
-      "category": "work",
-      "id": 4
-    },
-    {
-      "title": "",
-      "important": false,
-      "category": "work",
-      "id": 5
     }
   ]
 }
