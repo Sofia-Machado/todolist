@@ -17,14 +17,14 @@ const InputTodo = ({important, onImportant}) => {
         padding: '20px',
     };
 
-    function handleSubmit(e) {
+    //submit form
+    function handleSubmit() {
         //define task values
         const task = { title, important, category };
         // sent new data to the database
         post("tasks", task)
         .then(() => {
             console.log(task);
-
         })
     }
 

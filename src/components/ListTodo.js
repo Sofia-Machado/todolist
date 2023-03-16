@@ -6,6 +6,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 
 const ListTodo = ({important, onImportant}) => {
   const [tasks, setTasks] = useState([])
+  const [deleteTask, setDeleteTask] = useState(false);
     
     const { get, deleteItem, loading } = useFetch("http://localhost:8000/")
 
@@ -14,15 +15,15 @@ const ListTodo = ({important, onImportant}) => {
         get("tasks")
         .then(data => {
             setTasks(data);
+            setDeleteTask(false);
         })
         .catch(error => console.log('could not fetch data', error))
-    }, [important])
+    }, [deleteTask, important]);
 
     //delete task
     function handleDelete(id) {
         console.log(tasks);
-        let newTasks = tasks.filter(task => task.id !== id)
-        setTasks(newTasks);
+        setDeleteTask(true);
         deleteItem('tasks/' + id);
     }
 
@@ -43,7 +44,7 @@ const ListTodo = ({important, onImportant}) => {
                                 <ListItemButton>
                                     <ListItemIcon>
                                     {task.important &&
-                                    <IconButton onClick={() => {onImportant(false, task.id); console.log(important)}}>
+                                    <IconButton onClick={() => {onImportant(false, task, task.id); console.log(task.important + " " + task.id + " " + task.title + " " + task.category)}}>
                                         <PriorityHighRoundedIcon 
                                             sx={{
                                                 fill:"darkred",
