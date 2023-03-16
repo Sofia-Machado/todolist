@@ -5,9 +5,10 @@ import PriorityHigh from '@mui/icons-material/PriorityHigh';
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
 
-const ListTodo = ({important, setImportant, update, setUpdate, complete, setComplete, tasks, setTasks}) => {
+const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks}) => {
     const [filterType, setFilterType] = useState('all');
     const [filterComplete, setFilterComplete] = useState(true);
+    const [complete, setComplete] = useState(false);
     const { get, deleteItem, put, loading } = useFetch("http://localhost:8000/")
 
     //fetch tasks list
@@ -71,7 +72,7 @@ const ListTodo = ({important, setImportant, update, setUpdate, complete, setComp
                     </FormControl>
                     <FormControl sx={{ minWidth: 100, marginLeft:"0.5em" }} size="small">
                         <FormControlLabel control={
-                            <Checkbox checked={filterComplete} onChange={() => setFilterComplete(!filterComplete)} />} label="Complete" 
+                            <Checkbox checked={filterComplete} onChange={() => setFilterComplete(prevState => !prevState)} />} label="Complete" 
                         />
                     </FormControl>
                     
@@ -79,9 +80,9 @@ const ListTodo = ({important, setImportant, update, setUpdate, complete, setComp
                     {tasks.filter(task => {
                         if (!filterComplete) {
                             if (filterType !== 'all'){
-                                return task.category === filterType && task.complete === false;
+                                return task.category === filterType && (task.complete === false || task.complete === undefined);
                             } else { 
-                                return task.complete === false;
+                                return task.complete === false || task.complete === undefined;
                             }
                         } else {
                             if (filterType !== 'all') {
