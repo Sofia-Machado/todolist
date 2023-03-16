@@ -48,7 +48,7 @@ export default function useFetch(baseUrl) {
         })
     }
 
-    function updateItem(url, body) {
+    function put(url, body) {
         return new Promise ((resolve, reject) => {
             fetch(baseUrl + url, {
                 method: 'PUT',
@@ -90,5 +90,5 @@ export default function useFetch(baseUrl) {
         })
     }
 
-    return { get, post, deleteItem, updateItem, loading };
+    return { get, post, deleteItem, put, loading };
 }

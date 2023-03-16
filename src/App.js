@@ -8,16 +8,13 @@ function App() {
 const [important, setImportant] = useState(false);
 const { updateItem } = useFetch("http://localhost:8000/")
 
-function handleImportant(state) {
-  setImportant(state);
-}
 
   return (
     <Container>
       <div className="App">
         <h2>To do list</h2>
-          <InputTodo important={important} onImportant={handleImportant} />
-          <ListTodo important={important} onImportant={handleImportant} />
+          <InputTodo important={important} setImportant={setImportant} />
+          <ListTodo important={important} setImportant={setImportant} />
       </div>
     </Container>
   );

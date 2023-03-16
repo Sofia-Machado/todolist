@@ -4,11 +4,11 @@ import { IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText 
 import PriorityHighRoundedIcon from '@mui/icons-material/PriorityHighRounded';
 import ClearIcon from '@mui/icons-material/Clear';
 
-const ListTodo = ({important, onImportant}) => {
+const ListTodo = ({important, setImportant}) => {
   const [tasks, setTasks] = useState([])
   const [deleteTask, setDeleteTask] = useState(false);
     
-    const { get, deleteItem, updateItem, loading } = useFetch("http://localhost:8000/")
+    const { get, deleteItem, put, loading } = useFetch("http://localhost:8000/")
 
     //fetch tasks list
     useEffect(() => {
@@ -19,14 +19,13 @@ const ListTodo = ({important, onImportant}) => {
             setDeleteTask(false);
         })
         .catch(error => console.log('could not fetch data', error))
-    }, [deleteTask, important]);
+    }, [deleteTask]);
     
     //update task
     function handleImportantUpdate(task) {
-        onImportant(prevState => !prevState);
+        setImportant(!important);
         console.log(task);
-            //hardcoded?
-            updateItem(`tasks/${task.id}`, {...task, important: false})
+            put(`tasks/${task.id}`, {...task, important: important})
             .then(data => data)
             .catch(error => console.log('could not fetch data', error))
         }
@@ -73,14 +72,14 @@ const ListTodo = ({important, onImportant}) => {
                                     }
                                     </ListItemIcon>
                                 <ListItemText primary={task.title} secondary={task.category.charAt(0).toUpperCase() + task.category.slice(1).toLowerCase()} />
-                                </ListItemButton>
                                 <IconButton 
                                     aria-label="delete" 
                                     size="small"
-                                    onClick={() => handleDelete(task.id)}
+                                    onClick={() => {handleDelete(task.id)}}
                                 >
                                     <ClearIcon />
                                 </IconButton>
+                                </ListItemButton>
                             </ListItem>
                         )
                     })}

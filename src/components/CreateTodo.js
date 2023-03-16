@@ -18,7 +18,8 @@ const InputTodo = ({important, onImportant}) => {
     };
 
     //submit form
-    function handleSubmit() {
+    function handleSubmit(e) {
+        e.preventDefault();
         //define task values
         const task = { title, important, category };
         // sent new data to the database
@@ -30,7 +31,7 @@ const InputTodo = ({important, onImportant}) => {
 
     return ( 
         <>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={(e) => handleSubmit(e)}>
                 <FormControl>
                     <FormGroup sx={styleWrapper}>
 
