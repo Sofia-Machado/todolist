@@ -1,20 +1,15 @@
 import { useState } from "react";
 import useFetch from "../useFetch";
-import { FormGroup, Select, Button, MenuItem, TextField, Checkbox, FormControl } from "@mui/material";
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import ErrorIcon from '@mui/icons-material/Error';
+import { ClickAwayListener, Fade, FormGroup, InputLabel, Select, Button, MenuItem, TextField, Checkbox, FormControl, Tooltip } from "@mui/material";
+import PriorityHigh from '@mui/icons-material/PriorityHigh';
+
 
 const InputTodo = ({important, setImportant, setUpdate}) => {
-
+    const [title, setTitle] = useState('');
+    const [category, setCategory] = useState('');
+    const [open, setOpen] = useState(false);
     const { post } = useFetch("http://localhost:8000/")
 
-    const [title, setTitle] = useState('');
-    const [category, setCategory] = useState('work');
-    const styleWrapper = {
-        display: 'flex',
-        flexDirection: 'row',
-        padding: '20px',
-    };
 
     //submit form
     function handleSubmit(e) {
@@ -29,57 +24,91 @@ const InputTodo = ({important, setImportant, setUpdate}) => {
         setUpdate(true);
     }
 
+    //tooltip functions
+    function handleTooltipClose() {
+        setOpen(false);
+    }
+    function handleTooltipOpen() {
+        setOpen(true);
+    }
+
     return ( 
         <>
             <form onSubmit={(e) => handleSubmit(e)}>
-                <FormControl>
-                    <FormGroup sx={styleWrapper}>
+                    <FormGroup 
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        marginTop: '2em',
+                    }}>
 
                         {/* Task */}
-                        <TextField
-                            sx={{
-                                paddingRight: '0.5em',
-                            }}
-                            placeholder="Please enter a task"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                        />
+                        <FormControl>
+                            <TextField
+                                sx={{
+                                    paddingRight: '0.5em',
+                                }}
+                                placeholder="Please enter a task"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                required
+                            />
+                        </FormControl>
 
                         {/* Category */}
-                        <Select
-                        sx={{
-                            width: "7em",
-                            fontSize: "0.8em"
-                        }}
-                            value={category}
-                            onChange={(e) => setCategory(e.target.value)}
-                        >
-                            <MenuItem value="work">Work</MenuItem>
-                            <MenuItem value="personal">Personal</MenuItem>
-                        </Select>
+                        <FormControl sx={{ minWidth: 100 }}>
+                            <InputLabel id="demo-select-small">Type</InputLabel>
+                            <Select
+                                labelId="demo-select-small"
+                                id="demo-select-small"
+                                label="Type"
+                                defaultValue="type"
+                                value={category}
+                                onChange={(e) => setCategory(e.target.value)}
+                            >
+                                <MenuItem value="work">Work</MenuItem>
+                                <MenuItem value="personal">Personal</MenuItem>
+                            </Select>
+                        </FormControl>
 
                         {/* Importance */}
-                        <Checkbox 
-                            name="important" 
-                            value={important}
-                            onChange={() => {
-                                setImportant(!important)
-                            }}
-                            icon={<ErrorOutlineIcon />}
-                            checkedIcon={<ErrorIcon />} 
-                        />
-                            
-                        <Button type='submit' sx={{
-                            color:'white',
-                            backgroundColor:'blue',
-                            margin: '0.2em',
-                            '&:hover': {
-                                backgroundColor:'lightblue'
-                            }
-                        }}>Add</Button>
+                        <FormControl>
+                        <ClickAwayListener onClickAway={handleTooltipClose}>
+                            <Tooltip
+                                TransitionComponent={Fade}
+                                TransitionProps={{ timeout: 600 }}
+                                title={!important ? 'Important' : "Not important"}
+                                placement="bottom"
+                            >
+                                <Checkbox 
+                                    size="medium"
+                                    name="important" 
+                                    value={important}
+                                    onChange={() => {
+                                        setImportant(!important)
+                                    }}
+                                    icon={<PriorityHigh sx={{color:"darkred"}} />}
+                                    checkedIcon={<PriorityHigh sx={{color:"#efe4e4"}} />} 
+                                />
+                            </Tooltip>
+                        </ClickAwayListener>
+                        </FormControl>
+
+                        {/* Submit Button */}    
+                        <Button type='submit'
+                            variant="contained" 
+                            size="small"
+                            sx={{
+                                color:'white',
+                                backgroundColor:'#5397db',
+                                '&:hover': {
+                                    backgroundColor:'#1d79d5'
+                                }
+                            }}>
+                            Add
+                        </Button>
 
                     </FormGroup>
-                </FormControl>
             </form>
         </>
      );

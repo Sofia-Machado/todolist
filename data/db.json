@@ -1,22 +1,25 @@
 {
   "tasks": [
     {
+      "title": "hello",
+      "important": true,
+      "category": "work",
+      "id": 2,
+      "complete": true
+    },
+    {
       "title": "Laundry",
-      "important": true,
+      "important": false,
       "category": "personal",
-      "id": 3
+      "id": 4,
+      "complete": false
     },
     {
-      "title": "hello",
+      "title": "google",
       "important": true,
       "category": "work",
-      "id": 11
-    },
-    {
-      "title": "hello",
-      "important": true,
-      "category": "work",
-      "id": 12
+      "id": 5,
+      "complete": false
     }
   ]
 }
