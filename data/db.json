@@ -8,18 +8,10 @@
       "complete": true
     },
     {
-      "title": "Laundry",
+      "title": "hello",
       "important": false,
       "category": "personal",
-      "id": 4,
-      "complete": false
-    },
-    {
-      "title": "google",
-      "important": true,
-      "category": "work",
-      "id": 5,
-      "complete": false
+      "id": 7
     }
   ]
 }

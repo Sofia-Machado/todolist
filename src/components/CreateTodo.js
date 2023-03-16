@@ -1,10 +1,10 @@
 import { useState } from "react";
 import useFetch from "../useFetch";
-import { ClickAwayListener, Fade, FormGroup, InputLabel, Select, Button, MenuItem, TextField, Checkbox, FormControl, Tooltip } from "@mui/material";
+import { ClickAwayListener, Fade, FormGroup, InputLabel, Select, Button, MenuItem, TextField, Checkbox, FormControl, Tooltip, Typography } from "@mui/material";
 import PriorityHigh from '@mui/icons-material/PriorityHigh';
 
 
-const InputTodo = ({important, setImportant, setUpdate}) => {
+const CreateTodo = ({important, setImportant, setUpdate}) => {
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState('');
     const [open, setOpen] = useState(false);
@@ -34,12 +34,13 @@ const InputTodo = ({important, setImportant, setUpdate}) => {
 
     return ( 
         <>
+        <Typography variant="h2" sx={{fontSize:"1rem", fontWeight: "500", marginTop: '1em', }}>Insert new todo</Typography>
             <form onSubmit={(e) => handleSubmit(e)}>
                     <FormGroup 
                     sx={{
                         display: 'flex',
                         flexDirection: 'row',
-                        marginTop: '2em',
+                        marginTop: '0.5em',
                     }}>
 
                         {/* Task */}
@@ -114,4 +115,4 @@ const InputTodo = ({important, setImportant, setUpdate}) => {
      );
 }
  
-export default InputTodo;
+export default CreateTodo;

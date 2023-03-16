@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import useFetch from "../useFetch";
-import {  Fade, FormControl, IconButton, InputLabel, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem, Select, Tooltip } from "@mui/material";
+import {  Checkbox, Fade, FormControl, FormControlLabel, IconButton, InputLabel, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem, Paper, Select, Tooltip } from "@mui/material";
 import PriorityHigh from '@mui/icons-material/PriorityHigh';
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
 
-const ListTodo = ({important, setImportant, update, setUpdate}) => {
-    const [tasks, setTasks] = useState([])
-    const [complete, setComplete] = useState(false);
-    const [filter, setFilter] = useState('all');
+const ListTodo = ({important, setImportant, update, setUpdate, complete, setComplete, tasks, setTasks}) => {
+    const [filterType, setFilterType] = useState('all');
+    const [filterComplete, setFilterComplete] = useState(true);
     const { get, deleteItem, put, loading } = useFetch("http://localhost:8000/")
 
     //fetch tasks list
@@ -49,34 +48,48 @@ const ListTodo = ({important, setImportant, update, setUpdate}) => {
         <>
             {loading && <p>Loading...</p>}
             {tasks &&
+            <Paper elevation={3} sx={{marginTop: "2em", paddingRight:"1em", paddingLeft:"1em"}}>
                 <List
                     sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper', marginTop: "2em" }}
                     aria-label="tasks"
                 >
                     {/* Filters */}
                     <FormControl sx={{ minWidth: 100 }} size="small">
-                            <InputLabel id="demo-select-small">Filter</InputLabel>
-                            <Select
-                                labelId="demo-select-small"
-                                id="demo-select-small"
-                                label="Type"
-                                defaultValue="filter"
-                                value={filter}
-                                onChange={(e) => setFilter(e.target.value)}
-                            >~
-                                <MenuItem value="all">All</MenuItem>
-                                <MenuItem value="work">Work</MenuItem>
-                                <MenuItem value="personal">Personal</MenuItem>
-                            </Select>
-                        </FormControl>
+                        <InputLabel id="demo-select-small">Category</InputLabel>
+                        <Select
+                            labelId="demo-select-small"
+                            id="demo-select-small"
+                            label="Category"
+                            defaultValue="filter"
+                            value={filterType}
+                            onChange={(e) => setFilterType(e.target.value)}
+                        >
+                            <MenuItem value="all">All</MenuItem>
+                            <MenuItem value="work">Work</MenuItem>
+                            <MenuItem value="personal">Personal</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <FormControl sx={{ minWidth: 100, marginLeft:"0.5em" }} size="small">
+                        <FormControlLabel control={
+                            <Checkbox checked={filterComplete} onChange={() => setFilterComplete(!filterComplete)} />} label="Complete" 
+                        />
+                    </FormControl>
                     
                     {/* Show list */}
                     {tasks.filter(task => {
-                        if (filter !== 'all'){
-                        return task.category === filter;
-                    } else { 
-                        return task;
-                    }
+                        if (!filterComplete) {
+                            if (filterType !== 'all'){
+                                return task.category === filterType && task.complete === false;
+                            } else { 
+                                return task.complete === false;
+                            }
+                        } else {
+                            if (filterType !== 'all') {
+                                return task.category === filterType;
+                            } else { 
+                                return task; 
+                            }
+                        } 
                     }).map(task => {
                         return (
                             <ListItem 
@@ -100,10 +113,14 @@ const ListTodo = ({important, setImportant, update, setUpdate}) => {
                                                         "&:hover": {
                                                             borderRadius: "20px",
                                                             padding: "0.2em",
-                                                            margin: "0"
+                                                            margin: "0",
+                                                            color:"darkred",
+                                                        },
+                                                        "&.important:hover": {
+                                                            color:"#d7b6b6",
                                                         },
                                                         "&.important": {
-                                                            fill:"darkred",
+                                                            color:"darkred",
                                                         }
                                                     }} 
                                                     />
@@ -119,7 +136,7 @@ const ListTodo = ({important, setImportant, update, setUpdate}) => {
                                     selected={complete}
                                     onClick={() => handleComplete(task)}
                                     className={task.complete ? 'complete' : ''}
-                                    sx={{"&.complete":{color:"green"}}}
+                                    sx={{color:"rgb(192 213 192 / 87%)", "&.complete":{color:"green"}}}
                                     >
                                     <CheckIcon />
                                 </IconButton>
@@ -127,7 +144,7 @@ const ListTodo = ({important, setImportant, update, setUpdate}) => {
                                     aria-label="delete" 
                                     size="small"
                                     onClick={() => handleDelete(task.id)}
-                                    sx={{"&:hover":{color:"darkred"}}}
+                                    sx={{color:"#efe4e4", "&:hover":{color:"darkred"}}}
                                 >
                                     <ClearIcon />
                                 </IconButton>
@@ -136,6 +153,7 @@ const ListTodo = ({important, setImportant, update, setUpdate}) => {
                         )
                     })}
                 </List>
+            </Paper>
             }
         </>
      );
