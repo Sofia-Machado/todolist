@@ -4,12 +4,11 @@ import { FormGroup, Select, Button, MenuItem, TextField, Checkbox, FormControl }
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import ErrorIcon from '@mui/icons-material/Error';
 
-const InputTodo = ({important, onImportant}) => {
+const InputTodo = ({important, setImportant, setUpdate}) => {
 
     const { post } = useFetch("http://localhost:8000/")
 
     const [title, setTitle] = useState('');
-    //const [important, setImportant] = useState(false);
     const [category, setCategory] = useState('work');
     const styleWrapper = {
         display: 'flex',
@@ -27,6 +26,7 @@ const InputTodo = ({important, onImportant}) => {
         .then(() => {
             console.log(task);
         })
+        setUpdate(true);
     }
 
     return ( 
@@ -63,8 +63,7 @@ const InputTodo = ({important, onImportant}) => {
                             name="important" 
                             value={important}
                             onChange={() => {
-                                onImportant(prevState => !prevState)
-                                console.log(important);
+                                setImportant(!important)
                             }}
                             icon={<ErrorOutlineIcon />}
                             checkedIcon={<ErrorIcon />} 

@@ -2,28 +2,21 @@
   "tasks": [
     {
       "title": "Laundry",
-      "important": false,
+      "important": true,
       "category": "personal",
       "id": 3
     },
     {
-      "title": "Laundry",
-      "important": false,
+      "title": "hello",
+      "important": true,
       "category": "work",
-      "id": 4,
-      "imporrtant": false
+      "id": 11
     },
     {
       "title": "hello",
-      "important": false,
+      "important": true,
       "category": "work",
-      "id": 5
-    },
-    {
-      "title": "hello",
-      "important": false,
-      "category": "work",
-      "id": 6
+      "id": 12
     }
   ]
 }
