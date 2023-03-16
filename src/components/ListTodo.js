@@ -8,10 +8,11 @@ const ListTodo = ({important, onImportant}) => {
   const [tasks, setTasks] = useState([])
   const [deleteTask, setDeleteTask] = useState(false);
     
-    const { get, deleteItem, loading } = useFetch("http://localhost:8000/")
+    const { get, deleteItem, updateItem, loading } = useFetch("http://localhost:8000/")
 
     //fetch tasks list
     useEffect(() => {
+        console.log('1')
         get("tasks")
         .then(data => {
             setTasks(data);
@@ -19,6 +20,16 @@ const ListTodo = ({important, onImportant}) => {
         })
         .catch(error => console.log('could not fetch data', error))
     }, [deleteTask, important]);
+    
+    //update task
+    function handleImportantUpdate(task) {
+        onImportant(prevState => !prevState);
+        console.log(task);
+            //hardcoded?
+            updateItem(`tasks/${task.id}`, {...task, important: false})
+            .then(data => data)
+            .catch(error => console.log('could not fetch data', error))
+        }
 
     //delete task
     function handleDelete(id) {
@@ -44,7 +55,7 @@ const ListTodo = ({important, onImportant}) => {
                                 <ListItemButton>
                                     <ListItemIcon>
                                     {task.important &&
-                                    <IconButton onClick={() => {onImportant(false, task, task.id); console.log(task.important + " " + task.id + " " + task.title + " " + task.category)}}>
+                                    <IconButton onClick={() => handleImportantUpdate(task)}>
                                         <PriorityHighRoundedIcon 
                                             sx={{
                                                 fill:"darkred",

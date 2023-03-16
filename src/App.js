@@ -8,21 +8,8 @@ function App() {
 const [important, setImportant] = useState(false);
 const { updateItem } = useFetch("http://localhost:8000/")
 
-async function handleImportant(state, body, id) {
+function handleImportant(state) {
   setImportant(state);
-  
-  console.log(body);
-  //update task
-  if (id) {
-    //hardcoded?
-    updateItem(`tasks/${id}`, {...body, important: false})
-    .then(data => {
-      console.log(data);
-      return data;
-    })
-    .catch(error => console.log('could not fetch data', error))
-
-  }
 }
 
   return (
