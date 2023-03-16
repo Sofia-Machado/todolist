@@ -4,21 +4,21 @@ import { IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText 
 import PriorityHighRoundedIcon from '@mui/icons-material/PriorityHighRounded';
 import ClearIcon from '@mui/icons-material/Clear';
 
-const ListTodo = () => {
-
-    
+const ListTodo = ({important, onImportant}) => {
   const [tasks, setTasks] = useState([])
     
     const { get, deleteItem, loading } = useFetch("http://localhost:8000/")
-  
+
+    //fetch tasks list
     useEffect(() => {
         get("tasks")
         .then(data => {
-            setTasks(data)
+            setTasks(data);
         })
         .catch(error => console.log('could not fetch data', error))
-    }, [])
-  
+    }, [important])
+
+    //delete task
     function handleDelete(id) {
         console.log(tasks);
         let newTasks = tasks.filter(task => task.id !== id)
@@ -43,6 +43,7 @@ const ListTodo = () => {
                                 <ListItemButton>
                                     <ListItemIcon>
                                     {task.important &&
+                                    <IconButton onClick={() => {onImportant(false, task.id); console.log(important)}}>
                                         <PriorityHighRoundedIcon 
                                             sx={{
                                                 fill:"darkred",
@@ -56,6 +57,7 @@ const ListTodo = () => {
                                                 /* tried to change focus css */
                                             }} 
                                         />
+                                    </IconButton>
                                     }
                                     </ListItemIcon>
                                 <ListItemText primary={task.title} secondary={task.category.charAt(0).toUpperCase() + task.category.slice(1).toLowerCase()} />

@@ -1,16 +1,16 @@
 {
   "tasks": [
     {
-      "title": "Run",
+      "title": "Laundry",
+      "category": "work",
       "important": true,
-      "category": "personal",
-      "id": 2
+      "id": 11
     },
     {
-      "title": "Sleep",
+      "title": "Laundry",
       "important": true,
       "category": "personal",
-      "id": 3
+      "id": 12
     }
   ]
 }
