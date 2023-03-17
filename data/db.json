@@ -12,6 +12,19 @@
       "important": false,
       "category": "personal",
       "id": 7
+    },
+    {
+      "title": "hello",
+      "important": false,
+      "category": "work",
+      "id": 8
+    },
+    {
+      "title": "laundry",
+      "important": false,
+      "category": "personal",
+      "id": 9,
+      "complete": true
     }
   ]
 }
