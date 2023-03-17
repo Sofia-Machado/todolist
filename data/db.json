@@ -2,7 +2,7 @@
   "tasks": [
     {
       "title": "hello",
-      "important": true,
+      "important": null,
       "category": "work",
       "id": 2,
       "complete": true
@@ -11,7 +11,8 @@
       "title": "hello",
       "important": false,
       "category": "personal",
-      "id": 7
+      "id": 7,
+      "complete": false
     },
     {
       "title": "hello",
@@ -24,13 +25,14 @@
       "important": false,
       "category": "personal",
       "id": 9,
-      "complete": false
+      "complete": true
     },
     {
       "title": "hello",
       "important": false,
       "category": "personal",
-      "id": 10
+      "id": 10,
+      "complete": true
     }
   ]
 }

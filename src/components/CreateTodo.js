@@ -1,21 +1,22 @@
 import { useState } from "react";
 import useFetch from "../useFetch";
-import { ClickAwayListener, Fade, FormGroup, InputLabel, Select, Button, MenuItem, TextField, Checkbox, FormControl, Tooltip, Typography } from "@mui/material";
+import { Fade, FormGroup, IconButton, InputLabel, Select, Button, MenuItem, TextField, FormControl, Tooltip, Typography } from "@mui/material";
 import PriorityHigh from '@mui/icons-material/PriorityHigh';
 
 
-const CreateTodo = ({important, setImportant, setUpdate}) => {
+const CreateTodo = ({setUpdate, newTask, setNewTask}) => {
+    const [important, setImportant] = useState(null);       
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState('');
-    const [open, setOpen] = useState(false);
     const { post } = useFetch("http://localhost:8000/")
 
 
     //submit form
     function handleSubmit(e) {
+        setNewTask(true);
         e.preventDefault();
         //define task values
-        const task = { title, important, category };
+        const task = { title, important, category, newTask: newTask };
         // sent new data to the database
         post("tasks", task)
         .then(() => {
@@ -24,30 +25,26 @@ const CreateTodo = ({important, setImportant, setUpdate}) => {
         setUpdate(true);
     }
 
-    //tooltip functions
-    function handleTooltipClose() {
-        setOpen(false);
-    }
-    function handleTooltipOpen() {
-        setOpen(true);
-    }
-
     return ( 
         <>
-        <Typography variant="h2" sx={{fontSize:"1rem", fontWeight: "500", marginTop: '1em', }}>Insert new todo</Typography>
+        <Typography variant="h2" sx={{fontSize:"1.2rem", fontWeight: "500", marginTop: '1em', }}>Insert new task:</Typography>
             <form onSubmit={(e) => handleSubmit(e)}>
                     <FormGroup 
                     sx={{
-                        display: 'flex',
+                        display: 'inline-flex',
                         flexDirection: 'row',
-                        marginTop: '0.5em',
+                        marginTop: '0.5em' 
+                        
                     }}>
 
                         {/* Task */}
-                        <FormControl>
+                        <FormControl 
+                            sx={{
+                        }}>
                             <TextField
                                 sx={{
                                     paddingRight: '0.5em',
+                                    marginBottom: 2
                                 }}
                                 placeholder="Please enter a task"
                                 value={title}
@@ -57,7 +54,7 @@ const CreateTodo = ({important, setImportant, setUpdate}) => {
                         </FormControl>
 
                         {/* Category */}
-                        <FormControl sx={{ minWidth: 100 }}>
+                        <FormControl sx={{ minWidth: 100, marginBottom: 2 }} required>
                             <InputLabel id="demo-select-small">Type</InputLabel>
                             <Select
                                 labelId="demo-select-small"
@@ -66,6 +63,7 @@ const CreateTodo = ({important, setImportant, setUpdate}) => {
                                 defaultValue="type"
                                 value={category}
                                 onChange={(e) => setCategory(e.target.value)}
+                                
                             >
                                 <MenuItem value="work">Work</MenuItem>
                                 <MenuItem value="personal">Personal</MenuItem>
@@ -74,25 +72,26 @@ const CreateTodo = ({important, setImportant, setUpdate}) => {
 
                         {/* Importance */}
                         <FormControl>
-                        <ClickAwayListener onClickAway={handleTooltipClose}>
                             <Tooltip
                                 TransitionComponent={Fade}
                                 TransitionProps={{ timeout: 600 }}
                                 title={!important ? 'Important' : "Not important"}
                                 placement="bottom"
+                                sx={{ marginBottom: 2 }}
                             >
-                                <Checkbox 
-                                    size="medium"
+                                <IconButton 
                                     name="important" 
                                     value={important}
-                                    onChange={() => {
-                                        setImportant(!important)
+                                    onClick={() => {
+                                        setImportant(!important);
                                     }}
-                                    icon={<PriorityHigh sx={{color:"darkred"}} />}
-                                    checkedIcon={<PriorityHigh sx={{color:"#efe4e4"}} />} 
-                                />
+                                    size="large"
+                                >
+                                    <PriorityHigh
+                                    className={important ? 'important' : ''} sx={{color:"#efe4e4",
+                                    "&.important":{color:"darkred"}}} />
+                                </IconButton>
                             </Tooltip>
-                        </ClickAwayListener>
                         </FormControl>
 
                         {/* Submit Button */}    
@@ -100,6 +99,7 @@ const CreateTodo = ({important, setImportant, setUpdate}) => {
                             variant="contained" 
                             size="small"
                             sx={{
+                                marginBottom: 2,
                                 color:'white',
                                 backgroundColor:'#5397db',
                                 '&:hover': {
