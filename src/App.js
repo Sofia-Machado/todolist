@@ -7,11 +7,7 @@ import { Typography } from "@mui/material";
 function App() {
 const [important, setImportant] = useState(false);
 const [update, setUpdate] = useState(false);
-<<<<<<< HEAD
-const [tasks, setTasks] = useState([]);
-=======
 const [tasks, setTasks] = useState([])
->>>>>>> 74dbec2e1f13a42202cf67b79a75a85e9b5c81f0
 
 
   return (
