@@ -33,8 +33,7 @@ const CreateTodo = ({setUpdate, newTask, setNewTask}) => {
                     sx={{
                         display: 'inline-flex',
                         flexDirection: 'row',
-                        marginTop: '0.5em' 
-                        
+                        marginTop: '0.5em'
                     }}>
 
                         {/* Task */}
@@ -49,6 +48,8 @@ const CreateTodo = ({setUpdate, newTask, setNewTask}) => {
                                 placeholder="Please enter a task"
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
+                                type="text"
+                                inputProps={{ maxLength: 18 }}
                                 required
                             />
                         </FormControl>

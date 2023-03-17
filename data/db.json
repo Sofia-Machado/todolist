@@ -1,38 +1,34 @@
 {
   "tasks": [
     {
-      "title": "hello",
+      "title": "sdfs",
       "important": null,
       "category": "work",
-      "id": 2,
-      "complete": true
-    },
-    {
-      "title": "hello",
-      "important": false,
-      "category": "personal",
-      "id": 7,
+      "newTask": false,
+      "id": 5,
       "complete": false
     },
     {
-      "title": "hello",
-      "important": false,
+      "title": "google",
+      "important": true,
       "category": "work",
+      "newTask": false,
+      "id": 6,
+      "complete": true
+    },
+    {
+      "title": "gggggggggggggggggg",
+      "important": null,
+      "category": "work",
+      "newTask": false,
       "id": 8
     },
     {
-      "title": "laundry",
-      "important": false,
-      "category": "personal",
-      "id": 9,
-      "complete": true
-    },
-    {
-      "title": "hello",
-      "important": false,
-      "category": "personal",
-      "id": 10,
-      "complete": true
+      "title": "hhhhhhhhhhhhhhhhhhhh",
+      "important": true,
+      "category": "work",
+      "newTask": false,
+      "id": 9
     }
   ]
 }

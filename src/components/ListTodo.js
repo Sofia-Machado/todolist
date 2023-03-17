@@ -10,6 +10,7 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
     const [filterComplete, setFilterComplete] = useState(true);
     const [complete, setComplete] = useState(false);
     const { get, deleteItem, put, loading } = useFetch("http://localhost:8000/");
+    const [mount, setMount] = useState(false);
     const badgeText = "NEW";
 
     //fetch tasks list
@@ -17,11 +18,31 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
         get("tasks")
         .then(data => {
             setTasks(data);
-            setUpdate(false);
+            setMount(!mount);
         })
         .catch(error => console.log('could not fetch data', error))
     }, [update]);
     
+    
+    //sort tasks
+    useEffect(() => {
+        sortTasks();
+    }, [mount])
+    
+    const sortTasks = () => {
+        let originalTasks = [...tasks];
+        let importantTasks = originalTasks.filter(task => task.important === true);
+        if (importantTasks) {
+            let unimportantTasks = originalTasks.filter(task => !task.important)
+            unimportantTasks = unimportantTasks.slice(0).reverse();
+            let newListOfTasks = [...importantTasks, ...unimportantTasks];
+            setTasks(newListOfTasks);
+        } else {
+            originalTasks = originalTasks.slice(0).reverse();
+            setTasks(originalTasks)
+        }
+    }
+
     //update task importance
     function handleImportantUpdate(e, task) {
         e.preventDefault();
@@ -30,7 +51,7 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
         put(`tasks/${task.id}`, {...task, important: important})
         .then(data => data)
         .catch(error => console.log('could not fetch data', error))
-        setUpdate(true);
+        setUpdate(!update);
     }
      //update task completion
      function handleComplete(e, task) {
@@ -40,7 +61,7 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
         put(`tasks/${task.id}`, {...task, complete: complete})
         .then(data => data)
         .catch(error => console.log('could not fetch data', error))
-        setUpdate(true);
+        setUpdate(!update);
     }
 
        //update new task
@@ -51,23 +72,23 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
         put(`tasks/${task.id}`, {...task, newTask: newTask})
         .then(data => data)
         .catch(error => console.log('could not fetch data', error))
-        setUpdate(true);
+        setUpdate(!update);
     }
 
     //delete task
     function handleDelete(id) {
         console.log(tasks);
         deleteItem('tasks/' + id);
-        setUpdate(true);
+        setUpdate(!update);
     }
 
     return (
         <>
             {loading && <p>Loading...</p>}
             {tasks &&
-            <Paper elevation={3} sx={{}}>
+            <Paper elevation={3} sx={{MaxWidth: 300, marginBottom:"1em" }}>
                 <List
-                    sx={{ padding:"1em" }}
+                    sx={{ padding:"1em", display:"block"}}
                     aria-label="tasks"
                 >
                     {/* Filters */}
@@ -107,7 +128,7 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
                                 return task; 
                             }
                         } 
-                    }).slice(0).reverse().map(task => {
+                    }).map(task => {
                         return (
                             <ListItem 
                                     disablePadding
@@ -115,7 +136,7 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
                                     onClick={(e) => {handleNewTask(e, task)}}
                                 >
                                 <Badge badgeContent={badgeText} color="primary" invisible={!task.newTask ?? newTask}>
-                                    <ListItemButton sx={{ display:"flex"}}>
+                                    <ListItemButton sx={{ display:"flex", paddingLeft: 0}}>
                                         <ListItemIcon>
                                             <Tooltip
                                                 TransitionComponent={Fade}
@@ -131,7 +152,7 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
                                                             padding: "0.2em",
                                                             "&:hover": {
                                                                 borderRadius: "20px",
-                                                                margin: "0",
+                                                                marginLeft: "0",
                                                                 color:"#d7b6b6",
                                                             },
                                                             "&.important": {
@@ -142,9 +163,10 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
                                                 </IconButton>
                                             </Tooltip>
                                         </ListItemIcon>
-                                        <ListItemText 
-                                            primary={task.title.charAt(0).toUpperCase() + task.title.slice(1).toLowerCase()}
-                                            secondary={task.category.charAt(0).toUpperCase() + task.category.slice(1).toLowerCase()} 
+                                        <ListItemText
+                                        sx={{maxWidth: 200, minWidth: 180}} 
+                                            primary={task.title.charAt(0).toUpperCase() + task.title.slice(1)}
+                                            secondary={task.category.charAt(0).toUpperCase() + task.category.slice(1)} 
                                         />
                                         <IconButton
                                             value="check"
