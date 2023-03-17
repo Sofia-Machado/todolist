@@ -91,7 +91,7 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks})
                                 return task; 
                             }
                         } 
-                    }).map(task => {
+                    }).slice(0).reverse().map(task => {
                         return (
                             <ListItem 
                                 disablePadding
