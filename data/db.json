@@ -1,7 +1,7 @@
 {
   "tasks": [
     {
-      "title": "sdfs",
+      "title": "create to do list",
       "important": null,
       "category": "work",
       "newTask": false,
@@ -17,17 +17,17 @@
       "complete": true
     },
     {
-      "title": "gggggggggggggggggg",
+      "title": "laundry",
       "important": null,
-      "category": "work",
+      "category": "personal",
       "newTask": false,
       "id": 8
     },
     {
-      "title": "hhhhhhhhhhhhhhhhhhhh",
+      "title": "prepare meals",
       "important": true,
       "category": "work",
-      "newTask": false,
+      "newTask": true,
       "id": 9
     }
   ]
