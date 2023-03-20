@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useFetch from "../useFetch";
-import {  Badge, Checkbox, Fade, FormControl, FormControlLabel, IconButton, InputLabel, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem, Paper, Select, Tooltip } from "@mui/material";
+import {  Alert, Badge, Button, Checkbox, Collapse, Fade, FormControl, FormControlLabel, IconButton, InputLabel, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem, Paper, Select, Tooltip } from "@mui/material";
 import PriorityHigh from '@mui/icons-material/PriorityHigh';
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
@@ -11,14 +11,17 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
     const [complete, setComplete] = useState(false);
     const { get, deleteItem, patch, put, loading } = useFetch("http://localhost:8000/");
     const [mount, setMount] = useState(false);
+    const [open, setOpen] = useState(false);
     const badgeText = "NEW";
+    const [selectedIndex, setSelectedIndex] = useState("")
 
-    //fetch tasks list
+
+     //fetch tasks list
     useEffect(() => {
         get("tasks")
         .then(data => {
-            setTasks(data);
-            setMount(!mount);
+            setMount(prevState => !prevState);
+            return setTasks(data);
         })
         .catch(error => console.log('could not fetch data', error))
     }, [update]);
@@ -27,21 +30,22 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
     //sort tasks
     useEffect(() => {
         sortTasks();
-    }, [mount])
+    }, [mount]) 
+
     
-    function sortTasks() {
+    const sortTasks = useCallback(() => {
         let originalTasks = [...tasks];
         let importantTasks = originalTasks.filter(task => task.important === true);
         if (importantTasks) {
             let unimportantTasks = originalTasks.filter(task => !task.important)
             unimportantTasks = unimportantTasks.slice(0).reverse();
             let newListOfTasks = [...importantTasks, ...unimportantTasks];
-            setTasks(newListOfTasks);
+            return setTasks(newListOfTasks);
         } else {
             originalTasks = originalTasks.slice(0).reverse();
-            setTasks(originalTasks)
+            return setTasks(originalTasks)
         }
-    }
+    })
 
     //update task importance
     function handleImportant(e, task) {
@@ -51,9 +55,10 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
         patch(`tasks/${task.id}`, {important})
         .then(data => {
             console.log(data)
-            setUpdate(!update);
+            return setUpdate(prevState => !prevState);
         })
         .catch(error => console.log('could not fetch data', error))
+        
     }
 
      //update task completion
@@ -64,7 +69,7 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
         patch(`tasks/${task.id}`, {complete})
         .then(data => {
             console.log(data)
-            setUpdate(!update);
+            setUpdate(prevState => !prevState);
         })
         .catch(error => console.log('could not fetch data', error))
     }
@@ -77,16 +82,25 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
         patch(`tasks/${task.id}`, {newTask})
         .then(data => {
             console.log(data)
-            setUpdate(!update);
+            setUpdate(prevState => !prevState);
         })
         .catch(error => console.log('could not fetch data', error))
     }
 
     //delete task
     function handleDelete(id) {
+        setOpen(true)
         console.log(tasks);
         deleteItem(`tasks/${id}`);
     }
+
+    const handleClick = id => {
+        if (selectedIndex === id) {
+          setSelectedIndex("")
+        } else {
+          setSelectedIndex(id)
+        }
+      }
 
     return (
         <>
@@ -183,14 +197,24 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
                                             >
                                             <CheckIcon />
                                         </IconButton>
-                                        <IconButton 
+                                        {!open && <IconButton 
                                             aria-label="delete" 
                                             size="small"
-                                            onClick={() => handleDelete(task.id)}
+                                            onClick={() => handleClick(task.id)}
                                             sx={{color:"#efe4e4", "&:hover":{color:"darkred"}}}
                                         >
                                             <ClearIcon />
-                                        </IconButton>
+                                        </IconButton>}
+                                        <Collapse in={task.id === selectedIndex} unmountOnExit={true}>
+                                        <Alert severity="warning" >Are you sure you want to delete this task?
+                                            <Button color="inherit" size="small" onClick={() => {setSelectedIndex(''); setOpen(false)}}>
+                                            No
+                                            </Button>
+                                            <Button color="inherit" size="small" onClick={() => {handleDelete(task.id); setOpen(false)}}>
+                                            Yes
+                                            </Button>
+                                        </Alert>
+                                        </Collapse>
                                     </ListItemButton>
                                 </Badge>
                             </ListItem>

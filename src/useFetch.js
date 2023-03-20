@@ -10,15 +10,15 @@ export default function useFetch(baseUrl) {
             .then(response => response.json())
             .then(data => {
                 if (!data) {
+                    reject(data);
                     setLoading(false);
-                    return reject(data);
                 }   
-                setLoading(false);
                 resolve(data);
+                setLoading(false);
             })
             .catch(error => {
-                setLoading(false);
                 reject(error);
+                setLoading(false);
             })
         })
     }
@@ -35,11 +35,11 @@ export default function useFetch(baseUrl) {
             .then(response => response.json())
             .then(data => {
                 if (!data) {
+                    reject(data);
                     setLoading(false);
-                    return reject(data);
                 }
-                setLoading(false);
                 resolve(data);
+                setLoading(false);
             })
             .catch(error => {
                 setLoading(false);
@@ -60,8 +60,8 @@ export default function useFetch(baseUrl) {
             .then(response => response.json())
             .then(data => {
                 if (!data) {
+                    reject(data)
                     setLoading(false);
-                    return reject(data)
                 }
                 setLoading(false);
                 resolve(data);
@@ -85,8 +85,8 @@ export default function useFetch(baseUrl) {
             .then(response => response.json())
             .then(data => {
                 if (!data) {
+                    reject(data)
                     setLoading(false);
-                    return reject(data)
                 }
                 setLoading(false);
                 resolve(data);

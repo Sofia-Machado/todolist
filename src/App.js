@@ -6,9 +6,9 @@ import { Typography } from "@mui/material";
 
 function App() {
 const [important, setImportant] = useState(null);
-const [update, setUpdate] = useState(false);
 const [tasks, setTasks] = useState([]);
 const [newTask, setNewTask] = useState(true);
+const [update, setUpdate] = useState(false);
 
   return (
     <Container maxWidth="sm">
