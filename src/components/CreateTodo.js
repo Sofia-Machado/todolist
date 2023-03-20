@@ -21,8 +21,9 @@ const CreateTodo = ({setUpdate, newTask, setNewTask}) => {
         post("tasks", task)
         .then(() => {
             console.log(task);
+            setUpdate(true);
         })
-        setUpdate(true);
+        
     }
 
     return ( 

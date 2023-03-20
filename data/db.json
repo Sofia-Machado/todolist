@@ -27,7 +27,7 @@
       "title": "prepare meals",
       "important": true,
       "category": "work",
-      "newTask": false,
+      "newTask": true,
       "id": 9
     }
   ]
