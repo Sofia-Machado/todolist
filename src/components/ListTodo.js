@@ -9,7 +9,7 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
     const [filterType, setFilterType] = useState('all');
     const [filterComplete, setFilterComplete] = useState(true);
     const [complete, setComplete] = useState(false);
-    const { get, deleteItem, put, loading } = useFetch("http://localhost:8000/");
+    const { get, deleteItem, patch, put, loading } = useFetch("http://localhost:8000/");
     const [mount, setMount] = useState(false);
     const badgeText = "NEW";
 
@@ -29,7 +29,7 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
         sortTasks();
     }, [mount])
     
-    const sortTasks = () => {
+    function sortTasks() {
         let originalTasks = [...tasks];
         let importantTasks = originalTasks.filter(task => task.important === true);
         if (importantTasks) {
@@ -44,42 +44,48 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
     }
 
     //update task importance
-    function handleImportantUpdate(e, task) {
-        e.preventDefault();
+    function handleImportant(e, task) {
         e.stopPropagation();
-        setImportant(!important);
-        put(`tasks/${task.id}`, {...task, important: important})
-        .then(data => data)
+        e.preventDefault();
+        setImportant(prevState => !prevState);
+        patch(`tasks/${task.id}`, {important})
+        .then(data => {
+            console.log(data)
+            setUpdate(!update);
+        })
         .catch(error => console.log('could not fetch data', error))
-        setUpdate(!update);
     }
+
      //update task completion
      function handleComplete(e, task) {
-        e.preventDefault();
         e.stopPropagation();
-        setComplete(!complete);
-        put(`tasks/${task.id}`, {...task, complete: complete})
-        .then(data => data)
+        e.preventDefault();
+        setComplete(prevState => !prevState);
+        patch(`tasks/${task.id}`, {complete})
+        .then(data => {
+            console.log(data)
+            setUpdate(!update);
+        })
         .catch(error => console.log('could not fetch data', error))
-        setUpdate(!update);
     }
 
        //update new task
        function handleNewTask(e, task) {
-        e.preventDefault();
         e.stopPropagation();
+        e.preventDefault();
         setNewTask(false); 
-        put(`tasks/${task.id}`, {...task, newTask: newTask})
-        .then(data => data)
+        patch(`tasks/${task.id}`, {newTask})
+        .then(data => {
+            console.log(data)
+            setUpdate(!update);
+        })
         .catch(error => console.log('could not fetch data', error))
-        setUpdate(!update);
     }
 
     //delete task
     function handleDelete(id) {
         console.log(tasks);
-        deleteItem('tasks/' + id);
-        setUpdate(!update);
+        deleteItem(`tasks/${id}`);
     }
 
     return (
@@ -133,10 +139,10 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
                             <ListItem 
                                     disablePadding
                                     key={task.id}
-                                    onClick={(e) => {handleNewTask(e, task)}}
                                 >
                                 <Badge badgeContent={badgeText} color="primary" invisible={!task.newTask ?? newTask}>
-                                    <ListItemButton sx={{ display:"flex", paddingLeft: 0}}>
+                                    <ListItemButton sx={{ display:"flex", paddingLeft: 0}}
+                                    onClick={(e) => {handleNewTask(e, task)}}>
                                         <ListItemIcon>
                                             <Tooltip
                                                 TransitionComponent={Fade}
@@ -145,7 +151,7 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
                                                 placement="left-start"
                                             >
                                                 
-                                                <IconButton onClick={(e) => handleImportantUpdate(e, task)}>
+                                                <IconButton onClick={(e) => handleImportant(e, task)}>
                                                     <PriorityHigh className={task.important ? 'important' : ''}
                                                         sx={{
                                                             color:"#efe4e4",

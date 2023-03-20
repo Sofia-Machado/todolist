@@ -13,15 +13,15 @@ const CreateTodo = ({setUpdate, newTask, setNewTask}) => {
 
     //submit form
     function handleSubmit(e) {
-        setNewTask(true);
         e.preventDefault();
+        setNewTask(true);
         //define task values
         const task = { title, important, category, newTask: newTask };
         // sent new data to the database
         post("tasks", task)
         .then(() => {
             console.log(task);
-            setUpdate(true);
+            setUpdate(prevState => !prevState);
         })
         
     }

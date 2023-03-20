@@ -73,22 +73,36 @@ export default function useFetch(baseUrl) {
         })
     }
 
-    function deleteItem(url) {
+    function patch(url, body) {
         return new Promise ((resolve, reject) => {
             fetch(baseUrl + url, {
-                method: 'DELETE',
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(body)
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
-                return resolve(data);
+                if (!data) {
+                    setLoading(false);
+                    return reject(data)
+                }
+                setLoading(false);
+                resolve(data);
             })
             .catch(error => {
+                setLoading(false);
                 reject(error);
-                console.log(error)
             })
         })
     }
 
-    return { get, post, deleteItem, put, loading };
+    function deleteItem(url) {
+            fetch(baseUrl + url, {
+                method: 'DELETE',
+            })
+    }
+
+    return { get, post, deleteItem, patch, put, loading };
 }
