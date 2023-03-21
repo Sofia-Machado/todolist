@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {  Alert, Badge, Button, Collapse, Fade, IconButton, ListItem, ListItemButton, ListItemIcon, ListItemText, Tooltip } from "@mui/material";
 import PriorityHigh from '@mui/icons-material/PriorityHigh';
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
+import useFetch from "../useFetch";
 
-
-function Task({task, newTask, handleNewTask, handleImportant, handleComplete, handleDelete, complete}) {
+function Task({ task, newTask, setNewTask, update, setUpdate, important, setImportant}) {
     const [selectedIndex, setSelectedIndex] = useState("");
     const [open, setOpen] = useState(false);
+    const [complete, setComplete] = useState(false);
     const badgeText = "NEW";
+    const { get, deleteItem, patch, put, loading } = useFetch("http://localhost:8000/");
 
      //handle delete alert
      const handleClick = id => {
@@ -19,6 +21,54 @@ function Task({task, newTask, handleNewTask, handleImportant, handleComplete, ha
           setSelectedIndex(id)
         }
       }
+
+     //update task importance
+     function handleImportant(e, task) {
+        e.stopPropagation();
+        e.preventDefault();
+        setImportant(prevState => !prevState);
+            patch(`tasks/${task.id}`, {important})
+            .then(data => {
+                console.log(data)
+                setUpdate(prevState => !prevState);
+            })
+            .catch(error => console.log('could not fetch data', error))
+    }
+
+     //update task completion
+     function handleComplete(e, task) {
+        e.stopPropagation();
+        e.preventDefault();
+        setComplete(prevState => !prevState);
+        patch(`tasks/${task.id}`, {complete})
+        .then(data => {
+            console.log(data)
+            setUpdate(prevState => !prevState);
+        })
+        .catch(error => console.log('could not fetch data', error))
+    }
+
+       //update new task
+       function handleNewTask(e, task) {
+           if(task.newTask) {
+            e.stopPropagation();
+            e.preventDefault();
+            setNewTask(false); 
+            patch(`tasks/${task.id}`, {newTask: false})
+            .then(data => {
+                console.log(data)
+                setUpdate(prevState => !prevState);
+            })
+            .catch(error => console.log('could not fetch data', error));
+        }
+    }
+
+    //delete task
+    function handleDelete(id) {
+        deleteItem(`tasks/${id}`);
+        setUpdate(prevState => !prevState);
+    }
+
 
     return ( 
         <ListItem 

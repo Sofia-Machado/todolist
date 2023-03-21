@@ -8,7 +8,6 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
     const [task, setTask] = useState({});
     const [filterType, setFilterType] = useState('all');
     const [filterComplete, setFilterComplete] = useState(true);
-    const [complete, setComplete] = useState(false);
     const [mount, setMount] = useState(false);
     
    // const [showTasks, setShowTasks] = useState(false);
@@ -21,9 +20,7 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
         get("tasks")
         .then(data => {
             setTasks(data);
-            if (data) {
-                setMount(prevState => !prevState);
-            }
+            sortTasks(data);
         })
         .catch(error => console.log('could not fetch data', error))
     }, [update]);
@@ -32,7 +29,7 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
     //sort tasks
     useEffect(() => {
         sortTasks();
-    }, [mount]) 
+    }, [important]) 
 
     
     const sortTasks = () => {
@@ -47,54 +44,6 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
             originalTasks = originalTasks.slice(0).reverse();
             setTasks(originalTasks)
         }
-    }
-
-    //update task importance
-    function handleImportant(e, task) {
-        e.stopPropagation();
-        e.preventDefault();
-        setImportant(prevState => !prevState);
-            patch(`tasks/${task.id}`, {important})
-            .then(data => {
-                console.log(data)
-                setUpdate(prevState => !prevState);
-            })
-            .catch(error => console.log('could not fetch data', error))
-    }
-
-     //update task completion
-     function handleComplete(e, task) {
-        e.stopPropagation();
-        e.preventDefault();
-        setComplete(prevState => !prevState);
-        patch(`tasks/${task.id}`, {complete})
-        .then(data => {
-            console.log(data)
-            setUpdate(prevState => !prevState);
-        })
-        .catch(error => console.log('could not fetch data', error))
-    }
-
-       //update new task
-       function handleNewTask(e, task) {
-           if(task.newTask) {
-            e.stopPropagation();
-            e.preventDefault();
-            setNewTask(false); 
-            patch(`tasks/${task.id}`, {newTask: false})
-            .then(data => {
-                console.log(data)
-                setUpdate(prevState => !prevState);
-            })
-            .catch(error => console.log('could not fetch data', error));
-        }
-    }
-
-    //delete task
-    function handleDelete(id) {
-        console.log(tasks);
-        deleteItem(`tasks/${id}`);
-        setUpdate(prevState => !prevState);
     }
 
     return (
@@ -145,7 +94,12 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
                         } 
                     }).map(task => {
                         return (
-                            <Task task={task} key={task.id} handleDelete={handleDelete} handleImportant={handleImportant} handleNewTask={handleNewTask} handleComplete={handleComplete} />
+                            <Task 
+                                task={task} key={task.id} 
+                                important={important} setImportant={setImportant} 
+                                update={update} setUpdate={setUpdate} 
+                                newTask={newTask} setNewTask={setNewTask}
+                            />
                         )
                     })}
                 </List>
