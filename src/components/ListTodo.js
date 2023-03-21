@@ -23,7 +23,7 @@ const ListTodo = ({ complete, setComplete, update, setUpdate, tasks, setTasks, n
         .catch(error => console.log('could not fetch data', error))
     }, [update]);
     
-/*     //sort tasks
+    //sort tasks
     useEffect(() => {
         sortTasks();
     }, [mount]) 
@@ -41,7 +41,7 @@ const ListTodo = ({ complete, setComplete, update, setUpdate, tasks, setTasks, n
             setTasks(originalTasks)
         }
     }
- */
+
     return (
         <>
             {loading && <p>Loading...</p>}
