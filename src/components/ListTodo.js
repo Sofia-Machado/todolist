@@ -18,12 +18,11 @@ const ListTodo = ({ complete, setComplete, update, setUpdate, tasks, setTasks, n
         .then(data => {
             setTasks(data);
             setMount(prevState => !prevState)
-            setUpdate(false);
         })
         .catch(error => console.log('could not fetch data', error))
     }, [update]);
     
-    //sort tasks
+  //sort tasks
     useEffect(() => {
         sortTasks();
     }, [mount]) 
@@ -40,7 +39,7 @@ const ListTodo = ({ complete, setComplete, update, setUpdate, tasks, setTasks, n
             originalTasks = originalTasks.slice(0).reverse();
             setTasks(originalTasks)
         }
-    }
+    } 
 
     return (
         <>

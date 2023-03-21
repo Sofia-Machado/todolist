@@ -2,10 +2,10 @@
   "tasks": [
     {
       "title": "google",
-      "important": false,
+      "important": true,
       "category": "work",
       "newTask": false,
-      "id": 6,
+      "id": 1,
       "complete": true
     },
     {
@@ -13,40 +13,40 @@
       "important": false,
       "category": "personal",
       "newTask": false,
-      "id": 8,
+      "id": 2,
       "complete": true
     },
     {
-      "title": "hello",
-      "important": false,
-      "category": "work",
-      "newTask": false,
-      "id": 9,
-      "complete": true
-    },
-    {
-      "title": "hello",
-      "important": false,
-      "category": "work",
-      "newTask": false,
-      "id": 10,
-      "complete": true
-    },
-    {
-      "title": "Laundry",
+      "title": "set delete button",
       "important": true,
       "category": "work",
       "newTask": false,
-      "id": 11,
+      "id": 3,
+      "complete": false
+    },
+    {
+      "title": "deal with flicker",
+      "important": true,
+      "category": "work",
+      "newTask": false,
+      "id": 4,
       "complete": true
     },
     {
-      "title": "hello",
+      "title": "Iron",
       "important": true,
-      "category": "work",
+      "category": "personal",
+      "newTask": true,
+      "id": 5,
+      "complete": false
+    },
+    {
+      "title": "Groceries",
+      "important": true,
+      "category": "personal",
       "newTask": false,
       "completed": false,
-      "id": 13,
+      "id": 6,
       "complete": false
     }
   ]

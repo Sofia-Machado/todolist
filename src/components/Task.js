@@ -32,7 +32,7 @@ function Task({ task, complete, setComplete, newTask, setNewTask, setUpdate}) {
         patch(`tasks/${task.id}`, {important: importantNew})
         .then(data => {
             console.log(data)
-            setUpdate(true)
+            setUpdate(prevState => !prevState)
         })
         .catch(error => console.log('could not fetch data', error)) 
     }
