@@ -5,7 +5,7 @@ import PriorityHigh from '@mui/icons-material/PriorityHigh';
 
 
 const CreateTodo = ({setUpdate, newTask, setNewTask}) => {
-    const [important, setImportant] = useState(null);       
+    const [important, setImportant] = useState(false);       
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState('');
     const { post } = useFetch("http://localhost:8000/")
@@ -14,9 +14,8 @@ const CreateTodo = ({setUpdate, newTask, setNewTask}) => {
     //submit form
     function handleSubmit(e) {
         e.preventDefault();
-        setNewTask(true);
         //define task values
-        const task = { title, important, category, newTask: newTask };
+        const task = { title, important, category, newTask: true };
         // sent new data to the database
         post("tasks", task)
         .then(() => {

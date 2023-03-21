@@ -2,7 +2,7 @@
   "tasks": [
     {
       "title": "create to do list",
-      "important": null,
+      "important": true,
       "category": "work",
       "newTask": false,
       "id": 5,
@@ -10,7 +10,7 @@
     },
     {
       "title": "google",
-      "important": true,
+      "important": false,
       "category": "work",
       "newTask": false,
       "id": 6,
@@ -18,10 +18,25 @@
     },
     {
       "title": "laundry",
-      "important": null,
+      "important": false,
       "category": "personal",
       "newTask": false,
-      "id": 8
+      "id": 8,
+      "complete": true
+    },
+    {
+      "title": "hello",
+      "important": false,
+      "category": "work",
+      "newTask": true,
+      "id": 9
+    },
+    {
+      "title": "hello",
+      "important": false,
+      "category": "work",
+      "newTask": true,
+      "id": 10
     }
   ]
 }
