@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {  Alert, Badge, Button, Collapse, Fade, IconButton, ListItem, ListItemButton, ListItemIcon, ListItemText, Tooltip } from "@mui/material";
+import {  Alert, Badge, Button, Collapse, Fade, ToggleButton, IconButton, ListItem, ListItemButton, ListItemIcon, ListItemText, Tooltip } from "@mui/material";
 import PriorityHigh from '@mui/icons-material/PriorityHigh';
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
@@ -24,12 +24,14 @@ function Task({ task, complete, setComplete, newTask, setNewTask, update, setUpd
      //update task importance
      function handleImportant(e, task) {
         e.stopPropagation();
-        e.preventDefault();
-        setImportant(prevState => !prevState);
+        //setImportant(prevState => !prevState)
+        console.log('value before ', task.important)
             patch(`tasks/${task.id}`, {important})
             .then(data => {
                 console.log(data)
-                setUpdate(prevState => !prevState);
+                console.log('value after', task.important)
+
+                setUpdate(prevState => !prevState)
             })
             .catch(error => console.log('could not fetch data', error))
     }
@@ -37,7 +39,6 @@ function Task({ task, complete, setComplete, newTask, setNewTask, update, setUpd
      //update task completion
      function handleComplete(e, task) {
         e.stopPropagation();
-        e.preventDefault();
         setComplete(prevState => !prevState);
         patch(`tasks/${task.id}`, {complete})
         .then(data => {
@@ -46,7 +47,7 @@ function Task({ task, complete, setComplete, newTask, setNewTask, update, setUpd
         })
         .catch(error => console.log('could not fetch data', error))
     }
-
+/* 
        //update new task
        function handleNewTask(e, task) {
            if(task.newTask) {
@@ -60,7 +61,7 @@ function Task({ task, complete, setComplete, newTask, setNewTask, update, setUpd
             })
             .catch(error => console.log('could not fetch data', error));
         }
-    }
+    } */
 
     //delete task
     function handleDelete(id) {
@@ -70,13 +71,10 @@ function Task({ task, complete, setComplete, newTask, setNewTask, update, setUpd
 
 
     return ( 
-        <ListItem 
-                disablePadding
-                key={task.id}
-            >
             <Badge badgeContent={badgeText} color="primary" invisible={!task.newTask ?? newTask}>
-                <ListItemButton sx={{ display:"flex", paddingLeft: 0}}
-                onClick={(e) => {handleNewTask(e, task)}}>
+                <ListItem sx={{ display:"flex", paddingLeft: 0}}
+                //</Badge>onClick={(e) => {handleNewTask(e, task)}}
+                >
                     <ListItemIcon>
                         <Tooltip
                             TransitionComponent={Fade}
@@ -84,8 +82,13 @@ function Task({ task, complete, setComplete, newTask, setNewTask, update, setUpd
                             title={task.important ? 'Important' : "Not important"}
                             placement="left-start"
                         >
-                            
-                            <IconButton onClick={(e) => handleImportant(e, task)}>
+                            <ToggleButton 
+                                value={task.important}
+                                onChange={(e) =>{
+                                    let newImportant = task.important;
+                                    setImportant(!newImportant);
+                                    handleImportant(e, task);
+                                }}>
                                 <PriorityHigh className={task.important ? 'important' : ''}
                                     sx={{
                                         color:"#efe4e4",
@@ -100,7 +103,7 @@ function Task({ task, complete, setComplete, newTask, setNewTask, update, setUpd
                                         }
                                     }} 
                                     />
-                            </IconButton>
+                            </ToggleButton>
                         </Tooltip>
                     </ListItemIcon>
                     <ListItemText
@@ -135,9 +138,8 @@ function Task({ task, complete, setComplete, newTask, setNewTask, update, setUpd
                         </Button>
                     </Alert>
                     </Collapse>
-                </ListItemButton>
+                </ListItem>
             </Badge>
-        </ListItem>
      );
 }
 

@@ -2,7 +2,7 @@
   "tasks": [
     {
       "title": "google",
-      "important": false,
+      "important": true,
       "category": "work",
       "newTask": false,
       "id": 6,
@@ -10,11 +10,11 @@
     },
     {
       "title": "laundry",
-      "important": true,
+      "important": false,
       "category": "personal",
       "newTask": false,
       "id": 8,
-      "complete": false
+      "complete": true
     },
     {
       "title": "hello",
@@ -22,11 +22,11 @@
       "category": "work",
       "newTask": false,
       "id": 9,
-      "complete": false
+      "complete": true
     },
     {
       "title": "hello",
-      "important": true,
+      "important": false,
       "category": "work",
       "newTask": false,
       "id": 10,
@@ -34,11 +34,19 @@
     },
     {
       "title": "Laundry",
-      "important": false,
+      "important": true,
       "category": "work",
       "newTask": false,
       "id": 11,
       "complete": true
+    },
+    {
+      "title": "Laundry",
+      "important": true,
+      "category": "work",
+      "newTask": true,
+      "id": 12,
+      "complete": false
     }
   ]
 }

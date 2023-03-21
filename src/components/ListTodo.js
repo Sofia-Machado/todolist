@@ -13,22 +13,14 @@ const ListTodo = ({important, setImportant, complete, setComplete, update, setUp
    // const [showTasks, setShowTasks] = useState(false);
     const { get, deleteItem, patch, put, loading } = useFetch("http://localhost:8000/");
 
-
     //fetch tasks list
     useEffect(() => {
         get("tasks")
         .then(data => {
             setTasks(data);
             setMount(prevState => !prevState)
-        })
-        .catch(error => console.log('could not fetch data', error))
-    }, []);
-       //fetch tasks list
-       useEffect(() => {
-        get("tasks")
-        .then(data => {
-            setTasks(data);
-            setMount(prevState => !prevState)
+            console.log('update' + update)
+            
         })
         .catch(error => console.log('could not fetch data', error))
     }, [update]);
@@ -37,7 +29,6 @@ const ListTodo = ({important, setImportant, complete, setComplete, update, setUp
     useEffect(() => {
         sortTasks();
     }, [mount]) 
-
     
     const sortTasks = () => {
         let originalTasks = [...tasks];

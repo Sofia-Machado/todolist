@@ -15,7 +15,7 @@ const CreateTodo = ({setUpdate, newTask, setNewTask}) => {
     function handleSubmit(e) {
         e.preventDefault();
         //define task values
-        const task = { title, important, category, newTask: true };
+        const task = { title, important, category, newTask: true, completed: false };
         // sent new data to the database
         post("tasks", task)
         .then(() => {
