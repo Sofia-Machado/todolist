@@ -4,43 +4,31 @@ import Task from "./Task";
 import {  Checkbox, FormControl, FormControlLabel, InputLabel, List, MenuItem, Paper, Select } from "@mui/material";
 
 
-const ListTodo = ({ complete, setComplete, update, setUpdate, tasks, setTasks, newTask, setNewTask}) => {
+
+const ListTodo = ({ update, setUpdate, tasks, setTasks }) => {
+
     const [filterType, setFilterType] = useState('all');
     const [filterComplete, setFilterComplete] = useState(true);
-    const [mount, setMount] = useState(false);
-    
-   // const [showTasks, setShowTasks] = useState(false);
     const { get, loading } = useFetch("http://localhost:8000/");
-
+    
     //fetch tasks list
     useEffect(() => {
         get("tasks")
         .then(data => {
-            setTasks(data);
-            setMount(prevState => !prevState)
+            let newListOfTasks = sortTasks(data);
+            setTasks(newListOfTasks);
         })
         .catch(error => console.log('could not fetch data', error))
     }, [update]);
     
-  //sort tasks
-    useEffect(() => {
-        sortTasks();
-    }, [mount]) 
+    //sort tasks
+    function sortTasks(tasks) {
+        let importantTasks = tasks.filter(task => task.important === true);
+        let unimportantTasks = tasks.filter(task => !task.important)
+        unimportantTasks.reverse();
+        return [...importantTasks, ...unimportantTasks];
+    }
     
-    const sortTasks = () => {
-        let originalTasks = [...tasks];
-        let importantTasks = originalTasks.filter(task => task.important === true);
-        if (importantTasks) {
-            let unimportantTasks = originalTasks.filter(task => !task.important)
-            unimportantTasks = unimportantTasks.slice(0).reverse();
-            let newListOfTasks = [...importantTasks, ...unimportantTasks];
-            setTasks(newListOfTasks);
-        } else {
-            originalTasks = originalTasks.slice(0).reverse();
-            setTasks(originalTasks)
-        }
-    } 
-
     return (
         <>
             {loading && <p>Loading...</p>}
@@ -91,9 +79,7 @@ const ListTodo = ({ complete, setComplete, update, setUpdate, tasks, setTasks, n
                         return (
                             <Task 
                                 task={task} key={task.id}
-                                complete={complete} setComplete={setComplete}
                                 update={update} setUpdate={setUpdate} 
-                                newTask={newTask} setNewTask={setNewTask}
                             />
                         )
                     })}

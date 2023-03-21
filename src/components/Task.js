@@ -14,6 +14,54 @@ function Task({ task, complete, setComplete, newTask, setNewTask, setUpdate}) {
     const { deleteItem, patch } = useFetch("http://localhost:8000/");
     const badgeText = "NEW";
 
+    
+    //update task importance
+    function handleImportant(e, task) {
+        e.stopPropagation();
+        //setImportant(prevState => !prevState)
+        let importantNew = !task.important;
+        console.log('new value important ', importantNew)
+        
+        patch(`tasks/${task.id}`, {important: importantNew})
+        .then(data => {
+            console.log(data);
+            setUpdate(prevState => !prevState);
+        })
+        .catch(error => console.log('could not fetch data', error));
+    }
+
+    //update task completion
+    function handleComplete(e, task) {
+        e.stopPropagation();
+        patch(`tasks/${task.id}`, { complete: !task.complete })
+        .then(data => {
+            console.log(data);
+            setUpdate(prevState => !prevState);
+        })
+        .catch(error => console.log('could not fetch data', error));
+    }    
+    
+    //update new task
+    function handleNewTask(e, task) {
+        if(task.newTask) {
+            e.stopPropagation();
+            e.preventDefault();
+            setNewTask(false); 
+            patch(`tasks/${task.id}`, {newTask: false})
+            .then(data => {
+                console.log(data);
+                setUpdate(prevState => !prevState);
+            })
+            .catch(error => console.log('could not fetch data', error));
+        }
+    } 
+    
+    //delete task
+    function handleDelete(id) {
+        deleteItem(`tasks/${id}`);
+        setUpdate(prevState => !prevState);
+    }
+    
     //handle delete alert
     const handleClickDelete = id => {
         setOpenDeleteAlert(true);
@@ -23,20 +71,19 @@ function Task({ task, complete, setComplete, newTask, setNewTask, setUpdate}) {
             setSelectedIndex(id)
         }
     }
-
+    
     //handle delete note
     const handleClickDeleteNote = () => {
-        setOpenDeleteNote(true);
-      };
-    
-      const handleCloseDeleteNote = (reason) => {
+    setOpenDeleteNote(true);
+    };
+    const handleCloseDeleteNote = (reason) => {
         if (reason === 'clickaway') {
-          return ;
+            return;
         }
-    setOpenDeleteNote(false);
-      }
+        setOpenDeleteNote(false);
+    }
 
-      const action = (
+    const action = (
         <>
           <IconButton
             size="small"
@@ -47,57 +94,7 @@ function Task({ task, complete, setComplete, newTask, setNewTask, setUpdate}) {
             <CloseIcon fontSize="small" />
           </IconButton>
         </>
-      );
-   
-
-
-    //update task importance
-    function handleImportant(e, task) {
-    e.stopPropagation();
-    //setImportant(prevState => !prevState)
-    let importantNew = !task.important;
-    console.log('new value important ', importantNew)
-
-        patch(`tasks/${task.id}`, {important: importantNew})
-        .then(data => {
-            console.log(data)
-            setUpdate(prevState => !prevState)
-        })
-        .catch(error => console.log('could not fetch data', error)) 
-    }
-
-    //update task completion
-    function handleComplete(e, task) {
-        e.stopPropagation();
-        let newCompleteValue = !task.complete;
-        patch(`tasks/${task.id}`, {complete: newCompleteValue})
-        .then(data => {
-            console.log(data)
-            setUpdate(prevState => !prevState);
-        })
-        .catch(error => console.log('could not fetch data', error))
-    }
-
-    //update new task
-       function handleNewTask(e, task) {
-           if(task.newTask) {
-            e.stopPropagation();
-            e.preventDefault();
-            setNewTask(false); 
-            patch(`tasks/${task.id}`, {newTask: false})
-            .then(data => {
-                console.log(data)
-                setUpdate(prevState => !prevState);
-            })
-            .catch(error => console.log('could not fetch data', error));
-        }
-    } 
-
-    //delete task
-    function handleDelete(id) {
-        deleteItem(`tasks/${id}`);
-        setUpdate(prevState => !prevState);
-    }
+    );
 
 
     return ( 
@@ -157,7 +154,9 @@ function Task({ task, complete, setComplete, newTask, setNewTask, setUpdate}) {
                         <Button color="inherit" size="small" onClick={() => {setSelectedIndex(''); setOpenDeleteAlert(false)}}>
                         No
                         </Button>
-                        <Button color="inherit" size="small" onClick={() => {setOpenDeleteAlert(true); handleDelete(task.id); setOpenDeleteAlert(false); handleClickDeleteNote()}}>
+                        <Button color="inherit" size="small" 
+                        onClick={() => {
+                            setOpenDeleteAlert(true); handleDelete(task.id); setOpenDeleteAlert(false)}}>
                         Yes
                         </Button>
                     </Alert>
