@@ -1,54 +1,55 @@
-import { useEffect, useState } from "react";
-import {  Alert, Badge, Button, Collapse, Fade, ToggleButton, IconButton, ListItem, ListItemButton, ListItemIcon, ListItemText, Tooltip } from "@mui/material";
+import { useState } from "react";
+import {  Alert, Badge, Button, Collapse, Fade, ToggleButton, IconButton, ListItem, ListItemIcon, ListItemText, Tooltip } from "@mui/material";
 import PriorityHigh from '@mui/icons-material/PriorityHigh';
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
 import useFetch from "../useFetch";
 
-function Task({ task, complete, setComplete, newTask, setNewTask, update, setUpdate, important, setImportant}) {
+function Task({ task, complete, setComplete, newTask, setNewTask, setUpdate}) {
     const [selectedIndex, setSelectedIndex] = useState("");
     const [open, setOpen] = useState(false);
     const badgeText = "NEW";
     const { deleteItem, patch } = useFetch("http://localhost:8000/");
 
-     //handle delete alert
-     const handleClick = id => {
-        setOpen(true);
-        if (selectedIndex === id) {
-          setSelectedIndex("")
-        } else {
-          setSelectedIndex(id)
-        }
-      }
-
-     //update task importance
-     function handleImportant(e, task) {
-        e.stopPropagation();
-        //setImportant(prevState => !prevState)
-        console.log('value before ', task.important)
-            patch(`tasks/${task.id}`, {important})
-            .then(data => {
-                console.log(data)
-                console.log('value after', task.important)
-
-                setUpdate(prevState => !prevState)
-            })
-            .catch(error => console.log('could not fetch data', error))
+ 
+    //handle delete alert
+    const handleClick = id => {
+    setOpen(true);
+    if (selectedIndex === id) {
+        setSelectedIndex("")
+    } else {
+        setSelectedIndex(id)
+    }
     }
 
-     //update task completion
-     function handleComplete(e, task) {
+    //update task importance
+    function handleImportant(e, task) {
+    e.stopPropagation();
+    //setImportant(prevState => !prevState)
+    let importantNew = !task.important;
+    console.log('new value important ', importantNew)
+
+        patch(`tasks/${task.id}`, {important: importantNew})
+        .then(data => {
+            console.log(data)
+            setUpdate(true)
+        })
+        .catch(error => console.log('could not fetch data', error)) 
+    }
+
+    //update task completion
+    function handleComplete(e, task) {
         e.stopPropagation();
-        setComplete(prevState => !prevState);
-        patch(`tasks/${task.id}`, {complete})
+        let newCompleteValue = !task.complete;
+        patch(`tasks/${task.id}`, {complete: newCompleteValue})
         .then(data => {
             console.log(data)
             setUpdate(prevState => !prevState);
         })
         .catch(error => console.log('could not fetch data', error))
     }
-/* 
-       //update new task
+
+    //update new task
        function handleNewTask(e, task) {
            if(task.newTask) {
             e.stopPropagation();
@@ -61,7 +62,7 @@ function Task({ task, complete, setComplete, newTask, setNewTask, update, setUpd
             })
             .catch(error => console.log('could not fetch data', error));
         }
-    } */
+    } 
 
     //delete task
     function handleDelete(id) {
@@ -73,8 +74,7 @@ function Task({ task, complete, setComplete, newTask, setNewTask, update, setUpd
     return ( 
             <Badge badgeContent={badgeText} color="primary" invisible={!task.newTask ?? newTask}>
                 <ListItem sx={{ display:"flex", paddingLeft: 0}}
-                //</Badge>onClick={(e) => {handleNewTask(e, task)}}
-                >
+                onClick={(e) => {handleNewTask(e, task)}}>
                     <ListItemIcon>
                         <Tooltip
                             TransitionComponent={Fade}
@@ -84,11 +84,7 @@ function Task({ task, complete, setComplete, newTask, setNewTask, update, setUpd
                         >
                             <ToggleButton 
                                 value={task.important}
-                                onChange={(e) =>{
-                                    let newImportant = task.important;
-                                    setImportant(!newImportant);
-                                    handleImportant(e, task);
-                                }}>
+                                onClick={(e) =>{handleImportant(e, task)}}>
                                 <PriorityHigh className={task.important ? 'important' : ''}
                                     sx={{
                                         color:"#efe4e4",
@@ -113,7 +109,6 @@ function Task({ task, complete, setComplete, newTask, setNewTask, update, setUpd
                     />
                     <IconButton
                         value="check"
-                        selected={complete}
                         onClick={(e) => handleComplete(e, task)}
                         className={task.complete ? 'complete' : ''}
                         sx={{color:"rgb(192 213 192 / 87%)", "&.complete":{color:"green"}}}

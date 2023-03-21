@@ -1,17 +1,16 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useFetch from "../useFetch";
 import Task from "./Task";
 import {  Checkbox, FormControl, FormControlLabel, InputLabel, List, MenuItem, Paper, Select } from "@mui/material";
 
 
-const ListTodo = ({important, setImportant, complete, setComplete, update, setUpdate, tasks, setTasks, newTask, setNewTask}) => {
-    const [task, setTask] = useState({});
+const ListTodo = ({ complete, setComplete, update, setUpdate, tasks, setTasks, newTask, setNewTask}) => {
     const [filterType, setFilterType] = useState('all');
     const [filterComplete, setFilterComplete] = useState(true);
     const [mount, setMount] = useState(false);
     
    // const [showTasks, setShowTasks] = useState(false);
-    const { get, deleteItem, patch, put, loading } = useFetch("http://localhost:8000/");
+    const { get, loading } = useFetch("http://localhost:8000/");
 
     //fetch tasks list
     useEffect(() => {
@@ -19,13 +18,12 @@ const ListTodo = ({important, setImportant, complete, setComplete, update, setUp
         .then(data => {
             setTasks(data);
             setMount(prevState => !prevState)
-            console.log('update' + update)
-            
+            setUpdate(false);
         })
         .catch(error => console.log('could not fetch data', error))
     }, [update]);
     
-    //sort tasks
+/*     //sort tasks
     useEffect(() => {
         sortTasks();
     }, [mount]) 
@@ -43,7 +41,7 @@ const ListTodo = ({important, setImportant, complete, setComplete, update, setUp
             setTasks(originalTasks)
         }
     }
-
+ */
     return (
         <>
             {loading && <p>Loading...</p>}
@@ -93,8 +91,7 @@ const ListTodo = ({important, setImportant, complete, setComplete, update, setUp
                     }).map(task => {
                         return (
                             <Task 
-                                task={task} key={task.id} 
-                                important={important} setImportant={setImportant} 
+                                task={task} key={task.id}
                                 complete={complete} setComplete={setComplete}
                                 update={update} setUpdate={setUpdate} 
                                 newTask={newTask} setNewTask={setNewTask}

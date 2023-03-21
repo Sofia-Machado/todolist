@@ -2,7 +2,7 @@
   "tasks": [
     {
       "title": "google",
-      "important": true,
+      "important": false,
       "category": "work",
       "newTask": false,
       "id": 6,
@@ -41,11 +41,12 @@
       "complete": true
     },
     {
-      "title": "Laundry",
+      "title": "hello",
       "important": true,
       "category": "work",
-      "newTask": true,
-      "id": 12,
+      "newTask": false,
+      "completed": false,
+      "id": 13,
       "complete": false
     }
   ]

@@ -5,11 +5,19 @@ import { useState } from "react";
 import { Typography } from "@mui/material";
 
 function App() {
-const [important, setImportant] = useState(false);
-const [complete, setComplete] = useState(false);
-const [tasks, setTasks] = useState([]);
-const [newTask, setNewTask] = useState(true);
-const [update, setUpdate] = useState(false);
+
+  const [complete, setComplete] = useState(false);
+  const [tasks, setTasks] = useState([]);
+  const [newTask, setNewTask] = useState(true);
+  const [update, setUpdate] = useState(false);
+
+  //Using useToggle Hook
+  const useToggle = (initialState) => {
+      const [toggleValue, setToggleValue] = useState(initialState);
+      const toggler = () => { setToggleValue(!toggleValue) };
+      return [toggleValue, toggler]
+  };
+
 
   return (
     <Container maxWidth="sm">
@@ -19,7 +27,6 @@ const [update, setUpdate] = useState(false);
         >To do list</Typography>
           <CreateTodo update={update} setUpdate={setUpdate} newTask={newTask} setNewTask={setNewTask} />
           <ListTodo 
-            important={important} setImportant={setImportant} 
             complete={complete} setComplete={setComplete}
             update={update} setUpdate={setUpdate} 
             tasks={tasks} setTasks={setTasks} 
