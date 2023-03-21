@@ -4,7 +4,7 @@ import Task from "./Task";
 import {  Checkbox, FormControl, FormControlLabel, InputLabel, List, MenuItem, Paper, Select } from "@mui/material";
 
 
-const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, newTask, setNewTask}) => {
+const ListTodo = ({important, setImportant, complete, setComplete, update, setUpdate, tasks, setTasks, newTask, setNewTask}) => {
     const [task, setTask] = useState({});
     const [filterType, setFilterType] = useState('all');
     const [filterComplete, setFilterComplete] = useState(true);
@@ -12,7 +12,6 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
     
    // const [showTasks, setShowTasks] = useState(false);
     const { get, deleteItem, patch, put, loading } = useFetch("http://localhost:8000/");
-    const badgeText = "NEW";
 
 
     //fetch tasks list
@@ -20,16 +19,24 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
         get("tasks")
         .then(data => {
             setTasks(data);
-            sortTasks(data);
+            setMount(prevState => !prevState)
+        })
+        .catch(error => console.log('could not fetch data', error))
+    }, []);
+       //fetch tasks list
+       useEffect(() => {
+        get("tasks")
+        .then(data => {
+            setTasks(data);
+            setMount(prevState => !prevState)
         })
         .catch(error => console.log('could not fetch data', error))
     }, [update]);
     
-    
     //sort tasks
     useEffect(() => {
         sortTasks();
-    }, [important]) 
+    }, [mount]) 
 
     
     const sortTasks = () => {
@@ -97,6 +104,7 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
                             <Task 
                                 task={task} key={task.id} 
                                 important={important} setImportant={setImportant} 
+                                complete={complete} setComplete={setComplete}
                                 update={update} setUpdate={setUpdate} 
                                 newTask={newTask} setNewTask={setNewTask}
                             />

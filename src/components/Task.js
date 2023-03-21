@@ -5,12 +5,11 @@ import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
 import useFetch from "../useFetch";
 
-function Task({ task, newTask, setNewTask, update, setUpdate, important, setImportant}) {
+function Task({ task, complete, setComplete, newTask, setNewTask, update, setUpdate, important, setImportant}) {
     const [selectedIndex, setSelectedIndex] = useState("");
     const [open, setOpen] = useState(false);
-    const [complete, setComplete] = useState(false);
     const badgeText = "NEW";
-    const { get, deleteItem, patch, put, loading } = useFetch("http://localhost:8000/");
+    const { deleteItem, patch } = useFetch("http://localhost:8000/");
 
      //handle delete alert
      const handleClick = id => {
