@@ -11,14 +11,6 @@ function App() {
   const [newTask, setNewTask] = useState(true);
   const [update, setUpdate] = useState(false);
 
-  //Using useToggle Hook
-  const useToggle = (initialState) => {
-      const [toggleValue, setToggleValue] = useState(initialState);
-      const toggler = () => { setToggleValue(!toggleValue) };
-      return [toggleValue, toggler]
-  };
-
-
   return (
     <Container maxWidth="sm">
       <div className="App">

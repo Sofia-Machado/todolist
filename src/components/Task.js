@@ -1,26 +1,55 @@
 import { useState } from "react";
-import {  Alert, Badge, Button, Collapse, Fade, ToggleButton, IconButton, ListItem, ListItemIcon, ListItemText, Tooltip } from "@mui/material";
+import {  Alert, Badge, Button, Collapse, Fade, IconButton, ListItem, ListItemIcon, ListItemText, Snackbar, Tooltip } from "@mui/material";
 import PriorityHigh from '@mui/icons-material/PriorityHigh';
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 import useFetch from "../useFetch";
 
 function Task({ task, complete, setComplete, newTask, setNewTask, setUpdate}) {
+    
     const [selectedIndex, setSelectedIndex] = useState("");
-    const [open, setOpen] = useState(false);
-    const badgeText = "NEW";
+    const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
+    const [openDeleteNote, setOpenDeleteNote] = useState(false);
     const { deleteItem, patch } = useFetch("http://localhost:8000/");
+    const badgeText = "NEW";
 
- 
     //handle delete alert
-    const handleClick = id => {
-    setOpen(true);
-    if (selectedIndex === id) {
-        setSelectedIndex("")
-    } else {
-        setSelectedIndex(id)
+    const handleClickDelete = id => {
+        setOpenDeleteAlert(true);
+        if (selectedIndex === id) {
+            setSelectedIndex("")
+        } else {
+            setSelectedIndex(id)
+        }
     }
-    }
+
+    //handle delete note
+    const handleClickDeleteNote = () => {
+        setOpenDeleteNote(true);
+      };
+    
+      const handleCloseDeleteNote = (reason) => {
+        if (reason === 'clickaway') {
+          return ;
+        }
+    setOpenDeleteNote(false);
+      }
+
+      const action = (
+        <>
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={handleCloseDeleteNote}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        </>
+      );
+   
+
 
     //update task importance
     function handleImportant(e, task) {
@@ -82,7 +111,7 @@ function Task({ task, complete, setComplete, newTask, setNewTask, setUpdate}) {
                             title={task.important ? 'Important' : "Not important"}
                             placement="left-start"
                         >
-                            <ToggleButton 
+                            <IconButton 
                                 value={task.important}
                                 onClick={(e) =>{handleImportant(e, task)}}>
                                 <PriorityHigh className={task.important ? 'important' : ''}
@@ -99,7 +128,7 @@ function Task({ task, complete, setComplete, newTask, setNewTask, setUpdate}) {
                                         }
                                     }} 
                                     />
-                            </ToggleButton>
+                            </IconButton>
                         </Tooltip>
                     </ListItemIcon>
                     <ListItemText
@@ -115,24 +144,31 @@ function Task({ task, complete, setComplete, newTask, setNewTask, setUpdate}) {
                         >
                         <CheckIcon />
                     </IconButton>
-                    {!open && <IconButton 
+                    {!openDeleteAlert && <IconButton 
                         aria-label="delete" 
                         size="small"
-                        onClick={() => handleClick(task.id)}
+                        onClick={() => handleClickDelete(task.id)}
                         sx={{color:"#efe4e4", "&:hover":{color:"darkred"}}}
                     >
                         <ClearIcon />
                     </IconButton>}
                     <Collapse in={task.id === selectedIndex} unmountOnExit={true}>
                     <Alert severity="warning" >Are you sure you want to delete this task?
-                        <Button color="inherit" size="small" onClick={() => {setSelectedIndex(''); setOpen(false)}}>
+                        <Button color="inherit" size="small" onClick={() => {setSelectedIndex(''); setOpenDeleteAlert(false)}}>
                         No
                         </Button>
-                        <Button color="inherit" size="small" onClick={() => {setOpen(true); handleDelete(task.id); setOpen(false)}}>
+                        <Button color="inherit" size="small" onClick={() => {setOpenDeleteAlert(true); handleDelete(task.id); setOpenDeleteAlert(false); handleClickDeleteNote()}}>
                         Yes
                         </Button>
                     </Alert>
                     </Collapse>
+                    <Snackbar
+                        open={openDeleteNote}
+                        autoHideDuration={6000}
+                        onClose={handleCloseDeleteNote}
+                        message={`${task.title} deleted`}
+                        action={action}
+                    />
                 </ListItem>
             </Badge>
      );
