@@ -10,8 +10,8 @@ export default function useFetch(baseUrl) {
             .then(response => response.json())
             .then(data => {
                 if (!data) {
-                    reject(data);
                     setLoading(false);
+                    return reject(data);
                 }   
                 resolve(data);
                 setLoading(false);
@@ -35,8 +35,8 @@ export default function useFetch(baseUrl) {
             .then(response => response.json())
             .then(data => {
                 if (!data) {
-                    reject(data);
                     setLoading(false);
+                    return reject(data);
                 }
                 resolve(data);
                 setLoading(false);
@@ -60,8 +60,8 @@ export default function useFetch(baseUrl) {
             .then(response => response.json())
             .then(data => {
                 if (!data) {
-                    reject(data)
                     setLoading(false);
+                    return reject(data);
                 }
                 setLoading(false);
                 resolve(data);
@@ -85,8 +85,8 @@ export default function useFetch(baseUrl) {
             .then(response => response.json())
             .then(data => {
                 if (!data) {
-                    reject(data)
                     setLoading(false);
+                    return reject(data);
                 }
                 setLoading(false);
                 resolve(data);

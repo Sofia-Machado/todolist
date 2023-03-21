@@ -22,13 +22,6 @@
       "category": "personal",
       "newTask": false,
       "id": 8
-    },
-    {
-      "title": "prepare meals",
-      "important": true,
-      "category": "work",
-      "newTask": true,
-      "id": 9
     }
   ]
 }

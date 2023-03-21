@@ -16,12 +16,12 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
     const [selectedIndex, setSelectedIndex] = useState("")
 
 
-     //fetch tasks list
+    //fetch tasks list
     useEffect(() => {
         get("tasks")
         .then(data => {
             setMount(prevState => !prevState);
-            return setTasks(data);
+            setTasks(data);
         })
         .catch(error => console.log('could not fetch data', error))
     }, [update]);
@@ -33,19 +33,19 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
     }, [mount]) 
 
     
-    const sortTasks = useCallback(() => {
+    const sortTasks = () => {
         let originalTasks = [...tasks];
         let importantTasks = originalTasks.filter(task => task.important === true);
         if (importantTasks) {
             let unimportantTasks = originalTasks.filter(task => !task.important)
             unimportantTasks = unimportantTasks.slice(0).reverse();
             let newListOfTasks = [...importantTasks, ...unimportantTasks];
-            return setTasks(newListOfTasks);
+            setTasks(newListOfTasks);
         } else {
             originalTasks = originalTasks.slice(0).reverse();
-            return setTasks(originalTasks)
+            setTasks(originalTasks)
         }
-    })
+    }
 
     //update task importance
     function handleImportant(e, task) {
@@ -55,7 +55,7 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
         patch(`tasks/${task.id}`, {important})
         .then(data => {
             console.log(data)
-            return setUpdate(prevState => !prevState);
+            setUpdate(prevState => !prevState);
         })
         .catch(error => console.log('could not fetch data', error))
         
@@ -94,7 +94,9 @@ const ListTodo = ({important, setImportant, update, setUpdate, tasks, setTasks, 
         deleteItem(`tasks/${id}`);
     }
 
+    //handle delete alert
     const handleClick = id => {
+        setOpen(true);
         if (selectedIndex === id) {
           setSelectedIndex("")
         } else {
