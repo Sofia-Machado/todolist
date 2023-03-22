@@ -3,17 +3,64 @@ import {  Alert, Badge, Button, Collapse, Fade, IconButton, ListItem, ListItemIc
 import PriorityHigh from '@mui/icons-material/PriorityHigh';
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
-import CloseIcon from '@mui/icons-material/Close';
 import useFetch from "../useFetch";
 
-function Task({ task, complete, setComplete, newTask, setNewTask, setUpdate}) {
+function Task({ action, handleCloseDeleteNote, openDeleteNote, task, complete, setComplete, newTask, setNewTask, setUpdate, handleClickDeleteNote}) {
     
     const [selectedIndex, setSelectedIndex] = useState("");
     const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
-    const [openDeleteNote, setOpenDeleteNote] = useState(false);
     const { deleteItem, patch } = useFetch("http://localhost:8000/");
     const badgeText = "NEW";
 
+    
+    //update task importance
+    function handleImportant(e, task) {
+        e.stopPropagation();
+        //setImportant(prevState => !prevState)
+        let importantNew = !task.important;
+        console.log('new value important ', importantNew)
+        
+        patch(`tasks/${task.id}`, {important: importantNew})
+        .then(data => {
+            console.log(data);
+            setUpdate(prevState => !prevState);
+        })
+        .catch(error => console.log('could not fetch data', error));
+    }
+
+    //update task completion
+    function handleComplete(e, task) {
+        e.stopPropagation();
+        patch(`tasks/${task.id}`, { complete: !task.complete })
+        .then(data => {
+            console.log(data);
+            setUpdate(prevState => !prevState);
+        })
+        .catch(error => console.log('could not fetch data', error));
+    }    
+    
+    //update new task
+    function handleNewTask(e, task) {
+        if(task.newTask) {
+            e.stopPropagation();
+            e.preventDefault();
+            setNewTask(false); 
+            patch(`tasks/${task.id}`, {newTask: false})
+            .then(data => {
+                console.log(data);
+                setUpdate(prevState => !prevState);
+            })
+            .catch(error => console.log('could not fetch data', error));
+        }
+    } 
+    
+    //delete task
+    function handleDelete(id) {
+        deleteItem(`tasks/${id}`);
+        setUpdate(prevState => !prevState);
+        setOpenDeleteAlert(false);
+    }
+    
     //handle delete alert
     const handleClickDelete = id => {
         setOpenDeleteAlert(true);
@@ -23,81 +70,8 @@ function Task({ task, complete, setComplete, newTask, setNewTask, setUpdate}) {
             setSelectedIndex(id)
         }
     }
-
-    //handle delete note
-    const handleClickDeleteNote = () => {
-        setOpenDeleteNote(true);
-      };
     
-      const handleCloseDeleteNote = (reason) => {
-        if (reason === 'clickaway') {
-          return ;
-        }
-    setOpenDeleteNote(false);
-      }
-
-      const action = (
-        <>
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={handleCloseDeleteNote}
-          >
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        </>
-      );
    
-
-
-    //update task importance
-    function handleImportant(e, task) {
-    e.stopPropagation();
-    //setImportant(prevState => !prevState)
-    let importantNew = !task.important;
-    console.log('new value important ', importantNew)
-
-        patch(`tasks/${task.id}`, {important: importantNew})
-        .then(data => {
-            console.log(data)
-            setUpdate(prevState => !prevState)
-        })
-        .catch(error => console.log('could not fetch data', error)) 
-    }
-
-    //update task completion
-    function handleComplete(e, task) {
-        e.stopPropagation();
-        let newCompleteValue = !task.complete;
-        patch(`tasks/${task.id}`, {complete: newCompleteValue})
-        .then(data => {
-            console.log(data)
-            setUpdate(prevState => !prevState);
-        })
-        .catch(error => console.log('could not fetch data', error))
-    }
-
-    //update new task
-       function handleNewTask(e, task) {
-           if(task.newTask) {
-            e.stopPropagation();
-            e.preventDefault();
-            setNewTask(false); 
-            patch(`tasks/${task.id}`, {newTask: false})
-            .then(data => {
-                console.log(data)
-                setUpdate(prevState => !prevState);
-            })
-            .catch(error => console.log('could not fetch data', error));
-        }
-    } 
-
-    //delete task
-    function handleDelete(id) {
-        deleteItem(`tasks/${id}`);
-        setUpdate(prevState => !prevState);
-    }
 
 
     return ( 
@@ -157,18 +131,17 @@ function Task({ task, complete, setComplete, newTask, setNewTask, setUpdate}) {
                         <Button color="inherit" size="small" onClick={() => {setSelectedIndex(''); setOpenDeleteAlert(false)}}>
                         No
                         </Button>
-                        <Button color="inherit" size="small" onClick={() => {setOpenDeleteAlert(true); handleDelete(task.id); setOpenDeleteAlert(false); handleClickDeleteNote()}}>
+                        <Button color="inherit" size="small" 
+                        onClick={() => {
+                            handleClickDeleteNote(task);
+                            setOpenDeleteAlert(true);
+                            handleDelete(task.id)
+                        }}>
                         Yes
                         </Button>
                     </Alert>
                     </Collapse>
-                    <Snackbar
-                        open={openDeleteNote}
-                        autoHideDuration={6000}
-                        onClose={handleCloseDeleteNote}
-                        message={`${task.title} deleted`}
-                        action={action}
-                    />
+                   
                 </ListItem>
             </Badge>
      );

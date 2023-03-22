@@ -1,45 +1,57 @@
 import { useEffect, useState } from "react";
 import useFetch from "../useFetch";
 import Task from "./Task";
-import {  Checkbox, FormControl, FormControlLabel, InputLabel, List, MenuItem, Paper, Select } from "@mui/material";
+import {  Checkbox, FormControl, FormControlLabel, InputLabel, IconButton, List, MenuItem, Paper, Select, Snackbar } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 
+const ListTodo = ({ update, setUpdate, tasks, setTasks }) => {
 
-const ListTodo = ({ complete, setComplete, update, setUpdate, tasks, setTasks, newTask, setNewTask}) => {
     const [filterType, setFilterType] = useState('all');
     const [filterComplete, setFilterComplete] = useState(true);
-    const [mount, setMount] = useState(false);
-    
-   // const [showTasks, setShowTasks] = useState(false);
+    const [openDeleteNote, setOpenDeleteNote] = useState(false);
+    const [message, setMessage] = useState('')
     const { get, loading } = useFetch("http://localhost:8000/");
-
+    
     //fetch tasks list
     useEffect(() => {
         get("tasks")
         .then(data => {
-            setTasks(data);
-            setMount(prevState => !prevState)
+            let newListOfTasks = sortTasks(data);
+            setTasks(newListOfTasks);
         })
         .catch(error => console.log('could not fetch data', error))
     }, [update]);
     
-  //sort tasks
-    useEffect(() => {
-        sortTasks();
-    }, [mount]) 
+    //sort tasks
+    function sortTasks(tasks) {
+        let importantTasks = tasks.filter(task => task.important === true);
+        let unimportantTasks = tasks.filter(task => !task.important)
+        unimportantTasks.reverse();
+        return [...importantTasks, ...unimportantTasks];
+    }
+
+    //handle delete note
+    const handleClickDeleteNote = (task) => {
+        console.log('open ' + task.title);
+        setMessage(task.title + " deleted");
+        setOpenDeleteNote(true);
+    };
+    const handleCloseDeleteNote = () => {
+        setOpenDeleteNote(false);
+    };
     
-    const sortTasks = () => {
-        let originalTasks = [...tasks];
-        let importantTasks = originalTasks.filter(task => task.important === true);
-        if (importantTasks) {
-            let unimportantTasks = originalTasks.filter(task => !task.important)
-            unimportantTasks = unimportantTasks.slice(0).reverse();
-            let newListOfTasks = [...importantTasks, ...unimportantTasks];
-            setTasks(newListOfTasks);
-        } else {
-            originalTasks = originalTasks.slice(0).reverse();
-            setTasks(originalTasks)
-        }
-    } 
+        const action = (
+            <>
+              <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={handleCloseDeleteNote}
+              >
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            </>
+        );
 
     return (
         <>
@@ -89,12 +101,23 @@ const ListTodo = ({ complete, setComplete, update, setUpdate, tasks, setTasks, n
                         } 
                     }).map(task => {
                         return (
-                            <Task 
-                                task={task} key={task.id}
-                                complete={complete} setComplete={setComplete}
-                                update={update} setUpdate={setUpdate} 
-                                newTask={newTask} setNewTask={setNewTask}
-                            />
+                            <>
+                                <Task 
+                                    task={task} key={task.id}
+                                    update={update} setUpdate={setUpdate} 
+                                    handleClickDeleteNote={handleClickDeleteNote}
+                                    openDeleteNote={openDeleteNote}
+                                    handleCloseDeleteNote={handleCloseDeleteNote}
+                                    action={action}
+                                />
+                                 <Snackbar
+                                    open={openDeleteNote}
+                                    autoHideDuration={6000}
+                                    onClose={handleCloseDeleteNote}
+                                    message={message}
+                                    action={action}
+                                />
+                            </>
                         )
                     })}
                 </List>
