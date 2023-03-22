@@ -18,19 +18,19 @@
     },
     {
       "title": "set delete button",
-      "important": false,
-      "category": "work",
-      "newTask": false,
-      "id": 3,
-      "complete": true
-    },
-    {
-      "title": "deal with flicker",
       "important": true,
       "category": "work",
       "newTask": false,
-      "id": 4,
+      "id": 3,
       "complete": false
+    },
+    {
+      "title": "deal with flicker",
+      "important": false,
+      "category": "work",
+      "newTask": false,
+      "id": 4,
+      "complete": true
     },
     {
       "title": "Iron",
@@ -38,16 +38,27 @@
       "category": "personal",
       "newTask": false,
       "id": 5,
-      "complete": false
+      "complete": true
     },
     {
       "title": "Groceries",
-      "important": false,
+      "important": true,
       "category": "personal",
       "newTask": false,
       "completed": false,
       "id": 6,
-      "complete": false
+      "complete": true
+    }
+  ],
+
+  "users": [
+    {
+      "email": "123@test.com",
+      "password": "123!"
+    },
+    {
+      "email": "abc@test.com",
+      "password": "abc!"
     }
   ]
 }

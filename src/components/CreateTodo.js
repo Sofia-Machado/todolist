@@ -4,7 +4,7 @@ import { Fade, FormGroup, IconButton, InputLabel, Select, Button, MenuItem, Text
 import PriorityHigh from '@mui/icons-material/PriorityHigh';
 
 
-const CreateTodo = ({setUpdate, newTask, setNewTask}) => {
+const CreateTodo = ({setUpdate}) => {
     const [important, setImportant] = useState(false);       
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState('');

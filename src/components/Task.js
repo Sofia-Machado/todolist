@@ -1,30 +1,33 @@
 import { useState } from "react";
-import {  Alert, Badge, Button, Collapse, Fade, IconButton, ListItem, ListItemIcon, ListItemText, ToggleButtonGroup, ToggleButton, Tooltip } from "@mui/material";
+import {  Alert, Badge, Button, Collapse, Fade, IconButton, ListItem, ListItemIcon, ListItemText, Tooltip } from "@mui/material";
 import PriorityHigh from '@mui/icons-material/PriorityHigh';
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
 import useFetch from "../useFetch";
 
 
-function Task({ handleClickDeleteNote, task, newTask, setNewTask, setUpdate}) {
-    const [importantSelected, setImportantSelected] = useState(task.important);
+function Task({  handleClickDeleteNote, task, setUpdate }) {
+    
+    const [taskValue, setTask] = useState({})
+    const [newTask, setNewTask] = useState(true);
     const [selectedIndex, setSelectedIndex] = useState("");
     const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
-    const { deleteItem, patch } = useFetch("http://localhost:8000/");
+    const { deleteItem, patch, get } = useFetch("http://localhost:8000/");
     const badgeText = "NEW";
 
     
     //update task importance
-    function handleImportant(e) {
+    function handleImportant(e, task) {
         e.stopPropagation();
-        console.log('important value ' + importantSelected)
-        setImportantSelected(prevState => !prevState)
-        patch(`tasks/${task.id}`, {important: importantSelected})
+
+        let importantNew = !task.important;
+        console.log('new value important ', importantNew)
+        
+        patch(`tasks/${task.id}`, {important: importantNew})
         .then(data => {
             console.log(data);
             setUpdate(prevState => !prevState);
         })
-        .catch(error => console.log('could not fetch data', error));
     }
 
     //update task completion
@@ -70,38 +73,43 @@ function Task({ handleClickDeleteNote, task, newTask, setNewTask, setUpdate}) {
         }
     }
 
-    
     return ( 
             <Badge badgeContent={badgeText} color="primary" invisible={!task.newTask ?? newTask}>
                 <ListItem sx={{ display:"flex", paddingLeft: 0}}
                 onClick={(e) => {handleNewTask(e, task)}}>
-                    
+                    <ListItemIcon>
                         <Tooltip
                             TransitionComponent={Fade}
                             TransitionProps={{ timeout: 600 }}
                             title={task.important ? 'Important' : "Not important"}
                             placement="left-start"
                         >
-                            <ToggleButton 
+                            <IconButton 
                                 value={task.important}
-                                selected={importantSelected}
-                                onChange={(e) => handleImportant(e)}
-                                >
-                                <PriorityHigh 
-                                //className={task.important ? 'important' : ''} sx={{color:"#efe4e4",padding: "0.2em","&:hover": {borderRadius: "20px",marginLeft: "0",color:"#d7b6b6",},"&.important": {color:"darkred",}}} 
+                                color={task.important ? 'error' : ''}
+                                onClick={(e) =>{handleImportant(e, task)}}>
+                                <PriorityHigh /* className={task.important ? 'important' : ''}
+                                    sx={{
+                                        color:"#efe4e4",
+                                        padding: "0.2em",
+                                        "&:hover": {
+                                            borderRadius: "20px",
+                                            marginLeft: "0",
+                                            color:"#d7b6b6",
+                                        },
+                                        "&.important": {
+                                            color:"darkred",
+                                        }
+                                    }}  */
                                     />
-                            </ToggleButton>
+                            </IconButton>
                         </Tooltip>
-
-
-                    {/* Task title */}
+                    </ListItemIcon>
                     <ListItemText
                     sx={{maxWidth: 200, minWidth: 180}} 
                         primary={task.title.charAt(0).toUpperCase() + task.title.slice(1)}
                         secondary={task.category.charAt(0).toUpperCase() + task.category.slice(1)} 
                     />
-
-                    {/* Complete Button */}
                     <IconButton
                         value="check"
                         onClick={(e) => handleComplete(e, task)}
@@ -110,7 +118,7 @@ function Task({ handleClickDeleteNote, task, newTask, setNewTask, setUpdate}) {
                         >
                         <CheckIcon />
                     </IconButton>
-
+                    
                     {/* Delete Button */}
                     {!openDeleteAlert && <IconButton 
                         aria-label="delete" 

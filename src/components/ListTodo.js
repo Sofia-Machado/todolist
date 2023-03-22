@@ -6,7 +6,6 @@ import CloseIcon from '@mui/icons-material/Close';
 
 const ListTodo = ({ update, setUpdate, tasks, setTasks }) => {
 
-
     const [filterType, setFilterType] = useState('all');
     const [filterComplete, setFilterComplete] = useState(true);
     const [openDeleteNote, setOpenDeleteNote] = useState(false);
@@ -104,7 +103,7 @@ const ListTodo = ({ update, setUpdate, tasks, setTasks }) => {
                         return (
                             <Task 
                                 task={task} key={task.id}
-                                update={update} setUpdate={setUpdate} 
+                                update={update} setUpdate={setUpdate}
                                 handleClickDeleteNote={handleClickDeleteNote}
                                 openDeleteNote={openDeleteNote}
                                 action={action}

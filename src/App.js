@@ -1,32 +1,31 @@
-import CreateTodo from "./components/CreateTodo";
-import ListTodo from "./components/ListTodo";
+import { useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Container from '@mui/system/Container';
-import { useState } from "react";
-import { Typography } from "@mui/material";
+import TodoListPage from './pages/TodoListPage';
+import About from './pages/About';
+import Login from './pages/Login';
 
 function App() {
+  const [login, setLogin] = useState(false);
 
-  const [complete, setComplete] = useState(false);
-  const [tasks, setTasks] = useState([]);
-  const [newTask, setNewTask] = useState(true);
-  const [update, setUpdate] = useState(false);
+  let initialUrl;
+
+  if (login) {
+    initialUrl = <TodoListPage />;
+  } else {
+    initialUrl = <Login setLogin={setLogin} />
+  }
 
   return (
-    <Container maxWidth="sm">
-      <div className="App">
-        <Typography variant="h1"
-          sx={{fontSize:"4rem", paddingTop:"0.5em" }}
-        >To do list</Typography>
-          <CreateTodo update={update} setUpdate={setUpdate} newTask={newTask} setNewTask={setNewTask} />
-          <ListTodo 
-            complete={complete} setComplete={setComplete}
-            update={update} setUpdate={setUpdate} 
-            tasks={tasks} setTasks={setTasks} 
-            newTask={newTask} setNewTask={setNewTask} 
-          />
-      </div>
-    </Container>
-  );
+    <BrowserRouter>
+      <Container maxWidth="sm">
+        <Routes>
+          <Route path='/' element={initialUrl} />
+          <Route path='/about' element={<About />} />
+        </Routes>
+      </Container>
+    </BrowserRouter>
+  )
 }
 
 export default App;
