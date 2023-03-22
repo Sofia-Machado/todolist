@@ -4,8 +4,10 @@ import PriorityHigh from '@mui/icons-material/PriorityHigh';
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
 import useFetch from "../useFetch";
+import CloseIcon from '@mui/icons-material/Close';
 
-function Task({ action, handleCloseDeleteNote, openDeleteNote, task, complete, setComplete, newTask, setNewTask, setUpdate, handleClickDeleteNote}) {
+
+function Task({  handleClickDeleteNote, task, complete, setComplete, newTask, setNewTask, setUpdate}) {
     
     const [selectedIndex, setSelectedIndex] = useState("");
     const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
@@ -70,8 +72,7 @@ function Task({ action, handleCloseDeleteNote, openDeleteNote, task, complete, s
             setSelectedIndex(id)
         }
     }
-    
-   
+
 
 
     return ( 

@@ -6,10 +6,12 @@ import CloseIcon from '@mui/icons-material/Close';
 
 const ListTodo = ({ update, setUpdate, tasks, setTasks }) => {
 
+
     const [filterType, setFilterType] = useState('all');
     const [filterComplete, setFilterComplete] = useState(true);
     const [openDeleteNote, setOpenDeleteNote] = useState(false);
     const [message, setMessage] = useState('')
+
     const { get, loading } = useFetch("http://localhost:8000/");
     
     //fetch tasks list
@@ -107,7 +109,6 @@ const ListTodo = ({ update, setUpdate, tasks, setTasks }) => {
                                     update={update} setUpdate={setUpdate} 
                                     handleClickDeleteNote={handleClickDeleteNote}
                                     openDeleteNote={openDeleteNote}
-                                    handleCloseDeleteNote={handleCloseDeleteNote}
                                     action={action}
                                 />
                                  <Snackbar
@@ -116,6 +117,7 @@ const ListTodo = ({ update, setUpdate, tasks, setTasks }) => {
                                     onClose={handleCloseDeleteNote}
                                     message={message}
                                     action={action}
+                                    setOpenDeleteNote={setOpenDeleteNote}
                                 />
                             </>
                         )
