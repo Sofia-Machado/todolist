@@ -27,11 +27,13 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-function Login ({setLogin}) {
-    
-    //const [user, setUser] = useState({});
+function Login ({login, setLogin}) {
 
-    async function handleSubmit(event) {
+    //error textfield
+
+    function handleSubmit(event) {
+        event.preventDefault();
+        const [value, setValue] = useState("");
         const data = new FormData(event.currentTarget);
         let user = ({
             email: data.get("email"),
@@ -41,13 +43,17 @@ function Login ({setLogin}) {
          fetch('http://localhost:8000/users/')
             .then(res => res.json())
             .then(data => {
-                let newData = data.filter(dataUser => dataUser === user);
+                let newData = data.filter(dataUser => (dataUser.email === user.email && dataUser.password === user.password));
                     console.log(user)
                     console.log(newData)
-                    setLogin(true)
+                    if (newData.length > 0) {
+                        setLogin(true)
+                    }
             })
-            .catch(error => console.log(error))
-  
+            .catch(error => {
+                console.log(error)
+                return error
+            })
     };
 
     return (
@@ -70,28 +76,38 @@ function Login ({setLogin}) {
             </Typography>
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="email"
+                    label="Email Address"
+                    name="email"
+                    autoComplete="email"
+                    helperText={!login ? "Require" : ""}
+                    value={value}
+                    error={!value}
+                    autoFocus
                 />
+                  <TextField
+                    label="Password"
+                    required
+                    value={value}
+                    type="password"
+                    onChange={(e) => setValue(e.target.value)}
+                    />
                 <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
                 />
                 <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
+                    control={<Checkbox value="remember" color="primary" />}
+                    label="Remember me"
                 />
                 <Button
                 type="submit"
