@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -30,25 +31,29 @@ const theme = createTheme();
 
 function Login ({setLogin}) {
     
-    const { get } = useFetch('http://localhost:8000/');
+    const navigate = useNavigate();
+    const { get, post } = useFetch('http://localhost:8000/');
     
     const handleSubmit = (event) => {
         const data = new FormData(event.currentTarget);
         const email = data.get('email');
         const password = data.get('password');
-        console.log('hello ' + email)
-        setTimeout(() => {
-            
-                    }, 10000)
-            
-            get('users')
-            .then(data => {
-                if (data.email === email && data.password === password) {
-                    console.log(data);
+        
+        get('users')
+        .then(data => {
+            let result = data.includes(user => {
+                return user.email === email && user.password === password
+            })
+            console.log(result);
+            setTimeout(() => {
+                
+                if (result) {
                     setLogin(true);
+                    navigate('/');
                 }
             })
             .catch(error => console.log(error))
+        }, 10000)
         
        /*  get("users")
         .then (data => {
