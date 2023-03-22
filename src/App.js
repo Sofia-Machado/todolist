@@ -8,19 +8,11 @@ import Login from './pages/Login';
 function App() {
   const [login, setLogin] = useState(false);
 
-  let initialUrl;
-
-  if (login) {
-    initialUrl = <TodoListPage />;
-  } else {
-    initialUrl = <Login setLogin={setLogin} />
-  }
-
   return (
     <BrowserRouter>
       <Container maxWidth="sm">
         <Routes>
-          <Route path='/' element={initialUrl} />
+          <Route path='/' element={login ? <TodoListPage /> : <Login login={login} setLogin={setLogin} />} />
           <Route path='/about' element={<About />} />
         </Routes>
       </Container>

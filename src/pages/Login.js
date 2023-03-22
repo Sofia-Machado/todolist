@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,7 +11,6 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import useFetch from '../useFetch';
 
 function Copyright(props) {
     return (
@@ -31,38 +29,24 @@ const theme = createTheme();
 
 function Login ({setLogin}) {
     
-    const navigate = useNavigate();
-    const { get, post } = useFetch('http://localhost:8000/');
-    
-    const handleSubmit = (event) => {
+    //const [user, setUser] = useState({});
+
+    async function handleSubmit(event) {
         const data = new FormData(event.currentTarget);
-        const email = data.get('email');
-        const password = data.get('password');
-        
-        get('users')
-        .then(data => {
-            let result = data.includes(user => {
-                return user.email === email && user.password === password
-            })
-            console.log(result);
-            setTimeout(() => {
-                
-                if (result) {
-                    setLogin(true);
-                    navigate('/');
-                }
+        let user = ({
+            email: data.get("email"),
+            password: data.get("password")
+        })
+
+         fetch('http://localhost:8000/users/')
+            .then(res => res.json())
+            .then(data => {
+                let newData = data.filter(dataUser => dataUser === user);
+                    console.log(user)
+                    console.log(newData)
+                    setLogin(true)
             })
             .catch(error => console.log(error))
-        }, 10000)
-        
-       /*  get("users")
-        .then (data => {
-            if (data.email === event.target.email && data.password === event.target.password) {
-                console.log(data)
-                setLogin(true);
-            }
-        })
-        .catch(error => console.log(error)) */
   
     };
 
