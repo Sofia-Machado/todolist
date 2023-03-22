@@ -34,7 +34,6 @@ const ListTodo = ({ update, setUpdate, tasks, setTasks }) => {
 
     //handle delete note
     const handleClickDeleteNote = (task) => {
-        console.log('open ' + task.title);
         setMessage(task.title + " deleted");
         setOpenDeleteNote(true);
     };
@@ -103,26 +102,23 @@ const ListTodo = ({ update, setUpdate, tasks, setTasks }) => {
                         } 
                     }).map(task => {
                         return (
-                            <>
-                                <Task 
-                                    task={task} key={task.id}
-                                    update={update} setUpdate={setUpdate} 
-                                    handleClickDeleteNote={handleClickDeleteNote}
-                                    openDeleteNote={openDeleteNote}
-                                    action={action}
-                                />
-                                 <Snackbar
-                                    open={openDeleteNote}
-                                    autoHideDuration={6000}
-                                    onClose={handleCloseDeleteNote}
-                                    message={message}
-                                    action={action}
-                                    setOpenDeleteNote={setOpenDeleteNote}
-                                />
-                            </>
+                            <Task 
+                                task={task} key={task.id}
+                                update={update} setUpdate={setUpdate} 
+                                handleClickDeleteNote={handleClickDeleteNote}
+                                openDeleteNote={openDeleteNote}
+                                action={action}
+                            />
                         )
                     })}
                 </List>
+                <Snackbar
+                    open={openDeleteNote}
+                    autoHideDuration={6000}
+                    onClose={handleCloseDeleteNote}
+                    message={message}
+                    action={action}
+                />
             </Paper>
             }
         </>

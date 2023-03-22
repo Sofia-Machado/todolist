@@ -1,13 +1,12 @@
 import { useState } from "react";
-import {  Alert, Badge, Button, Collapse, Fade, IconButton, ListItem, ListItemIcon, ListItemText, Snackbar, Tooltip } from "@mui/material";
+import {  Alert, Badge, Button, Collapse, Fade, IconButton, ListItem, ListItemIcon, ListItemText, Tooltip } from "@mui/material";
 import PriorityHigh from '@mui/icons-material/PriorityHigh';
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
 import useFetch from "../useFetch";
-import CloseIcon from '@mui/icons-material/Close';
 
 
-function Task({  handleClickDeleteNote, task, complete, setComplete, newTask, setNewTask, setUpdate}) {
+function Task({  handleClickDeleteNote, task, newTask, setNewTask, setUpdate}) {
     
     const [selectedIndex, setSelectedIndex] = useState("");
     const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
@@ -58,9 +57,10 @@ function Task({  handleClickDeleteNote, task, complete, setComplete, newTask, se
     
     //delete task
     function handleDelete(id) {
+        setOpenDeleteAlert(true);
         deleteItem(`tasks/${id}`);
-        setUpdate(prevState => !prevState);
         setOpenDeleteAlert(false);
+        setUpdate(prevState => !prevState);
     }
     
     //handle delete alert
@@ -72,8 +72,6 @@ function Task({  handleClickDeleteNote, task, complete, setComplete, newTask, se
             setSelectedIndex(id)
         }
     }
-
-
 
     return ( 
             <Badge badgeContent={badgeText} color="primary" invisible={!task.newTask ?? newTask}>
@@ -135,7 +133,6 @@ function Task({  handleClickDeleteNote, task, complete, setComplete, newTask, se
                         <Button color="inherit" size="small" 
                         onClick={() => {
                             handleClickDeleteNote(task);
-                            setOpenDeleteAlert(true);
                             handleDelete(task.id)
                         }}>
                         Yes
