@@ -57,9 +57,8 @@ function Task({  handleClickDeleteNote, task, newTask, setNewTask, setUpdate}) {
     
     //delete task
     function handleDelete(id) {
-        setOpenDeleteAlert(true);
-        deleteItem(`tasks/${id}`);
         setOpenDeleteAlert(false);
+        deleteItem(`tasks/${id}`);
         setUpdate(prevState => !prevState);
     }
     
@@ -117,6 +116,8 @@ function Task({  handleClickDeleteNote, task, newTask, setNewTask, setUpdate}) {
                         >
                         <CheckIcon />
                     </IconButton>
+                    
+                    {/* Delete Button */}
                     {!openDeleteAlert && <IconButton 
                         aria-label="delete" 
                         size="small"
@@ -127,13 +128,17 @@ function Task({  handleClickDeleteNote, task, newTask, setNewTask, setUpdate}) {
                     </IconButton>}
                     <Collapse in={task.id === selectedIndex} unmountOnExit={true}>
                     <Alert severity="warning" >Are you sure you want to delete this task?
-                        <Button color="inherit" size="small" onClick={() => {setSelectedIndex(''); setOpenDeleteAlert(false)}}>
+                        <Button color="inherit" size="small" 
+                            onClick={() => {
+                                setSelectedIndex(''); 
+                                setOpenDeleteAlert(false)
+                            }}>
                         No
                         </Button>
                         <Button color="inherit" size="small" 
                         onClick={() => {
-                            handleClickDeleteNote(task);
                             handleDelete(task.id)
+                            handleClickDeleteNote(task);
                         }}>
                         Yes
                         </Button>
