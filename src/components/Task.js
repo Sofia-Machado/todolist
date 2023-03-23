@@ -8,11 +8,10 @@ import useFetch from "../useFetch";
 
 function Task({  handleClickDeleteNote, task, setUpdate }) {
     
-    const [taskValue, setTask] = useState({})
     const [newTask, setNewTask] = useState(true);
     const [selectedIndex, setSelectedIndex] = useState("");
     const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
-    const { deleteItem, patch, get } = useFetch("http://localhost:8000/");
+    const { deleteItem, patch } = useFetch("http://localhost:8000/");
     const badgeText = "NEW";
 
     

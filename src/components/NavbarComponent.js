@@ -1,6 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {  Button, Toolbar, Typography } from '@mui/material';
-import { useEffect } from 'react';
 
 const NavbarComponent = ({login, setLogin}) => {
 

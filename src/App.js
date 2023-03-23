@@ -13,12 +13,10 @@ function App() {
   return (
     <BrowserRouter>
     <NavbarComponent login={login} setLogin={setLogin} />
-      <Container maxWidth="sm">
-        <Routes>
-          <Route path='/' element={login ? <TodoListPage /> : <Login login={login} setLogin={setLogin} />} />
-          <Route path='about' element={login ? <About /> : <Navigate to='/' replace />} />
-        </Routes>
-      </Container>
+      <Routes>
+        <Route path='/' element={login ? <TodoListPage /> : <Login login={login} setLogin={setLogin} />} />
+        <Route path='about' element={login ? <About /> : <Navigate to='/' replace />} />
+      </Routes>
     </BrowserRouter>
   )
 }
