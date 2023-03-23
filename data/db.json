@@ -30,7 +30,7 @@
       "category": "work",
       "newTask": false,
       "id": 4,
-      "complete": true
+      "complete": false
     },
     {
       "title": "Iron",
@@ -38,7 +38,7 @@
       "category": "personal",
       "newTask": false,
       "id": 5,
-      "complete": true
+      "complete": false
     },
     {
       "title": "Groceries",
@@ -47,10 +47,9 @@
       "newTask": false,
       "completed": false,
       "id": 6,
-      "complete": true
+      "complete": false
     }
   ],
-
   "users": [
     {
       "email": "123@test.com",
