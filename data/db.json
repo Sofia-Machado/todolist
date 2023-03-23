@@ -2,7 +2,7 @@
   "tasks": [
     {
       "title": "google",
-      "important": false,
+      "important": true,
       "category": "work",
       "newTask": false,
       "id": 1,
@@ -18,7 +18,7 @@
     },
     {
       "title": "set delete button",
-      "important": true,
+      "important": false,
       "category": "work",
       "newTask": false,
       "id": 3,
@@ -34,7 +34,7 @@
     },
     {
       "title": "Iron",
-      "important": false,
+      "important": true,
       "category": "personal",
       "newTask": false,
       "id": 5,
@@ -48,6 +48,14 @@
       "completed": false,
       "id": 6,
       "complete": false
+    },
+    {
+      "title": "google",
+      "important": true,
+      "category": "projects",
+      "newTask": false,
+      "completed": false,
+      "id": 7
     }
   ],
   "users": [

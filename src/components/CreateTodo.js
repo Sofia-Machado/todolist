@@ -15,17 +15,16 @@ const CreateTodo = ({ categoryOptions, setUpdate}) => {
     //had to do it this way because MenuItem wasn't a direct children of Select, therefore it couldn't reach e.target.value
     useEffect(() => {
         setCategoryData(categoryOptions);
-    }, [])
+    }, []);
 
     const renderCategories = (categories) => {
         const parameters = categories.options.map(category => {
             return (
-                    <MenuItem key={category.value} value={category.value}>{category.value}</MenuItem>
-                    );
-                });
-                return [<ListSubheader key={categories.label}>{categories.label}</ListSubheader>, parameters]
-            }
-    
+                <MenuItem key={category.value} value={category.value}>{category.value}</MenuItem>
+            );
+        });
+        return [<ListSubheader key={categories.label}>{categories.label}</ListSubheader>, parameters]
+    }
 
     //submit form
     function handleSubmit(e) {
@@ -78,7 +77,7 @@ const CreateTodo = ({ categoryOptions, setUpdate}) => {
                                 label="Category"
                                 defaultValue=""
                                 value={category}
-                                onChange={(e) => {console.log(e.target.value); setCategory(e.target.value)}}
+                                onChange={(e) => {setCategory(e.target.value)}}
                             >
                                 {categoryData?.map(category => renderCategories(category))}
                             </Select>

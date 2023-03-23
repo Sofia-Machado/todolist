@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {  Alert, Badge, Button, Collapse, Fade, IconButton, ListItem, ListItemIcon, ListItemText, Popover, Tooltip } from "@mui/material";
+import {  Alert, Badge, Button, Fade, IconButton, ListItem, ListItemIcon, ListItemText, Popover, Tooltip } from "@mui/material";
 import PriorityHigh from '@mui/icons-material/PriorityHigh';
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
@@ -24,7 +24,9 @@ function Task({ categoryOptions, handleClickDeleteNote, task, setUpdate }) {
         patch(`tasks/${task.id}`, {important: importantNew})
         .then(data => {
             console.log(data);
-            setUpdate(prevState => !prevState);
+            setTimeout(() => {
+                setUpdate(prevState => !prevState);
+            }, 250)
         })
     }
 
@@ -89,20 +91,7 @@ function Task({ categoryOptions, handleClickDeleteNote, task, setUpdate }) {
                                 value={task.important}
                                 color={task.important ? 'error' : ''}
                                 onClick={(e) =>{handleImportant(e, task)}}>
-                                <PriorityHigh /* className={task.important ? 'important' : ''}
-                                    sx={{
-                                        color:"#efe4e4",
-                                        padding: "0.2em",
-                                        "&:hover": {
-                                            borderRadius: "20px",
-                                            marginLeft: "0",
-                                            color:"#d7b6b6",
-                                        },
-                                        "&.important": {
-                                            color:"darkred",
-                                        }
-                                    }}  */
-                                    />
+                                <PriorityHigh />
                             </IconButton>
                         </Tooltip>
                     </ListItemIcon>

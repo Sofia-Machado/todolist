@@ -28,6 +28,33 @@ const TodoListPage = () => {
     },
 ]
 
+console.log(categoryOptions.map(category => {
+  return category.options
+}))
+
+//check who's label is this
+console.log(categoryOptions.map(category => {
+  return category.options.map(value => {
+    if (Object.values(value).includes('projects')) {
+      return true;
+    }
+  })
+}))
+
+//got first check
+console.log(Object.values(categoryOptions[0]['options']).map(value => {
+  if (value.value === 'projects') {
+    let result = categoryOptions[0].label;
+    return result
+  }
+}))
+console.log(Object.values(categoryOptions[1]['options']).map(value => {
+  if (value.value === 'dog') {
+    let result = categoryOptions[1].label;
+    return result;
+  }
+}))
+
   return (
     <Container maxWidth="sm" sx={{marginTop: 2}}>
       <div className="todolist-page">
