@@ -1,15 +1,39 @@
 import { useState } from "react";
 import useFetch from "../useFetch";
-import { Fade, FormGroup, IconButton, InputLabel, Select, Button, MenuItem, TextField, FormControl, Tooltip, Typography } from "@mui/material";
+import { Button, Fade, FormControl, FormGroup, IconButton, InputLabel, ListSubheader, MenuItem, Select, TextField, Tooltip, Typography } from "@mui/material";
 import PriorityHigh from '@mui/icons-material/PriorityHigh';
 
 
 const CreateTodo = ({setUpdate}) => {
     const [important, setImportant] = useState(false);       
     const [title, setTitle] = useState('');
-    const [category, setCategory] = useState('');
+    const [category, setCategory] = useState({});
     const { post } = useFetch("http://localhost:8000/")
 
+    const workOptions = [
+        { value: "projects" },
+        { value: "exercises" },
+        { value: "team"}
+    ];
+    const personalOptions = [
+        { value: "house" },
+        { value: "family" },
+        { value: "dog" }
+    ]
+    const categoryOptions = [
+        {
+            label: "work",
+            options: workOptions
+        },
+        {
+            label: "personal",
+            options: personalOptions
+        }
+    ]
+
+
+
+    console.log(categoryOptions);
 
     //submit form
     function handleSubmit(e) {
@@ -22,7 +46,6 @@ const CreateTodo = ({setUpdate}) => {
             console.log(task);
             setUpdate(prevState => !prevState);
         })
-        
     }
 
     return ( 
@@ -56,18 +79,32 @@ const CreateTodo = ({setUpdate}) => {
 
                         {/* Category */}
                         <FormControl sx={{ minWidth: 100, marginBottom: 2 }} required>
-                            <InputLabel id="demo-select-small">Type</InputLabel>
+                            <InputLabel id="type-selection" label="Type">Type</InputLabel>
                             <Select
-                                labelId="demo-select-small"
-                                id="demo-select-small"
-                                label="Type"
-                                defaultValue="type"
+                                labelId="selet-category"
+                                id="select-category"
+                                label="Category"
+                                defaultValue="category"
                                 value={category}
                                 onChange={(e) => setCategory(e.target.value)}
-                                
                             >
-                                <MenuItem value="work">Work</MenuItem>
-                                <MenuItem value="personal">Personal</MenuItem>
+                                {categoryOptions.map(category => {
+                                    return (
+                                        <div>
+
+                                            <ListSubheader key={category.label}>{category.label}</ListSubheader>
+                                            {category.options.map(options => {
+                                                return <MenuItem key={options.value} value={options.value}>{options.value}</MenuItem>
+                                            })} 
+                                        
+                                            </div>
+                                    )
+                                })}
+                                {/* <ListSubheader>Work</ListSubheader>
+                                <MenuItem value={}>Project 1</MenuItem>
+                                <MenuItem value="work">Project 2</MenuItem>
+                                <ListSubheader>Personal</ListSubheader>
+                                <MenuItem value="personal">Personal</MenuItem> */}
                             </Select>
                         </FormControl>
 
