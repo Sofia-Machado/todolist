@@ -7,8 +7,8 @@ import Login from './pages/Login';
 import NavbarComponent from './components/NavbarComponent';
 
 function App() {
-  const [login, setLogin] = useState(false);
-
+  const [login, setLogin] = useState(true);
+  //change to test
 
   return (
     <BrowserRouter>
