@@ -1,39 +1,47 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useFetch from "../useFetch";
 import { Button, Fade, FormControl, FormGroup, IconButton, InputLabel, ListSubheader, MenuItem, Select, TextField, Tooltip, Typography } from "@mui/material";
 import PriorityHigh from '@mui/icons-material/PriorityHigh';
-
 
 const CreateTodo = ({setUpdate}) => {
     const [important, setImportant] = useState(false);       
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState('');
-    const { post } = useFetch("http://localhost:8000/")
+    const [categoryData, setCategoryData] = useState();
+    const { post } = useFetch("http://localhost:8000/");
 
-    const workOptions = [
-        { value: "projects" },
-        { value: "exercises" },
-        { value: "team"}
-    ];
-    const personalOptions = [
-        { value: "house" },
-        { value: "family" },
-        { value: "dog" }
-    ]
     const categoryOptions = [
         {
             label: "work",
-            options: workOptions
+            options: [
+                { value: "projects" },
+                { value: "exercises" },
+                { value: "team"}
+            ],
         },
         {
             label: "personal",
-            options: personalOptions
-        }
+            options: [
+                { value: "house" },
+                { value: "family" },
+                { value: "dog" }
+            ],
+        },
     ]
 
+    useEffect(() => {
+        setCategoryData(categoryOptions);
+    }, [])
 
-
-    console.log(categoryOptions);
+    const renderCategories = (categories) => {
+        const parameters = categories.options.map(category => {
+            return (
+                    <MenuItem key={category.value} value={category.value}>{category.value}</MenuItem>
+                    );
+                });
+                return [<ListSubheader key={categories.label}>{categories.label}</ListSubheader>, parameters]
+            }
+    
 
     //submit form
     function handleSubmit(e) {
@@ -78,8 +86,8 @@ const CreateTodo = ({setUpdate}) => {
                         </FormControl>
 
                         {/* Category */}
-                        <FormControl sx={{ minWidth: 100, marginBottom: 2 }} required>
-                            <InputLabel id="type-selection" label="Type">Type</InputLabel>
+                        <FormControl sx={{ minWidth: 115, marginBottom: 2 }} required>
+                            <InputLabel id="category-selection" label="Category">Category</InputLabel>
                             <Select
                                 labelId="selet-category"
                                 id="select-category"
@@ -88,23 +96,7 @@ const CreateTodo = ({setUpdate}) => {
                                 value={category}
                                 onChange={(e) => {console.log(e.target.value); setCategory(e.target.value)}}
                             >
-                                {categoryOptions.map(category => {
-                                    return category.options.map(options => {
-                                                return ( 
-                                                <MenuItem key={options.value} value={options.value}>
-                                                <ListSubheader key={category.label}>{category.label}</ListSubheader>
-                                                {options.value}
-                                                </MenuItem>)
-                                            })} 
-                                        
-                                            
-                                    )
-                                }
-                                {/* <ListSubheader>Work</ListSubheader>
-                                <MenuItem value={}>Project 1</MenuItem>
-                                <MenuItem value="work">Project 2</MenuItem>
-                                <ListSubheader>Personal</ListSubheader>
-                                <MenuItem value="personal">Personal</MenuItem> */}
+                                {categoryData?.map(category => renderCategories(category))}
                             </Select>
                         </FormControl>
 
