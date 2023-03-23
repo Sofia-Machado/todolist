@@ -3,32 +3,16 @@ import useFetch from "../useFetch";
 import { Button, Fade, FormControl, FormGroup, IconButton, InputLabel, ListSubheader, MenuItem, Select, TextField, Tooltip, Typography } from "@mui/material";
 import PriorityHigh from '@mui/icons-material/PriorityHigh';
 
-const CreateTodo = ({setUpdate}) => {
+const CreateTodo = ({ categoryOptions, setUpdate}) => {
     const [important, setImportant] = useState(false);       
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState('');
     const [categoryData, setCategoryData] = useState();
     const { post } = useFetch("http://localhost:8000/");
 
-    const categoryOptions = [
-        {
-            label: "work",
-            options: [
-                { value: "projects" },
-                { value: "exercises" },
-                { value: "team"}
-            ],
-        },
-        {
-            label: "personal",
-            options: [
-                { value: "house" },
-                { value: "family" },
-                { value: "dog" }
-            ],
-        },
-    ]
 
+    //render categories in the Select element
+    //had to do it this way because MenuItem wasn't a direct children of Select, therefore it couldn't reach e.target.value
     useEffect(() => {
         setCategoryData(categoryOptions);
     }, [])

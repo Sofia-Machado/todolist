@@ -6,7 +6,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import useFetch from "../useFetch";
 
 
-function Task({  handleClickDeleteNote, task, setUpdate }) {
+function Task({ categoryOptions, handleClickDeleteNote, task, setUpdate }) {
     
     const [newTask, setNewTask] = useState(true);
     const [openDeleteAlert, setOpenDeleteAlert] = useState(false);

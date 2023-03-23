@@ -9,7 +9,24 @@ const TodoListPage = () => {
   const [tasks, setTasks] = useState([]);
   const [update, setUpdate] = useState(false);
 
- 
+  const categoryOptions = [
+    {
+        label: "work",
+        options: [
+            { value: "projects" },
+            { value: "exercises" },
+            { value: "team"}
+        ],
+    },
+    {
+        label: "personal",
+        options: [
+            { value: "house" },
+            { value: "family" },
+            { value: "dog" }
+        ],
+    },
+]
 
   return (
     <Container maxWidth="sm" sx={{marginTop: 2}}>
@@ -17,8 +34,9 @@ const TodoListPage = () => {
         <Typography variant="h1"
           sx={{fontSize:"4rem", paddingTop:"0.5em" }}
         >To do list</Typography>
-          <CreateTodo update={update} setUpdate={setUpdate} />
+          <CreateTodo update={update} setUpdate={setUpdate} categoryOptions={categoryOptions} />
           <ListTodo 
+            categoryOptions={categoryOptions}
             complete={complete} setComplete={setComplete}
             update={update} setUpdate={setUpdate} 
             tasks={tasks} setTasks={setTasks}
