@@ -4,7 +4,7 @@ import Task from "./Task";
 import {  Checkbox, FormControl, FormControlLabel, InputLabel, IconButton, List, MenuItem, Paper, Select, Snackbar } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 
-const ListTodo = ({ update, setUpdate, tasks, setTasks }) => {
+const ListTodo = ({ categoryOptions, update, setUpdate, tasks, setTasks }) => {
 
     const [filterType, setFilterType] = useState('all');
     const [filterComplete, setFilterComplete] = useState(true);
@@ -23,6 +23,36 @@ const ListTodo = ({ update, setUpdate, tasks, setTasks }) => {
         .catch(error => console.log('could not fetch data', error))
     }, [update]);
     
+
+    
+console.log(categoryOptions.map(category => {
+    return category.options
+  }))
+  
+ /*  //check who's label is this
+  console.log(categoryOptions.map(category => {
+    return category.options.map(value => {
+      if (Object.values(value).includes('projects')) {
+        return true;
+      }
+    })
+  }))
+  
+  //got first check
+  console.log(Object.values(categoryOptions[0]['options']).map(value => {
+    if (value.value === 'projects') {
+      let result = categoryOptions[0].label;
+      return result
+    }
+  }))
+  console.log(Object.values(categoryOptions[1]['options']).map(value => {
+    if (value.value === 'dog') {
+      let result = categoryOptions[1].label;
+      return result;
+    }
+  })) */
+
+
     //sort tasks
     function sortTasks(tasks) {
         let importantTasks = tasks.filter(task => task.important === true);
@@ -88,9 +118,9 @@ const ListTodo = ({ update, setUpdate, tasks, setTasks }) => {
                     {tasks.filter(task => {
                         if (!filterComplete) {
                             if (filterType !== 'all'){
-                                return task.category === filterType && (task.complete === false || task.complete === undefined);
+                                return task.category === filterType && task.complete === false;
                             } else { 
-                                return task.complete === false || task.complete === undefined;
+                                return task.complete === false;
                             }
                         } else {
                             if (filterType !== 'all') {
