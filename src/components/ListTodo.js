@@ -84,7 +84,7 @@ const ListTodo = ({ update, setUpdate, tasks, setTasks }) => {
                         />
                     </FormControl>
                     
-                    {/* Show list */}
+                    {/* Show tasks */}
                     {tasks.filter(task => {
                         if (!filterComplete) {
                             if (filterType !== 'all'){

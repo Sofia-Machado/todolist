@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {  Alert, Badge, Button, Collapse, Fade, IconButton, ListItem, ListItemIcon, ListItemText, Tooltip } from "@mui/material";
+import {  Alert, Badge, Button, Collapse, Fade, IconButton, ListItem, ListItemIcon, ListItemText, Popover, Tooltip } from "@mui/material";
 import PriorityHigh from '@mui/icons-material/PriorityHigh';
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
@@ -9,7 +9,6 @@ import useFetch from "../useFetch";
 function Task({  handleClickDeleteNote, task, setUpdate }) {
     
     const [newTask, setNewTask] = useState(true);
-    const [selectedIndex, setSelectedIndex] = useState("");
     const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
     const { deleteItem, patch } = useFetch("http://localhost:8000/");
     const badgeText = "NEW";
@@ -63,14 +62,17 @@ function Task({  handleClickDeleteNote, task, setUpdate }) {
     }
     
     //handle delete alert
-    const handleClickDelete = id => {
-        setOpenDeleteAlert(true);
-        if (selectedIndex === id) {
-            setSelectedIndex("")
-        } else {
-            setSelectedIndex(id)
-        }
-    }
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+  
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+  
+    const open = Boolean(anchorEl);
 
     return ( 
             <Badge badgeContent={badgeText} color="primary" invisible={!task.newTask ?? newTask}>
@@ -122,29 +124,41 @@ function Task({  handleClickDeleteNote, task, setUpdate }) {
                     {!openDeleteAlert && <IconButton 
                         aria-label="delete" 
                         size="small"
-                        onClick={() => handleClickDelete(task.id)}
+                        onClick={handleClick}
                         sx={{color:"#efe4e4", "&:hover":{color:"darkred"}}}
                     >
                         <ClearIcon />
                     </IconButton>}
-                    <Collapse in={task.id === selectedIndex} unmountOnExit={true}>
-                    <Alert severity="warning" >Are you sure you want to delete this task?
-                        <Button color="inherit" size="small" 
+                    <Popover 
+                    id={task.id}
+                    open={open}
+                    anchorEl={anchorEl}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                    vertical: 'center',
+                    horizontal: 'right',
+                    }}
+                    transformOrigin={{
+                    vertical: 'center',
+                    horizontal: 'left',
+                    }}
+                    >
+                        <Alert severity="warning" >Delete task?
+                            <Button sx={{minWidth: '35px', fontWeight:'bold'}} color="inherit" size="small" 
                             onClick={() => {
-                                setSelectedIndex(''); 
-                                setOpenDeleteAlert(false)
+                                handleClose()
                             }}>
-                        No
-                        </Button>
-                        <Button color="inherit" size="small" 
-                        onClick={() => {
-                            handleDelete(task.id)
-                            handleClickDeleteNote(task);
-                        }}>
-                        Yes
-                        </Button>
-                    </Alert>
-                    </Collapse>
+                            No
+                            </Button>
+                            <Button color="error" sx={{minWidth: '35px', padding: 0, fontWeight:'bold'}} 
+                            onClick={() => {
+                                handleDelete(task.id)
+                                handleClickDeleteNote(task);
+                            }}>
+                            Yes
+                            </Button>
+                        </Alert>
+                    </Popover>
                    
                 </ListItem>
             </Badge>
