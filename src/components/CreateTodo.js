@@ -7,7 +7,7 @@ import PriorityHigh from '@mui/icons-material/PriorityHigh';
 const CreateTodo = ({setUpdate}) => {
     const [important, setImportant] = useState(false);       
     const [title, setTitle] = useState('');
-    const [category, setCategory] = useState({});
+    const [category, setCategory] = useState('');
     const { post } = useFetch("http://localhost:8000/")
 
     const workOptions = [
@@ -84,22 +84,22 @@ const CreateTodo = ({setUpdate}) => {
                                 labelId="selet-category"
                                 id="select-category"
                                 label="Category"
-                                defaultValue="category"
+                                defaultValue=""
                                 value={category}
-                                onChange={(e) => setCategory(e.target.value)}
+                                onChange={(e) => {console.log(e.target.value); setCategory(e.target.value)}}
                             >
                                 {categoryOptions.map(category => {
-                                    return (
-                                        <div>
-
-                                            <ListSubheader key={category.label}>{category.label}</ListSubheader>
-                                            {category.options.map(options => {
-                                                return <MenuItem key={options.value} value={options.value}>{options.value}</MenuItem>
+                                    return category.options.map(options => {
+                                                return ( 
+                                                <MenuItem key={options.value} value={options.value}>
+                                                <ListSubheader key={category.label}>{category.label}</ListSubheader>
+                                                {options.value}
+                                                </MenuItem>)
                                             })} 
                                         
-                                            </div>
+                                            
                                     )
-                                })}
+                                }
                                 {/* <ListSubheader>Work</ListSubheader>
                                 <MenuItem value={}>Project 1</MenuItem>
                                 <MenuItem value="work">Project 2</MenuItem>
