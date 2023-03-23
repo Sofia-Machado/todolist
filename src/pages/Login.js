@@ -104,13 +104,6 @@ function Login ({login, setLogin}) {
                     error={!validEmail}
                     autoFocus
                 />
-                  <TextField
-                    label="Password"
-                    required
-                    value={value}
-                    type="password"
-                    onChange={(e) => setValue(e.target.value)}
-                    />
                 <TextField
                     margin="normal"
                     required
@@ -125,8 +118,6 @@ function Login ({login, setLogin}) {
                     error={!validPassword}
                 />
                 <FormControlLabel
-                    control={<Checkbox value="remember" color="primary" />}
-                    label="Remember me"
                     control={<Checkbox value="remember" color="primary" />}
                     label="Remember me"
                 />
