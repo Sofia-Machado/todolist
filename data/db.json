@@ -3,7 +3,7 @@
     {
       "title": "google",
       "important": false,
-      "category": "work",
+      "category": "projects - work",
       "newTask": false,
       "id": 1,
       "complete": false
@@ -11,7 +11,7 @@
     {
       "title": "laundry",
       "important": false,
-      "category": "personal",
+      "category": "house - personal",
       "newTask": false,
       "id": 2,
       "complete": true
@@ -19,7 +19,7 @@
     {
       "title": "set delete button",
       "important": false,
-      "category": "work",
+      "category": "exercises - work",
       "newTask": false,
       "id": 3,
       "complete": false
@@ -27,7 +27,7 @@
     {
       "title": "deal with flicker",
       "important": true,
-      "category": "work",
+      "category": "exercises - work",
       "newTask": false,
       "id": 4,
       "complete": false
@@ -35,7 +35,7 @@
     {
       "title": "Iron",
       "important": true,
-      "category": "personal",
+      "category": "house - personal",
       "newTask": false,
       "id": 5,
       "complete": false
@@ -43,7 +43,7 @@
     {
       "title": "Groceries",
       "important": false,
-      "category": "personal",
+      "category": "house - personal",
       "newTask": false,
       "completed": false,
       "id": 6,

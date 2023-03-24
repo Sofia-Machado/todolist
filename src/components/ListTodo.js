@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useFetch from "../useFetch";
 import Task from "./Task";
-import {  Checkbox, FormControl, FormControlLabel, InputLabel, IconButton, List, MenuItem, Paper, Select, Snackbar } from "@mui/material";
+import {  Checkbox, Collapse, FormControl, FormControlLabel, InputLabel, IconButton, List, ListItemButton, ListItemText, ListItemIcon, MenuItem, Paper, Select, Snackbar } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import EngineeringIcon from '@mui/icons-material/Engineering';
@@ -20,24 +20,53 @@ const ListTodo = ({ categoryOptions, update, setUpdate, tasks, setTasks }) => {
     const [message, setMessage] = useState('')
 
     const { get, loading } = useFetch("http://localhost:8000/");
-   /*  
+
+   /*  const categoryOptionsArray = categoryOptions.map(category => {
+        return category.options.map(item => item.value);
+    })
+      */
+
+    //Category arrays
+    const tasksCategory = (tasks) => {
+        return tasks.map(item => {
+            let result = item.category.split('-');
+            return result[1];
+        })
+    }
+    const tasksCategoryAvailable = [ ...new Set(tasksCategory(tasks))]
+
+    const tasksSubCategory = (tasks) => {
+        return tasks.map(item => {
+            let result = item.category.split('-');
+            return result[0];
+        })
+    }
+    const tasksSubCategoryAvailable = [ ...new Set(tasksSubCategory(tasks))]
+
+    console.log(tasksCategoryAvailable.map(item => item));
+
+    //define icon
     let subCategoryIcon;
-
-    if (cleanCategory[0] === 'pet') {
+    if (tasksSubCategory === 'pet') {
         subCategoryIcon = <PetsIcon />;
-    }  if (cleanCategory[0] === 'family') {
+    }  if (tasksSubCategory === 'family') {
         subCategoryIcon = <FamilyRestroomIcon />;
-    }  if (cleanCategory[0] === 'house') {
+    }  if (tasksSubCategory === 'house') {
         subCategoryIcon = <CottageIcon />;
-    }  if (cleanCategory[0] === 'projects') {
+    }  if (tasksSubCategory === 'projects') {
         subCategoryIcon = <AccountTreeIcon />;
-    }  if (cleanCategory[0] === 'exercises') {
+    }  if (tasksSubCategory === 'exercises') {
         subCategoryIcon = <EngineeringIcon />;
-    }  if (cleanCategory[0] === 'team') {
+    }  if (tasksSubCategory === 'team') {
         subCategoryIcon = <Diversity3Icon />;
-    } */
-    
-
+    } 
+/*     
+    console.log('category options ', categoryOptionsArray);
+    console.log(tasks.map(item => {
+        let result = item.category.split('-');
+        return result[0];
+    }));
+ */
     //fetch tasks list
     useEffect(() => {
         get("tasks")
@@ -49,7 +78,6 @@ const ListTodo = ({ categoryOptions, update, setUpdate, tasks, setTasks }) => {
     }, [update]);
 
     
-console.log(categoryOptions[0].options);
   
 
     //sort tasks
@@ -99,6 +127,43 @@ console.log(categoryOptions[0].options);
         })
     }
 
+    //Filter list
+    const [openFilter, setOpenFilter] = useState(true);
+
+    const handleClickFilter = () => {
+        setOpenFilter(!openFilter);
+    };
+
+    const filterList = (task, filterType) => {
+        return (
+            <List>
+                <ListItemButton onClick={handleClickFilter}>
+                    {tasksSubCategoryAvailable.filter(value => value === filterType).map(value => {
+                        <>
+                        <ListItemIcon>
+                            {value}
+                        </ListItemIcon>
+                        <ListItemText primary={value} />
+                        </>
+                    })}
+                    {openFilter ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+                <Collapse in={openFilter} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                    <Task 
+                        filterType={filterType}
+                        task={task} key={task.id}
+                        update={update} setUpdate={setUpdate}
+                        handleClickDeleteNote={handleClickDeleteNote}
+                        openDeleteNote={openDeleteNote}
+                        action={action}
+                    />
+                    </List>
+                </Collapse>
+            </List>
+        )
+    }
+
     return (
         <>
             {loading && <p>Loading...</p>}
@@ -133,34 +198,20 @@ console.log(categoryOptions[0].options);
                     {/* Show tasks */}
                     {tasksFilter(tasks).map(task => {
                         return (
-                            //console.log(categoryOptions[0].options);
-                            /*  {(filterType !== 'all') ? 
-                                (<List>
-                                <ListItemButton onClick={handleClickFilter}>
-                                    <ListItemIcon>
-                                        {subCategoryIcon}
-                                    </ListItemIcon>
-                                    <ListItemText primary={cleanCategory[0].toUpperCase()} />
-                                    {openFilter ? <ExpandLess /> : <ExpandMore />}
-                                </ListItemButton>
-                                <Collapse in={openFilter} timeout="auto" unmountOnExit>
-                                    <List component="div" disablePadding>
-                                        <ListItemText primary={task.title.charAt(0).toUpperCase() + task.title.slice(1)} />
-                                    </List>
-                                </Collapse>
-                                </List>
-                                )
-                                : */
-                                <Task 
-                                    filterType={filterType}
-                                    task={task} key={task.id}
-                                    update={update} setUpdate={setUpdate}
-                                    handleClickDeleteNote={handleClickDeleteNote}
-                                    openDeleteNote={openDeleteNote}
-                                    action={action}
-                                />
-                                
-                            
+                            <>
+                            {(filterType !== 'all') ? 
+                            filterList(task, filterType)
+                            :
+                            (<Task 
+                                filterType={filterType}
+                                task={task} key={task.id}
+                                update={update} setUpdate={setUpdate}
+                                handleClickDeleteNote={handleClickDeleteNote}
+                                openDeleteNote={openDeleteNote}
+                                action={action}
+                            />)
+                            }
+                            </>
                         )
                     })}
                 </List>

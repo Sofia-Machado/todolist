@@ -100,7 +100,7 @@ function Task({ handleClickDeleteNote, task, setUpdate }) {
                         sx={{maxWidth: 200, minWidth: 180}} 
                         primary={task.title.charAt(0).toUpperCase() + task.title.slice(1)}
                         secondary={cleanCategory[0].toUpperCase()} 
-                    List/>
+                    />
                 
 
                 {/* <Box sx={{maxWidth: 200, minWidth: 180}}>
