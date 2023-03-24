@@ -25,7 +25,8 @@ const ListTodo = ({ categoryOptions, update, setUpdate, tasks, setTasks }) => {
         return category.options.map(item => item.value);
     })
       */
-
+    let cleanCategory = tasks.map(task => task.category.split('-'));
+  
     //Category arrays
     const tasksCategory = (tasks) => {
         return tasks.map(item => {
@@ -43,24 +44,28 @@ const ListTodo = ({ categoryOptions, update, setUpdate, tasks, setTasks }) => {
     }
     const tasksSubCategoryAvailable = [ ...new Set(tasksSubCategory(tasks))]
 
-    console.log(tasksCategoryAvailable.map(item => item));
+
 
     //define icon
-    let subCategoryIcon;
-    if (tasksSubCategory === 'pet') {
-        subCategoryIcon = <PetsIcon />;
-    }  if (tasksSubCategory === 'family') {
-        subCategoryIcon = <FamilyRestroomIcon />;
-    }  if (tasksSubCategory === 'house') {
-        subCategoryIcon = <CottageIcon />;
-    }  if (tasksSubCategory === 'projects') {
-        subCategoryIcon = <AccountTreeIcon />;
-    }  if (tasksSubCategory === 'exercises') {
-        subCategoryIcon = <EngineeringIcon />;
-    }  if (tasksSubCategory === 'team') {
-        subCategoryIcon = <Diversity3Icon />;
-    } 
-/*     
+    const subCategoryIcon = (value) => {
+        let icon;
+        if (value === 'pet') {
+            icon = <PetsIcon />;
+        }  if (value === 'family') {
+            icon = <FamilyRestroomIcon />;
+        }  if (value === 'house') {
+            icon = <CottageIcon />;
+        }  if (value === 'projects') {
+            icon = <AccountTreeIcon />;
+        }  if (value === 'exercises') {
+            icon = <EngineeringIcon />;
+        }  if (value === 'team') {
+            icon = <Diversity3Icon />;
+        }
+        return icon
+    };
+
+    /*     
     console.log('category options ', categoryOptionsArray);
     console.log(tasks.map(item => {
         let result = item.category.split('-');
@@ -134,33 +139,30 @@ const ListTodo = ({ categoryOptions, update, setUpdate, tasks, setTasks }) => {
         setOpenFilter(!openFilter);
     };
 
-    const filterList = (task, filterType) => {
-        return (
-            <List>
-                <ListItemButton onClick={handleClickFilter}>
-                    {tasksSubCategoryAvailable.filter(value => value === filterType).map(value => {
-                        <>
-                        <ListItemIcon>
-                            {value}
-                        </ListItemIcon>
-                        <ListItemText primary={value} />
-                        </>
-                    })}
-                    {openFilter ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
-                <Collapse in={openFilter} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding>
-                    <Task 
-                        filterType={filterType}
-                        task={task} key={task.id}
-                        update={update} setUpdate={setUpdate}
-                        handleClickDeleteNote={handleClickDeleteNote}
-                        openDeleteNote={openDeleteNote}
-                        action={action}
-                    />
-                    </List>
-                </Collapse>
-            </List>
+    const filterList = (task) => {
+        let subCategory = (task.category.split('-')[0]);
+        return ( 
+        <List>
+            <ListItemButton onClick={handleClickFilter} key='{subcategory}'>
+                    <ListItemIcon>
+                        {subCategoryIcon(subCategory)}
+                    </ListItemIcon>
+                    <ListItemText primary={subCategory} />
+                {openFilter ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
+            <Collapse in={openFilter} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                <Task 
+                    filterType={filterType}
+                    task={task} key={task.id}
+                    update={update} setUpdate={setUpdate}
+                    handleClickDeleteNote={handleClickDeleteNote}
+                    openDeleteNote={openDeleteNote}
+                    action={action}
+                />
+                </List>
+            </Collapse>
+        </List>
         )
     }
 
@@ -200,7 +202,7 @@ const ListTodo = ({ categoryOptions, update, setUpdate, tasks, setTasks }) => {
                         return (
                             <>
                             {(filterType !== 'all') ? 
-                            filterList(task, filterType)
+                            filterList(task)
                             :
                             (<Task 
                                 filterType={filterType}
