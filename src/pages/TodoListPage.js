@@ -23,7 +23,7 @@ const TodoListPage = () => {
         options: [
             { value: "house" },
             { value: "family" },
-            { value: "dog" }
+            { value: "pet" }
         ],
     },
 ]

@@ -23,7 +23,7 @@ const CreateTodo = ({ categoryOptions, setUpdate}) => {
     const renderCategories = (categories) => {
         const parameters = categories.options.map(category => {
             return (
-                <MenuItem key={category.value} value={category.value}>{category.value.charAt(0).toUpperCase() + category.value.slice(1)}</MenuItem>
+                <MenuItem key={category.value} value={category.value + " - " + categories.label}>{category.value.charAt(0).toUpperCase() + category.value.slice(1)}</MenuItem>
             );
         });
         return [<ListSubheader key={categories.label}>{categories.label.toUpperCase()}</ListSubheader>, parameters]

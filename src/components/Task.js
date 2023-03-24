@@ -3,24 +3,24 @@ import {  Alert, Badge, Button, Fade, IconButton, ListItem, ListItemIcon, ListIt
 import PriorityHigh from '@mui/icons-material/PriorityHigh';
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
+
 import useFetch from "../useFetch";
 
 
-function Task({ categoryOptions, handleClickDeleteNote, task, setUpdate }) {
+function Task({ handleClickDeleteNote, task, setUpdate }) {
     
     const [newTask, setNewTask] = useState(true);
     const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
     const { deleteItem, patch } = useFetch("http://localhost:8000/");
     const badgeText = "NEW";
+    let cleanCategory = task.category.split('-');
 
-    
+
     //update task importance
     function handleImportant(e, task) {
         e.stopPropagation();
 
         let importantNew = !task.important;
-        console.log('new value important ', importantNew)
-        
         patch(`tasks/${task.id}`, {important: importantNew})
         .then(data => {
             console.log(data);
@@ -77,81 +77,96 @@ function Task({ categoryOptions, handleClickDeleteNote, task, setUpdate }) {
     const open = Boolean(anchorEl);
 
     return ( 
-            <Badge badgeContent={badgeText} color="primary" invisible={!task.newTask ?? newTask}>
-                <ListItem sx={{ display:"flex", paddingLeft: 0}}
-                onClick={(e) => {handleNewTask(e, task)}}>
-                    <ListItemIcon>
-                        <Tooltip
-                            TransitionComponent={Fade}
-                            TransitionProps={{ timeout: 600 }}
-                            title={task.important ? 'Important' : "Not important"}
-                            placement="left-start"
+        //<Grid direction="column" alignItems="stretch" justifyContent="space-between" container>
+        <Badge badgeContent={badgeText} color="primary" invisible={!task.newTask ?? newTask}>
+            <ListItem sx={{ display:"flex", paddingLeft: 0}}
+            onClick={(e) => {handleNewTask(e, task)}}>
+                <ListItemIcon>
+                    <Tooltip
+                        TransitionComponent={Fade}
+                        TransitionProps={{ timeout: 600 }}
+                        title={task.important ? 'Important' : "Not important"}
+                        placement="left-start"
                         >
-                            <IconButton 
-                                value={task.important}
-                                color={task.important ? 'error' : ''}
-                                onClick={(e) =>{handleImportant(e, task)}}>
-                                <PriorityHigh />
-                            </IconButton>
-                        </Tooltip>
-                    </ListItemIcon>
+                        <IconButton 
+                            value={task.important}
+                            color={task.important ? 'error' : ''}
+                            onClick={(e) =>{handleImportant(e, task)}}>
+                            <PriorityHigh />
+                        </IconButton>
+                    </Tooltip>
+                </ListItemIcon>
                     <ListItemText
-                    sx={{maxWidth: 200, minWidth: 180}} 
+                        sx={{maxWidth: 200, minWidth: 180}} 
                         primary={task.title.charAt(0).toUpperCase() + task.title.slice(1)}
-                        secondary={task.category.charAt(0).toUpperCase() + task.category.slice(1)} 
-                    />
-                    <IconButton
-                        value="check"
-                        onClick={(e) => handleComplete(e, task)}
-                        className={task.complete ? 'complete' : ''}
-                        sx={{color:"rgb(192 213 192 / 87%)", "&.complete":{color:"green"}}}
-                        >
-                        <CheckIcon />
-                    </IconButton>
-                    
-                    {/* Delete Button */}
-                    {!openDeleteAlert && <IconButton 
-                        aria-label="delete" 
-                        size="small"
-                        onClick={handleClick}
-                        sx={{color:"#efe4e4", "&:hover":{color:"darkred"}}}
+                        secondary={cleanCategory[0].toUpperCase()} 
+                    List/>
+                
+
+                {/* <Box sx={{maxWidth: 200, minWidth: 180}}>
+                    <Box aria-labelledby="category" >
+                        <li>{task.title.charAt(0).toUpperCase() + task.title.slice(1)}</li>
+                    </Box>
+                    <Box
+                        id="category"
+                        sx={{ fontSize: '10px', textTransform: 'uppercase' }}
                     >
-                        <ClearIcon />
-                    </IconButton>}
-                    <Popover 
-                    id={task.id}
-                    open={open}
-                    anchorEl={anchorEl}
-                    onClose={handleClose}
-                    anchorOrigin={{
+                        {cleanCategory[0]}
+                    </Box>
+                </Box> */}
+                
+                <IconButton
+                    value="check"
+                    onClick={(e) => handleComplete(e, task)}
+                    className={task.complete ? 'complete' : ''}
+                    sx={{color:"rgb(192 213 192 / 87%)", "&.complete":{color:"green"}}}
+                    >
+                    <CheckIcon />
+                </IconButton>
+                
+                {/* Delete Button */}
+                {!openDeleteAlert && <IconButton 
+                    aria-label="delete" 
+                    size="small"
+                    onClick={handleClick}
+                    sx={{color:"#efe4e4", "&:hover":{color:"darkred"}}}
+                    >
+                    <ClearIcon />
+                </IconButton>}
+                <Popover 
+                id={task.id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
                     vertical: 'center',
                     horizontal: 'right',
-                    }}
-                    transformOrigin={{
+                }}
+                transformOrigin={{
                     vertical: 'center',
                     horizontal: 'left',
-                    }}
-                    >
-                        <Alert severity="warning" >Delete task?
-                            <Button sx={{minWidth: '35px', fontWeight:'bold'}} color="inherit" size="small" 
-                            onClick={() => {
-                                handleClose()
-                            }}>
-                            No
-                            </Button>
-                            <Button color="error" sx={{minWidth: '35px', padding: 0, fontWeight:'bold'}} 
-                            onClick={() => {
-                                handleDelete(task.id)
-                                handleClickDeleteNote(task);
-                            }}>
-                            Yes
-                            </Button>
-                        </Alert>
-                    </Popover>
-                   
-                </ListItem>
-            </Badge>
-     );
+                }}
+                >
+                    <Alert severity="warning" >Delete task?
+                        <Button sx={{minWidth: '35px', fontWeight:'bold'}} color="inherit" size="small" 
+                        onClick={() => {
+                            handleClose()
+                        }}>
+                        No
+                        </Button>
+                        <Button color="error" sx={{minWidth: '35px', padding: 0, fontWeight:'bold'}} 
+                        onClick={() => {
+                            handleDelete(task.id)
+                            handleClickDeleteNote(task);
+                        }}>
+                        Yes
+                        </Button>
+                    </Alert>
+                </Popover>
+            </ListItem>
+        </Badge>
+    //</Grid>
+    );
 }
 
 export default Task;
