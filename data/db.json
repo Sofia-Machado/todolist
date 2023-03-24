@@ -10,7 +10,7 @@
     },
     {
       "title": "laundry",
-      "important": true,
+      "important": false,
       "category": "personal",
       "newTask": false,
       "id": 2,
