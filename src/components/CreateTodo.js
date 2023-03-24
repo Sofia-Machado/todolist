@@ -10,20 +10,23 @@ const CreateTodo = ({ categoryOptions, setUpdate}) => {
     const [categoryData, setCategoryData] = useState();
     const { post } = useFetch("http://localhost:8000/");
 
-
-    //render categories in the Select element
-    //had to do it this way because MenuItem wasn't a direct children of Select, therefore it couldn't reach e.target.value
     useEffect(() => {
         setCategoryData(categoryOptions);
-    }, []);
-
+        setCategory('');
+        setImportant(false);
+        setTitle('');
+    }, [categoryOptions]);
+    
+    
+        //render categories in the Select element
+        //had to do it this way because MenuItem wasn't a direct children of Select, therefore it couldn't reach e.target.value
     const renderCategories = (categories) => {
         const parameters = categories.options.map(category => {
             return (
-                <MenuItem key={category.value} value={category.value}>{category.value}</MenuItem>
+                <MenuItem key={category.value} value={category.value}>{category.value.charAt(0).toUpperCase() + category.value.slice(1)}</MenuItem>
             );
         });
-        return [<ListSubheader key={categories.label}>{categories.label}</ListSubheader>, parameters]
+        return [<ListSubheader key={categories.label}>{categories.label.toUpperCase()}</ListSubheader>, parameters]
     }
 
     //submit form
