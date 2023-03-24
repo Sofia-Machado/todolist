@@ -82,7 +82,7 @@ console.log(categoryOptions[0].options);
 
     //filter tasks
     const tasksFilter = (tasks) => {
-        tasks.filter(task => {
+        return tasks.filter(task => {
             if (!filterComplete) {
                 if (filterType !== 'all'){
                     return task.category.includes(filterType) && task.complete === false;
