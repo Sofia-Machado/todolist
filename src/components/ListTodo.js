@@ -14,7 +14,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 
 const ListTodo = ({ categoryOptions, update, setUpdate, tasks, setTasks }) => {
     
-    const [openFilter, setOpenFilter] = useState(true);
+    const [openFilter, setOpenFilter] = useState({});
     const [filterType, setFilterType] = useState('all');
     const [filterComplete, setFilterComplete] = useState(true);
     const [openDeleteNote, setOpenDeleteNote] = useState(false);
@@ -73,8 +73,9 @@ const ListTodo = ({ categoryOptions, update, setUpdate, tasks, setTasks }) => {
         </IconButton>
     );
     
-    const handleClickFilter = () => {
-        setOpenFilter(!openFilter);
+    const handleClickFilter = (i) => {
+        setOpenFilter({...openFilter,
+            [i]: !openFilter[i]});
     };
 
     const tasksSubCategory = (tasks) => {
@@ -107,14 +108,14 @@ const ListTodo = ({ categoryOptions, update, setUpdate, tasks, setTasks }) => {
         return tasksSubCategoryAvailable.map((subCategory, i) => {
             return (
                 <List key={`subCategory-${i}`}>
-                    <ListItemButton onClick={handleClickFilter}>
+                    <ListItemButton onClick={() => handleClickFilter(i)}>
                         <>
                             <ListItemIcon>{subCategoryIcon(subCategory)}</ListItemIcon>
                             <ListItemText primary={subCategory.toUpperCase()} />
                         </>
-                        {openFilter ? <ExpandLess /> : <ExpandMore />}
+                        {openFilter[i] ? <ExpandLess /> : <ExpandMore />}
                     </ListItemButton>
-                    <Collapse in={openFilter} timeout="auto" unmountOnExit>
+                    <Collapse in={openFilter[i]} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
                             {
                                 tasksToShow.filter(task => task.subCategory === subCategory).map(task => {
