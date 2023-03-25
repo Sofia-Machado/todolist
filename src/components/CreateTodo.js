@@ -7,12 +7,14 @@ const CreateTodo = ({ categoryOptions, setUpdate}) => {
     const [important, setImportant] = useState(false);       
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState('');
+    const [subCategory, setSubCategory] = useState('');
     const [categoryData, setCategoryData] = useState();
     const { post } = useFetch("http://localhost:8000/");
 
     useEffect(() => {
         setCategoryData(categoryOptions);
         setCategory('');
+        setSubCategory('');
         setImportant(false);
         setTitle('');
     }, [categoryOptions]);
@@ -23,7 +25,7 @@ const CreateTodo = ({ categoryOptions, setUpdate}) => {
     const renderCategories = (categories) => {
         const parameters = categories.options.map(category => {
             return (
-                <MenuItem key={category.value} value={category.value + " - " + categories.label}>{category.value.charAt(0).toUpperCase() + category.value.slice(1)}</MenuItem>
+                <MenuItem key={category.value} value={category.value + ':' + categories.label}>{category.value.charAt(0).toUpperCase() + category.value.slice(1)}</MenuItem>
             );
         });
         return [<ListSubheader key={categories.label}>{categories.label.toUpperCase()}</ListSubheader>, parameters]
@@ -33,7 +35,7 @@ const CreateTodo = ({ categoryOptions, setUpdate}) => {
     function handleSubmit(e) {
         e.preventDefault();
         //define task values
-        const task = { title, important, category, newTask: true, completed: false };
+        const task = { title, important, category, subCategory, newTask: true, completed: false };
         // sent new data to the database
         post("tasks", task)
         .then(() => {
@@ -79,8 +81,14 @@ const CreateTodo = ({ categoryOptions, setUpdate}) => {
                                 id="select-category"
                                 label="Category"
                                 defaultValue=""
-                                value={category}
-                                onChange={(e) => {setCategory(e.target.value)}}
+                                value={subCategory ? (subCategory + ':' + category) : ''}
+                                onChange={(e) => {
+                                    
+                                    let value = e.target.value.split(':');
+                                    console.log(value[0]);
+                                    setSubCategory(value[0]);
+                                    setCategory(value[1]);
+                                }}
                             >
                                 {categoryData?.map(category => renderCategories(category))}
                             </Select>
