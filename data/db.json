@@ -59,7 +59,7 @@
       "title": "Walk the dog",
       "important": false,
       "category": "personal",
-      "subCategory": "dog",
+      "subCategory": "pet",
       "newTask": false,
       "completed": false,
       "id": 7
@@ -68,20 +68,11 @@
       "title": "Go to the vet",
       "important": false,
       "category": "personal",
-      "subCategory": "dog",
+      "subCategory": "pet",
       "newTask": false,
       "completed": false,
       "id": 8,
       "complete": true
-    },
-    {
-      "title": "hello",
-      "important": false,
-      "category": "personal",
-      "subCategory": "family",
-      "newTask": true,
-      "completed": false,
-      "id": 9
     }
   ],
   "users": [
