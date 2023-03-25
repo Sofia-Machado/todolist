@@ -13,7 +13,8 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 
 const ListTodo = ({ categoryOptions, update, setUpdate, tasks, setTasks }) => {
-
+    
+    const [openFilter, setOpenFilter] = useState(true);
     const [filterType, setFilterType] = useState('all');
     const [filterComplete, setFilterComplete] = useState(true);
     const [openDeleteNote, setOpenDeleteNote] = useState(false);
@@ -21,52 +22,6 @@ const ListTodo = ({ categoryOptions, update, setUpdate, tasks, setTasks }) => {
 
     const { get, loading } = useFetch("http://localhost:8000/");
 
-   /*  const categoryOptionsArray = categoryOptions.map(category => {
-        return category.options.map(item => item.value);
-    })
-      */
-
-    //Category arrays
-    const tasksCategory = (tasks) => {
-        return tasks.map(item => {
-            let result = item.category.split('-');
-            return result[1];
-        })
-    }
-    const tasksCategoryAvailable = [ ...new Set(tasksCategory(tasks))]
-
-    const tasksSubCategory = (tasks) => {
-        return tasks.map(item => {
-            let result = item.category.split('-');
-            return result[0];
-        })
-    }
-    const tasksSubCategoryAvailable = [ ...new Set(tasksSubCategory(tasks))]
-
-    console.log(tasksCategoryAvailable.map(item => item));
-
-    //define icon
-    let subCategoryIcon;
-    if (tasksSubCategory === 'pet') {
-        subCategoryIcon = <PetsIcon />;
-    }  if (tasksSubCategory === 'family') {
-        subCategoryIcon = <FamilyRestroomIcon />;
-    }  if (tasksSubCategory === 'house') {
-        subCategoryIcon = <CottageIcon />;
-    }  if (tasksSubCategory === 'projects') {
-        subCategoryIcon = <AccountTreeIcon />;
-    }  if (tasksSubCategory === 'exercises') {
-        subCategoryIcon = <EngineeringIcon />;
-    }  if (tasksSubCategory === 'team') {
-        subCategoryIcon = <Diversity3Icon />;
-    } 
-/*     
-    console.log('category options ', categoryOptionsArray);
-    console.log(tasks.map(item => {
-        let result = item.category.split('-');
-        return result[0];
-    }));
- */
     //fetch tasks list
     useEffect(() => {
         get("tasks")
@@ -76,9 +31,6 @@ const ListTodo = ({ categoryOptions, update, setUpdate, tasks, setTasks }) => {
         })
         .catch(error => console.log('could not fetch data', error))
     }, [update]);
-
-    
-  
 
     //sort tasks
     function sortTasks(tasks) {
@@ -96,7 +48,20 @@ const ListTodo = ({ categoryOptions, update, setUpdate, tasks, setTasks }) => {
     const handleCloseDeleteNote = () => {
         setOpenDeleteNote(false);
     };
-
+    
+    //filter complete tasks
+    const filterCompleteTasks = (tasks) => {
+        return tasks.filter(task => {
+            if (!filterComplete) {
+                return !task.complete;
+            } else {
+                return true;
+            }  
+        })
+    } 
+    
+    //Filter list
+    
     const action = (
         <IconButton
         size="small"
@@ -107,61 +72,66 @@ const ListTodo = ({ categoryOptions, update, setUpdate, tasks, setTasks }) => {
         <CloseIcon fontSize="small" />
         </IconButton>
     );
-
-    //filter tasks
-    const tasksFilter = (tasks) => {
-        return tasks.filter(task => {
-            if (!filterComplete) {
-                if (filterType !== 'all'){
-                    return task.category.includes(filterType) && task.complete === false;
-                } else { 
-                    return task.complete === false;
-                }
-            } else {
-                if (filterType !== 'all') {
-                    return task.category.includes(filterType);
-                } else { 
-                    return task; 
-                }
-            } 
-        })
-    }
-
-    //Filter list
-    const [openFilter, setOpenFilter] = useState(true);
-
+    
     const handleClickFilter = () => {
         setOpenFilter(!openFilter);
     };
 
-    const filterList = (task, filterType) => {
-        return (
-            <List>
-                <ListItemButton onClick={handleClickFilter}>
-                    {tasksSubCategoryAvailable.filter(value => value === filterType).map(value => {
+    const tasksSubCategory = (tasks) => {
+        return tasks.map(item => {
+            return item.subCategory;
+        })
+    }
+    
+    //define icon
+    const subCategoryIcon = (value) => {
+        if (value === 'pet') {
+            return <PetsIcon />;
+        }  if (value === 'family') {
+            return <FamilyRestroomIcon />;
+        }  if (value === 'house') {
+            return <CottageIcon />;
+        }  if (value === 'projects') {
+            return <AccountTreeIcon />;
+        }  if (value === 'exercises') {
+            return <EngineeringIcon />;
+        }  if (value === 'team') {
+            return <Diversity3Icon />;
+        } 
+    }
+
+    //show subcategories
+    const filterList = (tasks, category) => {
+        const tasksToShow = tasks.filter(task => task.category === category);
+        const tasksSubCategoryAvailable = [ ...new Set(tasksSubCategory(tasksToShow))];
+        return tasksSubCategoryAvailable.map((subCategory, i) => {
+            return (
+                <List key={`subCategory-${i}`}>
+                    <ListItemButton onClick={handleClickFilter}>
                         <>
-                        <ListItemIcon>
-                            {value}
-                        </ListItemIcon>
-                        <ListItemText primary={value} />
+                            <ListItemIcon>{subCategoryIcon(subCategory)}</ListItemIcon>
+                            <ListItemText primary={subCategory.toUpperCase()} />
                         </>
-                    })}
-                    {openFilter ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
-                <Collapse in={openFilter} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding>
-                    <Task 
-                        filterType={filterType}
-                        task={task} key={task.id}
-                        update={update} setUpdate={setUpdate}
-                        handleClickDeleteNote={handleClickDeleteNote}
-                        openDeleteNote={openDeleteNote}
-                        action={action}
-                    />
-                    </List>
-                </Collapse>
-            </List>
-        )
+                        {openFilter ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemButton>
+                    <Collapse in={openFilter} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                            {
+                                tasksToShow.filter(task => task.subCategory === subCategory).map(task => {
+                                    return (<Task 
+                                        task={task} key={task.id}
+                                        update={update} setUpdate={setUpdate}
+                                        handleClickDeleteNote={handleClickDeleteNote}
+                                        openDeleteNote={openDeleteNote}
+                                        action={action}
+                                    />);
+                                })
+                            }
+                        </List>
+                    </Collapse>
+                </List>
+            )
+        })
     }
 
     return (
@@ -196,24 +166,20 @@ const ListTodo = ({ categoryOptions, update, setUpdate, tasks, setTasks }) => {
                     </FormControl>
                     
                     {/* Show tasks */}
-                    {tasksFilter(tasks).map(task => {
-                        return (
-                            <>
-                            {(filterType !== 'all') ? 
-                            filterList(task, filterType)
-                            :
-                            (<Task 
+                    {
+                        (filterType === 'all')
+                        ? filterCompleteTasks(tasks).map(task => {
+                            return <Task 
                                 filterType={filterType}
                                 task={task} key={task.id}
                                 update={update} setUpdate={setUpdate}
                                 handleClickDeleteNote={handleClickDeleteNote}
                                 openDeleteNote={openDeleteNote}
                                 action={action}
-                            />)
-                            }
-                            </>
-                        )
-                    })}
+                            />
+                        })
+                        : filterList(filterCompleteTasks(tasks), filterType)
+                    }
                 </List>
                 <Snackbar
                     open={openDeleteNote}
