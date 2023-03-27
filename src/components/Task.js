@@ -13,7 +13,6 @@ function Task({ handleClickDeleteNote, task, setUpdate }) {
     const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
     const { deleteItem, patch } = useFetch("http://localhost:8000/");
     const badgeText = "NEW";
-    let cleanCategory = task.category.split('-');
 
 
     //update task importance
@@ -99,7 +98,7 @@ function Task({ handleClickDeleteNote, task, setUpdate }) {
                     <ListItemText
                         sx={{maxWidth: 200, minWidth: 180}} 
                         primary={task.title.charAt(0).toUpperCase() + task.title.slice(1)}
-                        secondary={cleanCategory[0].toUpperCase()} 
+                        secondary={task.subCategory.toUpperCase()} 
                     />
                 
 

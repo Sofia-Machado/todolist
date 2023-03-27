@@ -3,7 +3,8 @@
     {
       "title": "google",
       "important": false,
-      "category": "projects - work",
+      "category": "work",
+      "subCategory": "projects",
       "newTask": false,
       "id": 1,
       "complete": false
@@ -11,7 +12,8 @@
     {
       "title": "laundry",
       "important": false,
-      "category": "house - personal",
+      "category": "personal",
+      "subCategory": "house",
       "newTask": false,
       "id": 2,
       "complete": true
@@ -19,7 +21,8 @@
     {
       "title": "set delete button",
       "important": false,
-      "category": "exercises - work",
+      "category": "work",
+      "subCategory": "exercises",
       "newTask": false,
       "id": 3,
       "complete": false
@@ -27,7 +30,8 @@
     {
       "title": "deal with flicker",
       "important": true,
-      "category": "exercises - work",
+      "category": "work",
+      "subCategory": "exercises",
       "newTask": false,
       "id": 4,
       "complete": false
@@ -35,7 +39,8 @@
     {
       "title": "Iron",
       "important": true,
-      "category": "house - personal",
+      "category": "personal",
+      "subCategory": "house",
       "newTask": false,
       "id": 5,
       "complete": false
@@ -43,7 +48,8 @@
     {
       "title": "Groceries",
       "important": false,
-      "category": "house - personal",
+      "category": "personal",
+      "subCategory": "house",
       "newTask": false,
       "completed": false,
       "id": 6,
@@ -52,7 +58,8 @@
     {
       "title": "Walk the dog",
       "important": false,
-      "category": "dog - personal",
+      "category": "personal",
+      "subCategory": "pet",
       "newTask": false,
       "completed": false,
       "id": 7
@@ -60,7 +67,8 @@
     {
       "title": "Go to the vet",
       "important": false,
-      "category": "dog - personal",
+      "category": "personal",
+      "subCategory": "pet",
       "newTask": false,
       "completed": false,
       "id": 8,
