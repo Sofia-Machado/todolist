@@ -1,6 +1,8 @@
 # To Do List
 To Do List interface
 
+Can be accessed on [netlify](https://tiny-taiyaki-311f5c.netlify.app/)
+
 ## Purpose
 This To Do List is a solution that helps the user keep track of daily tasks.
 - Allows the user to add new tasks, with title, category and priority;
@@ -22,3 +24,7 @@ This To Do List is a solution that helps the user keep track of daily tasks.
 - Run `npm start` to run the app in developement mode
    - Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 - Now you can manage your tasks!
+
+## Usage
+To use the app, there are two fake logins, that can be found in teh database file (data/db.json);
+You can enter either with user "123.test@com" with the password "123!" or "abc@test.com" with the password "abc!"
