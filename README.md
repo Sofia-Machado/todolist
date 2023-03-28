@@ -17,7 +17,7 @@ This To Do List is a solution that helps the user keep track of daily tasks.
 - Material UI
 
 ## Installation
-- Clone the repo: `git clone https://https://github.com/Sofia-Machado/todolist`
+- Clone the repo: `git clone https://github.com/Sofia-Machado/todolist`
 - Run `npm install` in your terminal
 - Run `npx json-server --watch data/db.json --port 8000` to fake a Rest API
   - Open [http://localhost:8000/tasks](http://localhost:8000/tasks) to view the database. This will allow you to interact with the database
