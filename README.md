@@ -1,7 +1,7 @@
 # To Do List
 To Do List interface
 
-Can be accessed on [netlify](https://tiny-taiyaki-311f5c.netlify.app/)
+Can be accessed on [netlify](https://tiny-taiyaki-311f5c.netlify.app/) but you need to be running the database locally for it to work.
 
 ## Purpose
 This To Do List is a solution that helps the user keep track of daily tasks.
