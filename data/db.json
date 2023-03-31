@@ -1,78 +1,76 @@
 {
   "tasks": [
     {
+      "id": 1,
       "title": "google",
-      "important": false,
+      "important": true,
       "category": "work",
       "subCategory": "projects",
       "newTask": false,
-      "id": 1,
       "complete": false
     },
     {
+      "id": 2,
       "title": "laundry",
       "important": false,
       "category": "personal",
       "subCategory": "house",
       "newTask": false,
-      "id": 2,
-      "complete": true
+      "complete": false
     },
     {
-      "title": "set delete button",
-      "important": false,
-      "category": "work",
-      "subCategory": "exercises",
-      "newTask": false,
       "id": 3,
-      "complete": false
-    },
-    {
-      "title": "deal with flicker",
+      "title": "set delete button",
       "important": true,
       "category": "work",
       "subCategory": "exercises",
       "newTask": false,
+      "complete": true
+    },
+    {
       "id": 4,
-      "complete": false
-    },
-    {
-      "title": "Iron",
-      "important": true,
-      "category": "personal",
-      "subCategory": "house",
+      "title": "deal with flicker",
+      "important": false,
+      "category": "work",
+      "subCategory": "exercises",
       "newTask": false,
-      "id": 5,
       "complete": false
     },
     {
-      "title": "Groceries",
+      "id": 5,
+      "title": "Iron",
       "important": false,
       "category": "personal",
       "subCategory": "house",
       "newTask": false,
-      "completed": false,
-      "id": 6,
-      "complete": true
+      "complete": false
     },
     {
+      "id": 6,
+      "title": "Groceries",
+      "important": true,
+      "category": "personal",
+      "subCategory": "house",
+      "newTask": false,
+      "complete": false
+    },
+    {
+      "id": 7,
       "title": "Walk the dog",
       "important": false,
       "category": "personal",
       "subCategory": "pet",
       "newTask": false,
-      "completed": false,
-      "id": 7
+      "complete": true
     },
     {
+      "id": 8,
       "title": "Go to the vet",
       "important": false,
       "category": "personal",
       "subCategory": "pet",
       "newTask": false,
-      "completed": false,
-      "id": 8,
-      "complete": true
+      "complete": false
     }
   ],
   "users": [

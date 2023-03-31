@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import useFetch from "../useFetch";
 import { Button, Fade, FormControl, FormGroup, IconButton, InputLabel, ListSubheader, MenuItem, Select, TextField, Tooltip, Typography } from "@mui/material";
 import PriorityHigh from '@mui/icons-material/PriorityHigh';
+import { useAddTask } from "./hooks/useTasksData";
 
 const CreateTodo = ({ categoryOptions, setUpdate}) => {
     const [important, setImportant] = useState(false);       
@@ -10,6 +11,11 @@ const CreateTodo = ({ categoryOptions, setUpdate}) => {
     const [subCategory, setSubCategory] = useState('');
     const [categoryData, setCategoryData] = useState();
     const { post } = useFetch("http://localhost:8000/");
+
+
+
+     //call the useQuery hook
+     const { mutate } = useAddTask()
 
     useEffect(() => {
         setCategoryData(categoryOptions);
@@ -31,17 +37,26 @@ const CreateTodo = ({ categoryOptions, setUpdate}) => {
         return [<ListSubheader key={categories.label}>{categories.label.toUpperCase()}</ListSubheader>, parameters]
     }
 
-    //submit form
+/*     //submit form
     function handleSubmit(e) {
         e.preventDefault();
         //define task values
-        const task = { title, important, category, subCategory, newTask: true, completed: false };
+        const task = { title, important, category, subCategory, newTask: true, complete: false };
         // sent new data to the database
         post("tasks", task)
         .then(() => {
             console.log(task);
             setUpdate(prevState => !prevState);
         })
+    } */
+
+    //submit form
+    function handleSubmit(e) {
+        e.preventDefault();
+        //define task values
+        const task = { title, important, category, subCategory, newTask: true, complete: false };
+        // sent new data to the database
+        mutate(task)
     }
 
     return ( 

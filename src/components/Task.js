@@ -5,6 +5,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
 
 import useFetch from "../useFetch";
+import { useDeleteTask } from "./hooks/useTaskData";
 
 
 function Task({ handleClickDeleteNote, task, setUpdate }) {
@@ -13,6 +14,9 @@ function Task({ handleClickDeleteNote, task, setUpdate }) {
     const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
     const { deleteItem, patch } = useFetch("http://localhost:8000/");
     const badgeText = "NEW";
+
+    //call useQuery hook to delete
+    const {mutate} = useDeleteTask()
 
 
     //update task importance
@@ -58,8 +62,7 @@ function Task({ handleClickDeleteNote, task, setUpdate }) {
     //delete task
     function handleDelete(id) {
         setOpenDeleteAlert(false);
-        deleteItem(`tasks/${id}`);
-        setUpdate(prevState => !prevState);
+        mutate(id)
     }
     
     //handle delete alert
@@ -100,20 +103,6 @@ function Task({ handleClickDeleteNote, task, setUpdate }) {
                         primary={task.title.charAt(0).toUpperCase() + task.title.slice(1)}
                         secondary={task.subCategory.toUpperCase()} 
                     />
-                
-
-                {/* <Box sx={{maxWidth: 200, minWidth: 180}}>
-                    <Box aria-labelledby="category" >
-                        <li>{task.title.charAt(0).toUpperCase() + task.title.slice(1)}</li>
-                    </Box>
-                    <Box
-                        id="category"
-                        sx={{ fontSize: '10px', textTransform: 'uppercase' }}
-                    >
-                        {cleanCategory[0]}
-                    </Box>
-                </Box> */}
-                
                 <IconButton
                     value="check"
                     onClick={(e) => handleComplete(e, task)}
@@ -148,9 +137,7 @@ function Task({ handleClickDeleteNote, task, setUpdate }) {
                 >
                     <Alert severity="warning" >Delete task?
                         <Button sx={{minWidth: '35px', fontWeight:'bold'}} color="inherit" size="small" 
-                        onClick={() => {
-                            handleClose()
-                        }}>
+                        onClick={() => handleClose()}>
                         No
                         </Button>
                         <Button color="error" sx={{minWidth: '35px', padding: 0, fontWeight:'bold'}} 

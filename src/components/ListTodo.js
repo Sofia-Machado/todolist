@@ -11,18 +11,33 @@ import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
 import PetsIcon from '@mui/icons-material/Pets';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import { useTasksData } from "./hooks/useTasksData";
+
 
 const ListTodo = ({ categoryOptions, update, setUpdate, tasks, setTasks }) => {
-    
     const [openFilter, setOpenFilter] = useState({});
     const [filterType, setFilterType] = useState('all');
     const [filterComplete, setFilterComplete] = useState(true);
     const [openDeleteNote, setOpenDeleteNote] = useState(false);
     const [message, setMessage] = useState('')
 
+    //Success and error functions
+    const onSuccess = (data) => {
+        //can I insert sort tasks here?
+        console.log('Preform side effect after data fetching', data)
+    }
+    const onError = (error) => {
+        console.log('Preform side effect after encountering error', error)
+    }
+
+     //call the useQuery hook
+    const { isLoading, isError, error, data } = useTasksData(onSuccess, onError)
+  
+
+    /*
     const { get, loading } = useFetch("http://localhost:8000/");
 
-    //fetch tasks list
+   //fetch tasks list
     useEffect(() => {
         get("tasks")
         .then(data => {
@@ -31,15 +46,15 @@ const ListTodo = ({ categoryOptions, update, setUpdate, tasks, setTasks }) => {
         })
         .catch(error => console.log('could not fetch data', error))
     }, [update]);
-
+ */
     //sort tasks
-    function sortTasks(tasks) {
+/*     function sortTasks(tasks) {
         let importantTasks = tasks.filter(task => task.important === true);
         let unimportantTasks = tasks.filter(task => !task.important)
         unimportantTasks.reverse();
         return [...importantTasks, ...unimportantTasks];
     }
-
+ */
     //handle delete note
     const handleClickDeleteNote = (task) => {
         setMessage(task.title + " deleted");
@@ -60,8 +75,7 @@ const ListTodo = ({ categoryOptions, update, setUpdate, tasks, setTasks }) => {
         })
     } 
     
-    //Filter list
-    
+    //filter list
     const action = (
         <IconButton
         size="small"
@@ -135,10 +149,16 @@ const ListTodo = ({ categoryOptions, update, setUpdate, tasks, setTasks }) => {
         })
     }
 
+    if (isLoading) {
+        return <h2>Loading...</h2>
+    }
+    if (isError) {
+        return <h2>{error.message}</h2>
+    }
+
     return (
         <>
-            {loading && <p>Loading...</p>}
-            {tasks &&
+            {data &&
             <Paper elevation={3} sx={{MaxWidth: 300, marginBottom:"1em" }}>
                 <List
                     sx={{ padding:"1em", display:"block"}}
@@ -169,7 +189,7 @@ const ListTodo = ({ categoryOptions, update, setUpdate, tasks, setTasks }) => {
                     {/* Show tasks */}
                     {
                         (filterType === 'all')
-                        ? filterCompleteTasks(tasks).map(task => {
+                        ? filterCompleteTasks(data).map(task => {
                             return <Task 
                                 filterType={filterType}
                                 task={task} key={task.id}
