@@ -1,85 +1,97 @@
 {
-  "tasks": [
+  "accounts": [
     {
-      "id": 1,
-      "title": "google",
-      "important": false,
-      "category": "work",
-      "subCategory": "projects",
-      "newTask": false,
-      "complete": false
+      "accountName": "OneTwoThree",
+      "tasks": [
+        {
+          "id": 1,
+          "title": "google",
+          "important": false,
+          "category": "work",
+          "subCategory": "projects",
+          "newTask": false,
+          "complete": false
+        },
+        {
+          "id": 2,
+          "title": "laundry",
+          "important": false,
+          "category": "personal",
+          "subCategory": "house",
+          "newTask": false,
+          "complete": false
+        },
+        {
+          "id": 3,
+          "title": "set delete button",
+          "important": false,
+          "category": "work",
+          "subCategory": "exercises",
+          "newTask": false,
+          "complete": true
+        }
+      ]
     },
     {
-      "id": 2,
-      "title": "laundry",
-      "important": false,
-      "category": "personal",
-      "subCategory": "house",
-      "newTask": false,
-      "complete": false
-    },
-    {
-      "id": 3,
-      "title": "set delete button",
-      "important": false,
-      "category": "work",
-      "subCategory": "exercises",
-      "newTask": false,
-      "complete": true
-    },
-    {
-      "id": 4,
-      "title": "deal with flicker",
-      "important": true,
-      "category": "work",
-      "subCategory": "exercises",
-      "newTask": false,
-      "complete": false
-    },
-    {
-      "id": 5,
-      "title": "Iron",
-      "important": false,
-      "category": "personal",
-      "subCategory": "house",
-      "newTask": false,
-      "complete": false
-    },
-    {
-      "id": 6,
-      "title": "Groceries",
-      "important": false,
-      "category": "personal",
-      "subCategory": "house",
-      "newTask": false,
-      "complete": true
-    },
-    {
-      "id": 7,
-      "title": "Walk the dog",
-      "important": true,
-      "category": "personal",
-      "subCategory": "pet",
-      "newTask": false,
-      "complete": false
-    },
-    {
-      "id": 8,
-      "title": "Go to the vet",
-      "important": false,
-      "category": "personal",
-      "subCategory": "pet",
-      "newTask": false,
-      "complete": true
+      "accountName": "ABC",
+      "tasks": [
+        {
+          "id": 4,
+          "title": "deal with flicker",
+          "important": true,
+          "category": "work",
+          "subCategory": "exercises",
+          "newTask": false,
+          "complete": false
+        },
+        {
+          "id": 5,
+          "title": "Iron",
+          "important": false,
+          "category": "personal",
+          "subCategory": "house",
+          "newTask": false,
+          "complete": false
+        },
+        {
+          "id": 6,
+          "title": "Groceries",
+          "important": false,
+          "category": "personal",
+          "subCategory": "house",
+          "newTask": false,
+          "complete": true
+        },
+        {
+          "id": 7,
+          "title": "Walk the dog",
+          "important": true,
+          "category": "personal",
+          "subCategory": "pet",
+          "newTask": false,
+          "complete": false
+        },
+        {
+          "id": 8,
+          "title": "Go to the vet",
+          "important": false,
+          "category": "personal",
+          "subCategory": "pet",
+          "newTask": false,
+          "complete": true
+        }
+      ]
     }
   ],
   "users": [
     {
       "email": "123@test.com",
+      "username": "OneTwoThree",
       "password": "123!"
     },
     {
       "email": "abc@test.com",
+      "username": "ABC",
       "password": "abc!"
     }
   ]

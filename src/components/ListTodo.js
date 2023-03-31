@@ -13,7 +13,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import { useTasksData } from "./hooks/useTasksData";
 
 
-const ListTodo = ({ update, setUpdate, tasks, setTasks }) => {
+const ListTodo = ({ update, setUpdate, tasks, username }) => {
     const [openFilter, setOpenFilter] = useState({});
     const [filterType, setFilterType] = useState('all');
     const [filterComplete, setFilterComplete] = useState(true);
@@ -30,7 +30,7 @@ const ListTodo = ({ update, setUpdate, tasks, setTasks }) => {
     }
 
      //call the useQuery hook
-    const { isLoading, isError, error, data } = useTasksData(onSuccess, onError)
+    const { isLoading, isError, error, data } = useTasksData(onSuccess, onError, {username})
 
     //handle delete note
     const handleClickDeleteNote = (task) => {

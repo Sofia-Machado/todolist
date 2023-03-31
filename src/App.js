@@ -11,6 +11,7 @@ const queryClient = new QueryClient()
 
 function App() {
   const [login, setLogin] = useState(false);
+  const [userName, setUserName] = useState('');
   //change to test
 
   return (
@@ -18,7 +19,7 @@ function App() {
       <BrowserRouter>
       <NavbarComponent login={login} setLogin={setLogin} />
         <Routes>
-          <Route path='/' element={login ? <TodoListPage /> : <Login setLogin={setLogin} />} />
+          <Route path='/' element={login ? <TodoListPage userName={userName} /> : <Login setLogin={setLogin} userName={userName} setUserName={setUserName} />} />
           <Route path='about' element={login ? <About /> : <Navigate to='/' replace />} />
         </Routes>
       </BrowserRouter>

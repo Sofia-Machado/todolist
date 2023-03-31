@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import axios from 'axios';
 import { Avatar, Box, Button, Checkbox, Container, CssBaseline, FormControlLabel, Grid, Link, TextField, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -17,10 +16,9 @@ function Copyright(props) {
   );
 }
 
-
 const theme = createTheme();
 
-function Login ({ setLogin }) {
+function Login ({ setLogin, setUserName, userName }) {
     
     const [validEmail, setValidEmail] = useState(true);
     const [validPassword, setValidPassword] = useState(true);
@@ -38,6 +36,7 @@ function Login ({ setLogin }) {
          fetch('http://localhost:8000/users/')
          .then(res => res.json())
             .then(data => {
+                console.log(data);
                 //check values equality for errors
                 let newData = data.filter(dataUser => (dataUser.email === user.email || dataUser.password === user.password));
                 //match logins and change component with setState
@@ -50,6 +49,9 @@ function Login ({ setLogin }) {
                             return setValidEmail(false)
                         } else {
                             setIsLoading(false);
+                            setUserName(data.username)
+                            //not changinf user
+                            console.log(userName)
                             return setLogin(true);
                         }
                     })

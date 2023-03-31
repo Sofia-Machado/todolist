@@ -3,26 +3,28 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 import axios from "axios";
 
 //fetcher function
-const fetchTasks = () => {
-    return axios.get('http://localhost:8000/tasks');
+const fetchTasks = (username) => {
+    return axios.get(`http://localhost:8000/accounts/${username}`);
 }
+
 
 //mutation function
 const addTask = (task) => {
     return axios.post('http://localhost:8000/tasks', task)
 }
 
-export const useTasksData = (onSuccess, onError) => {
+export const useTasksData = (onSuccess, onError, {username}) => {
     //call the useQuery hook, it requires at least two arguments
     //1st - queries have an unique key
     //2nd - function that returns a promise
-    return useQuery('tasks', fetchTasks, {
+    return useQuery(['tasks', username], () => fetchTasks(username), {
         onSuccess,
         onError,
+        enabled: !!username,
         //sorted tasks during fetch
         select: (data) => {
-            const importantTasks = data.data.filter(task => task.important === true);
-            const unimportantTasks = data.data.filter(task => !task.important);
+            const importantTasks = data.filter(task => task.important === true);
+            const unimportantTasks = data.filter(task => !task.important);
             unimportantTasks.reverse();
             return [...importantTasks, ...unimportantTasks];
         }
