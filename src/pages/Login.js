@@ -1,16 +1,7 @@
 import { useState } from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
+import axios from 'axios';
+import { Avatar, Box, Button, Checkbox, Container, CssBaseline, FormControlLabel, Grid, Link, TextField, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 function Copyright(props) {
@@ -26,28 +17,29 @@ function Copyright(props) {
   );
 }
 
+
 const theme = createTheme();
 
-function Login ({login, setLogin}) {
+function Login ({ setLogin }) {
     
     const [validEmail, setValidEmail] = useState(true);
     const [validPassword, setValidPassword] = useState(true);
-
+    const [isLoading, setIsLoading] = useState(false);
+    const [isError, setIsError] = useState(null);
 
     function handleSubmit(event) {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
+        const formData = new FormData(event.currentTarget);
         let user = ({
-            email: data.get("email"),
-            password: data.get("password")
+            email: formData.get("email"),
+            password: formData.get("password")
         })
-
+        setIsLoading(true);
          fetch('http://localhost:8000/users/')
-            .then(res => res.json())
+         .then(res => res.json())
             .then(data => {
-                let newData = data.filter(dataUser => (dataUser.email === user.email || dataUser.password === user.password));
                 //check values equality for errors
-              
+                let newData = data.filter(dataUser => (dataUser.email === user.email || dataUser.password === user.password));
                 //match logins and change component with setState
                 if (newData.length > 0) {
                     newData.map(data => {
@@ -57,20 +49,24 @@ function Login ({login, setLogin}) {
                         if (data.email !== user.email) {
                             return setValidEmail(false)
                         } else {
-
+                            setIsLoading(false);
                             return setLogin(true);
                         }
                     })
-                    
-                    console.log(newData)
-                   // setLogin(true)
                 }
             })
             .catch(error => {
-                console.log(error)
-                return error
+                setIsLoading(false);
+                setIsError(error.message);
             })
     };
+
+    if (isLoading) {
+        return <h2>Loading...</h2>
+    }
+    if (isError) {
+        return <h2>{isError}</h2>
+    }
 
     return (
         <ThemeProvider theme={theme}>

@@ -3,58 +3,28 @@ import {  Alert, Badge, Button, Fade, IconButton, ListItem, ListItemIcon, ListIt
 import PriorityHigh from '@mui/icons-material/PriorityHigh';
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
-
-import useFetch from "../useFetch";
 import { useDeleteTask, useEditTask } from "./hooks/useTaskData";
 
 
-function Task({ handleClickDeleteNote, task, setUpdate }) {
+function Task({ handleClickDeleteNote, task }) {
     
-    const [newTask, setNewTask] = useState(true);
     const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
-    const { deleteItem, patch } = useFetch("http://localhost:8000/");
     const badgeText = "NEW";
 
-    //call useQuery hook to delete
+    //call useQuery hook to delete/edit
     const { mutate: deleteTask } = useDeleteTask();
     const { mutate: editTask } = useEditTask();
 
-  /*   //update task importance
-    function handleImportant(e, task) {
-        e.stopPropagation();
-
-        let importantNew = !task.important;
-        patch(`tasks/${task.id}`, {important: importantNew})
-        .then(data => {
-            console.log(data);
-            setTimeout(() => {
-                setUpdate(prevState => !prevState);
-            }, 250)
-        })
-    } */
       //update task importance
       function handleImportant(e, task) {
         e.stopPropagation();
-        let importantNew = !task.important;
-        editTask({id: task.id, important: importantNew});
-        /* patch(`tasks/${task.id}`, {important: importantNew})
-        .then(data => {
-            console.log(data);
-            setTimeout(() => {
-                setUpdate(prevState => !prevState);
-            }, 250)
-        }) */
+        editTask({id: task.id, important: !task.important});
     }
 
     //update task completion
     function handleComplete(e, task) {
         e.stopPropagation();
-        patch(`tasks/${task.id}`, { complete: !task.complete })
-        .then(data => {
-            console.log(data);
-            setUpdate(prevState => !prevState);
-        })
-        .catch(error => console.log('could not fetch data', error));
+        editTask({id: task.id, complete: !task.complete});
     }    
     
     //update new task
@@ -62,13 +32,7 @@ function Task({ handleClickDeleteNote, task, setUpdate }) {
         if(task.newTask) {
             e.stopPropagation();
             e.preventDefault();
-            setNewTask(false); 
-            patch(`tasks/${task.id}`, {newTask: false})
-            .then(data => {
-                console.log(data);
-                setUpdate(prevState => !prevState);
-            })
-            .catch(error => console.log('could not fetch data', error));
+            editTask({id: task.id, newTask: false});
         }
     } 
     
@@ -80,20 +44,16 @@ function Task({ handleClickDeleteNote, task, setUpdate }) {
     
     //handle delete alert
     const [anchorEl, setAnchorEl] = useState(null);
-
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
     };
-  
     const handleClose = () => {
       setAnchorEl(null);
     };
-  
     const open = Boolean(anchorEl);
 
     return ( 
-        //<Grid direction="column" alignItems="stretch" justifyContent="space-between" container>
-        <Badge badgeContent={badgeText} color="primary" invisible={!task.newTask ?? newTask}>
+        <Badge badgeContent={badgeText} color="primary" invisible={!task.newTask}>
             <ListItem sx={{ display:"flex", paddingLeft: 0}}
             onClick={(e) => {handleNewTask(e, task)}}>
                 <ListItemIcon>
@@ -164,7 +124,6 @@ function Task({ handleClickDeleteNote, task, setUpdate }) {
                 </Popover>
             </ListItem>
         </Badge>
-    //</Grid>
     );
 }
 

@@ -10,7 +10,7 @@ import NavbarComponent from './components/NavbarComponent';
 const queryClient = new QueryClient()
 
 function App() {
-  const [login, setLogin] = useState(true);
+  const [login, setLogin] = useState(false);
   //change to test
 
   return (
@@ -18,7 +18,7 @@ function App() {
       <BrowserRouter>
       <NavbarComponent login={login} setLogin={setLogin} />
         <Routes>
-          <Route path='/' element={login ? <TodoListPage /> : <Login login={login} setLogin={setLogin} />} />
+          <Route path='/' element={login ? <TodoListPage /> : <Login setLogin={setLogin} />} />
           <Route path='about' element={login ? <About /> : <Navigate to='/' replace />} />
         </Routes>
       </BrowserRouter>

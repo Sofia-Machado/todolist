@@ -1,33 +1,24 @@
 import { useEffect, useState } from "react";
-import useFetch from "../useFetch";
 import { Button, Fade, FormControl, FormGroup, IconButton, InputLabel, ListSubheader, MenuItem, Select, TextField, Tooltip, Typography } from "@mui/material";
 import PriorityHigh from '@mui/icons-material/PriorityHigh';
 import { useAddTask } from "./hooks/useTasksData";
 
-const CreateTodo = ({ categoryOptions, setUpdate}) => {
+const CreateTodo = ({ categoryOptions }) => {
     const [important, setImportant] = useState(false);       
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState('');
     const [subCategory, setSubCategory] = useState('');
     const [categoryData, setCategoryData] = useState();
-    const { post } = useFetch("http://localhost:8000/");
-
-
 
      //call the useQuery hook
      const { mutate } = useAddTask()
 
     useEffect(() => {
         setCategoryData(categoryOptions);
-        setCategory('');
-        setSubCategory('');
-        setImportant(false);
-        setTitle('');
     }, [categoryOptions]);
     
-    
-        //render categories in the Select element
-        //had to do it this way because MenuItem wasn't a direct children of Select, therefore it couldn't reach e.target.value
+    //render categories in the Select element
+    //had to do it this way because MenuItem wasn't a direct children of Select, therefore it couldn't reach e.target.value
     const renderCategories = (categories) => {
         const parameters = categories.options.map(category => {
             return (
@@ -37,26 +28,17 @@ const CreateTodo = ({ categoryOptions, setUpdate}) => {
         return [<ListSubheader key={categories.label}>{categories.label.toUpperCase()}</ListSubheader>, parameters]
     }
 
-/*     //submit form
-    function handleSubmit(e) {
-        e.preventDefault();
-        //define task values
-        const task = { title, important, category, subCategory, newTask: true, complete: false };
-        // sent new data to the database
-        post("tasks", task)
-        .then(() => {
-            console.log(task);
-            setUpdate(prevState => !prevState);
-        })
-    } */
-
     //submit form
     function handleSubmit(e) {
         e.preventDefault();
         //define task values
         const task = { title, important, category, subCategory, newTask: true, complete: false };
         // sent new data to the database
-        mutate(task)
+        mutate(task);
+        setCategory('');
+        setSubCategory('');
+        setImportant(false);
+        setTitle('');
     }
 
     return ( 

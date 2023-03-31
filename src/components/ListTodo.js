@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import useFetch from "../useFetch";
+import { useState } from "react";
 import Task from "./Task";
 import {  Checkbox, Collapse, FormControl, FormControlLabel, InputLabel, IconButton, List, ListItemButton, ListItemText, ListItemIcon, MenuItem, Paper, Select, Snackbar } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
@@ -14,7 +13,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import { useTasksData } from "./hooks/useTasksData";
 
 
-const ListTodo = ({ categoryOptions, update, setUpdate, tasks, setTasks }) => {
+const ListTodo = ({ update, setUpdate, tasks, setTasks }) => {
     const [openFilter, setOpenFilter] = useState({});
     const [filterType, setFilterType] = useState('all');
     const [filterComplete, setFilterComplete] = useState(true);
@@ -32,29 +31,7 @@ const ListTodo = ({ categoryOptions, update, setUpdate, tasks, setTasks }) => {
 
      //call the useQuery hook
     const { isLoading, isError, error, data } = useTasksData(onSuccess, onError)
-  
 
-    /*
-    const { get, loading } = useFetch("http://localhost:8000/");
-
-   //fetch tasks list
-    useEffect(() => {
-        get("tasks")
-        .then(data => {
-            let newListOfTasks = sortTasks(data);
-            setTasks(newListOfTasks);
-        })
-        .catch(error => console.log('could not fetch data', error))
-    }, [update]);
- */
-    //sort tasks
-/*     function sortTasks(tasks) {
-        let importantTasks = tasks.filter(task => task.important === true);
-        let unimportantTasks = tasks.filter(task => !task.important)
-        unimportantTasks.reverse();
-        return [...importantTasks, ...unimportantTasks];
-    }
- */
     //handle delete note
     const handleClickDeleteNote = (task) => {
         setMessage(task.title + " deleted");
