@@ -3,7 +3,7 @@
     {
       "id": 1,
       "title": "google",
-      "important": true,
+      "important": false,
       "category": "work",
       "subCategory": "projects",
       "newTask": false,
@@ -21,7 +21,7 @@
     {
       "id": 3,
       "title": "set delete button",
-      "important": true,
+      "important": false,
       "category": "work",
       "subCategory": "exercises",
       "newTask": false,
@@ -30,7 +30,7 @@
     {
       "id": 4,
       "title": "deal with flicker",
-      "important": false,
+      "important": true,
       "category": "work",
       "subCategory": "exercises",
       "newTask": false,
@@ -48,7 +48,7 @@
     {
       "id": 6,
       "title": "Groceries",
-      "important": true,
+      "important": false,
       "category": "personal",
       "subCategory": "house",
       "newTask": false,
@@ -61,12 +61,12 @@
       "category": "personal",
       "subCategory": "pet",
       "newTask": false,
-      "complete": true
+      "complete": false
     },
     {
       "id": 8,
       "title": "Go to the vet",
-      "important": false,
+      "important": true,
       "category": "personal",
       "subCategory": "pet",
       "newTask": false,

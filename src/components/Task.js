@@ -5,7 +5,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
 
 import useFetch from "../useFetch";
-import { useDeleteTask } from "./hooks/useTaskData";
+import { useDeleteTask, useEditTask } from "./hooks/useTaskData";
 
 
 function Task({ handleClickDeleteNote, task, setUpdate }) {
@@ -16,10 +16,10 @@ function Task({ handleClickDeleteNote, task, setUpdate }) {
     const badgeText = "NEW";
 
     //call useQuery hook to delete
-    const {mutate} = useDeleteTask()
+    const { mutate: deleteTask } = useDeleteTask();
+    const { mutate: editTask } = useEditTask();
 
-
-    //update task importance
+  /*   //update task importance
     function handleImportant(e, task) {
         e.stopPropagation();
 
@@ -31,6 +31,19 @@ function Task({ handleClickDeleteNote, task, setUpdate }) {
                 setUpdate(prevState => !prevState);
             }, 250)
         })
+    } */
+      //update task importance
+      function handleImportant(e, task) {
+        e.stopPropagation();
+        let importantNew = !task.important;
+        editTask({id: task.id, important: importantNew});
+        /* patch(`tasks/${task.id}`, {important: importantNew})
+        .then(data => {
+            console.log(data);
+            setTimeout(() => {
+                setUpdate(prevState => !prevState);
+            }, 250)
+        }) */
     }
 
     //update task completion
@@ -62,7 +75,7 @@ function Task({ handleClickDeleteNote, task, setUpdate }) {
     //delete task
     function handleDelete(id) {
         setOpenDeleteAlert(false);
-        mutate(id)
+        deleteTask(id)
     }
     
     //handle delete alert

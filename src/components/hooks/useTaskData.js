@@ -13,6 +13,10 @@ const deleteTask = (id) => {
     return axios.delete(`http://localhost:8000/tasks/${id}`)
 }
 
+const editTask = (data) => {
+    return axios.patch(`http://localhost:8000/tasks/${data.id}`, data)
+}
+
 export const useTaskData = (taskId) => {
     return useQuery(['task', taskId], fetchTask)
 }
@@ -22,6 +26,15 @@ export const useDeleteTask = () => {
     return useMutation(deleteTask, {
         onSuccess: () => {
             queryClient.invalidateQueries('tasks')
+        }
+    })
+}
+
+export const useEditTask = (taskId) => {
+    const queryClient = useQueryClient();
+    return useMutation(editTask, {
+        onSuccess: (data) => {
+            queryClient.invalidateQueries(['tasks', taskId], data)
         }
     })
 }
