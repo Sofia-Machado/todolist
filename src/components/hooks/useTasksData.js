@@ -10,7 +10,7 @@ const fetchTasks = (username) => {
 
 //mutation function
 const addTask = (task) => {
-    return axios.post('http://localhost:8000/tasks', task)
+    return axios.post(`http://localhost:8000/OneTwoThree/`, task)
 }
 
 export const useTasksData = (onSuccess, onError, {userName}) => {
@@ -31,7 +31,25 @@ export const useTasksData = (onSuccess, onError, {userName}) => {
     })
 }
 
-export const useAddTask = () => {
+export const useAddTask = ({userName}) => {
+    const queryClient = useQueryClient();
+    return useMutation(addTask, {
+        
+        onSuccess: (data) => {
+            //this funciton updates the query cache
+            queryClient.setQueryData(['task', userName], (oldQueryData) => {
+                return {
+                    ...oldQueryData,
+                    data: [...oldQueryData.data.tasks, data.data.tasks],
+                
+                }
+            })       
+            //this is to save network connection and avoid an unnecessary get request
+            //queryClient.invalidateQueries('tasks')
+        }
+    })
+}
+/* export const useAddTask = () => {
     const queryClient = useQueryClient();
     return useMutation(addTask, {
         onSuccess: (data) => {
@@ -46,4 +64,4 @@ export const useAddTask = () => {
             //queryClient.invalidateQueries('tasks')
         }
     })
-}
+} */

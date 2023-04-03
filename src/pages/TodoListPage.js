@@ -7,7 +7,6 @@ const TodoListPage = ({userName}) => {
 
   const [complete, setComplete] = useState(false);
   const [tasks, setTasks] = useState([]);
-  const [update, setUpdate] = useState(false);
 
   const categoryOptions = [
     {
@@ -34,12 +33,11 @@ const TodoListPage = ({userName}) => {
         <Typography variant="h1"
           sx={{fontSize:"4rem", paddingTop:"0.5em" }}
         >To do list</Typography>
-          <CreateTodo update={update} setUpdate={setUpdate} categoryOptions={categoryOptions} />
+          <CreateTodo userName={userName} categoryOptions={categoryOptions} />
           <ListTodo 
             userName={userName}
             categoryOptions={categoryOptions}
             complete={complete} setComplete={setComplete}
-            update={update} setUpdate={setUpdate} 
             tasks={tasks} setTasks={setTasks}
           />
       </div>

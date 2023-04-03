@@ -3,7 +3,7 @@ import { Button, Fade, FormControl, FormGroup, IconButton, InputLabel, ListSubhe
 import PriorityHigh from '@mui/icons-material/PriorityHigh';
 import { useAddTask } from "./hooks/useTasksData";
 
-const CreateTodo = ({ categoryOptions }) => {
+const CreateTodo = ({ userName, categoryOptions }) => {
     const [important, setImportant] = useState(false);       
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState('');
@@ -11,7 +11,7 @@ const CreateTodo = ({ categoryOptions }) => {
     const [categoryData, setCategoryData] = useState();
 
      //call the useQuery hook
-     const { mutate } = useAddTask()
+     const { mutate } = useAddTask({userName})
 
     useEffect(() => {
         setCategoryData(categoryOptions);
