@@ -1,7 +1,5 @@
 {
-  "accounts": [
-    {
-      "accountName": "OneTwoThree",
+  "OneTwoThree": {
       "tasks": [
         {
           "id": 1,
@@ -32,8 +30,7 @@
         }
       ]
     },
-    {
-      "accountName": "ABC",
+    "ABC": {
       "tasks": [
         {
           "id": 4,
@@ -82,7 +79,7 @@
         }
       ]
     }
-  ],
+  ,
   "users": [
     {
       "email": "123@test.com",

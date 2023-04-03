@@ -36,7 +36,6 @@ function Login ({ setLogin, setUserName, userName }) {
          fetch('http://localhost:8000/users/')
          .then(res => res.json())
             .then(data => {
-                console.log(data);
                 //check values equality for errors
                 let newData = data.filter(dataUser => (dataUser.email === user.email || dataUser.password === user.password));
                 //match logins and change component with setState
@@ -50,8 +49,6 @@ function Login ({ setLogin, setUserName, userName }) {
                         } else {
                             setIsLoading(false);
                             setUserName(data.username)
-                            //not changinf user
-                            console.log(userName)
                             return setLogin(true);
                         }
                     })

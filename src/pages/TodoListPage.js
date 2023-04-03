@@ -3,7 +3,7 @@ import ListTodo from "../components/ListTodo";
 import { useState } from "react";
 import { Container, Typography } from "@mui/material";
 
-const TodoListPage = () => {
+const TodoListPage = ({userName}) => {
 
   const [complete, setComplete] = useState(false);
   const [tasks, setTasks] = useState([]);
@@ -36,6 +36,7 @@ const TodoListPage = () => {
         >To do list</Typography>
           <CreateTodo update={update} setUpdate={setUpdate} categoryOptions={categoryOptions} />
           <ListTodo 
+            userName={userName}
             categoryOptions={categoryOptions}
             complete={complete} setComplete={setComplete}
             update={update} setUpdate={setUpdate} 
