@@ -37,21 +37,18 @@ function Login ({ setLogin, setUserName, userName }) {
          .then(res => res.json())
             .then(data => {
                 //check values equality for errors
-                let newData = data.filter(dataUser => (dataUser.email === user.email || dataUser.password === user.password));
+                let newData = data.filter(dataUser => (dataUser.email === user.email));
+                console.log(newData)
+                setIsLoading(false)
                 //match logins and change component with setState
                 if (newData.length > 0) {
-                    newData.map(data => {
-                        if (data.password !== user.password) {
-                            return setValidPassword(false)
-                        } 
-                        if (data.email !== user.email) {
-                            return setValidEmail(false)
-                        } else {
-                            setIsLoading(false);
-                            setUserName(data.username)
-                            return setLogin(true);
-                        }
-                    })
+                  if (newData[0].password === user.password) {
+                    setLogin(true);
+                  } else {
+                    setValidPassword(false);
+                  }
+                } else {
+                    setValidEmail(false);
                 }
             })
             .catch(error => {
