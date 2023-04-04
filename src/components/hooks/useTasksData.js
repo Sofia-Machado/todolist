@@ -9,8 +9,11 @@ const fetchTasks = (username) => {
 
 
 //mutation function
-const addTask = (task) => {
-    return axios.post(`http://localhost:8000/OneTwoThree/`, task)
+const addTaskToUser = (username) => {
+    // generate a function that receives only the task, to give to useMutation
+    return (task) => {
+        return axios.post(`http://localhost:8000/${username}/`, task)
+    }
 }
 
 export const useTasksData = (onSuccess, onError, {userName}) => {
@@ -22,28 +25,28 @@ export const useTasksData = (onSuccess, onError, {userName}) => {
         onError,
         enabled: !!userName,
         //sorted tasks during fetch
-        select: (data) => {
-            const importantTasks = data.data.tasks.filter(task => task.important === true);
-            const unimportantTasks = data.data.tasks.filter(task => !task.important);
+        select: (response) => {
+            const tasks = response.data.tasks;
+            const importantTasks = tasks.filter(task => task.important === true);
+            const unimportantTasks = tasks.filter(task => !task.important);
             unimportantTasks.reverse();
             return [...importantTasks, ...unimportantTasks];
         }
     })
 }
 
-export const useAddTask = ({userName}) => {
+export const useAddTask = (username) => {
     const queryClient = useQueryClient();
+    const addTask = addTaskToUser(username);
     return useMutation(addTask, {
-        
         onSuccess: (data) => {
             //this funciton updates the query cache
-            queryClient.setQueryData(['task', userName], (oldQueryData) => {
+            queryClient.setQueryData(['task', username], (oldQueryData) => {
                 return {
                     ...oldQueryData,
                     data: [...oldQueryData.data.tasks, data.data.tasks],
-                
                 }
-            })       
+            })
             //this is to save network connection and avoid an unnecessary get request
             //queryClient.invalidateQueries('tasks')
         }
