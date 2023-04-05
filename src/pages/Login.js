@@ -36,42 +36,32 @@ function Login ({login, setLogin}) {
 
     function handleSubmit(event) {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
+        const formData = new FormData(event.currentTarget);
         let user = ({
-            email: data.get("email"),
-            password: data.get("password")
+            email: formData.get("email"),
+            password: formData.get("password")
         })
-
          fetch('http://localhost:8000/users/')
-            .then(res => res.json())
+         .then(res => res.json())
             .then(data => {
-                let newData = data.filter(dataUser => (dataUser.email === user.email || dataUser.password === user.password));
                 //check values equality for errors
-              
+                let newData = data.filter(dataUser => (dataUser.email === user.email));
+                console.log(newData)
                 //match logins and change component with setState
                 if (newData.length > 0) {
-                    newData.map(data => {
-                        if (data.password !== user.password) {
-                            return setValidPassword(false)
-                        } 
-                        if (data.email !== user.email) {
-                            return setValidEmail(false)
-                        } else {
-
-                            return setLogin(true);
-                        }
-                    })
-                    
-                    console.log(newData)
-                   // setLogin(true)
+                  if (newData[0].password === user.password) {
+                    setLogin(true);
+                  } else {
+                    setValidPassword(false);
+                  }
+                } else {
+                    setValidEmail(false);
                 }
             })
             .catch(error => {
-                console.log(error)
-                return error
+                return error.message
             })
     };
-
     return (
         <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs">
